@@ -34,16 +34,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-  const select = document.getElementById("medSelect");
-  const input = document.getElementById("medInput");
+  const select = document.getElementById("medSelectCreate");
+  const input = document.getElementById("nameInputCreate");
 
   select.addEventListener("change", function () {
     if (this.value === "new") {
       input.disabled = false;
-      input.focus(); // opcional: enfoca automáticamente
+      input.required = true;
+      input.focus();
     } else {
       input.disabled = true;
-      input.value = ""; // opcional: limpia el campo
+      input.required = false;
+      input.value = "";
     }
   });
 });
