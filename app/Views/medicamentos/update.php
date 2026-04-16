@@ -1,6 +1,7 @@
 <div class="caja-cb">
   <form>
 
+    <!-- Sección 1 -->
     <div class="mb-4">
       <h4 class="border-bottom pb-2 mb-3">Opciones del medicamento</h4>
 
@@ -12,12 +13,6 @@
             <option value="new"> + Crear un nuevo medicamento </option>
             <option value="1">One</option>
             <option value="2">Two</option>
-            <?php /* foreach ($medicamentos as $medicamento): ?>
-              <option value="<?= $medicamento['id_medicamento']?>"
-              data-nombre="<?= $medicamento['nombre_medicamento'] ?>"
-              >
-              <?= $medicamento['nombre_medicamento'] ?></option>
-            <?php endforeach; */?>
           </select>
         </div>
 
@@ -28,7 +23,7 @@
       </div>
     </div>
 
-
+    <!-- Sección 2 -->
     <div class="mb-4">
       <h4 class="border-bottom pb-2 mb-3">Descripción farmacéutica</h4>
 
@@ -40,9 +35,6 @@
             <option value="" selected disabled hidden>Seleccione...</option>
             <option value="1">One</option>
             <option value="2">Two</option>
-            <?php /* foreach ($tipoMedicamentos as $tipo): ?>
-              <option value="<?= $tipo['id_tipo_producto'] ?>"><?= $tipo['nombre_tipo_producto'] ?></option>
-            <?php endforeach; */?>
           </select>
         </div>
 
@@ -57,9 +49,6 @@
             <option value="" selected disabled hidden>Seleccione...</option>
             <option value="1">One</option>
             <option value="2">Two</option>
-            <?php /* foreach ($unidadMedida as $unidad): ?>
-              <option value="<?= $tipo['id_unidad'] ?>"><?= $tipo['nombre_unidad'] ?></option>
-            <?php endforeach; */?>
           </select>
         </div>       
       </div>
@@ -71,6 +60,9 @@
         placeholder="Deje una descripción de la utilización del producto"></textarea>
     </div>
 
+    
+
+    <!-- Botón -->
     <div class="text-center mt-4">
       <button type="submit" class="btn btn-primary px-4">Crear</button>
     </div>

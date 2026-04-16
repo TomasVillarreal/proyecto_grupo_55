@@ -38,14 +38,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const input = document.getElementById("nameInputCreate");
 
   select.addEventListener("change", function () {
+    const selectedOption = this.options[this.selectedIndex];
+
     if (this.value === "new") {
       input.disabled = false;
       input.required = true;
-      input.focus();
     } else {
+      const nombre = selectedOption.getAttribute("data-nombre");
       input.disabled = true;
       input.required = false;
-      input.value = "";
+      input.value = nombre;
     }
   });
 });
