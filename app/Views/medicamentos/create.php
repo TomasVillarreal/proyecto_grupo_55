@@ -10,8 +10,6 @@
           <select id="medSelectCreate" class="form-select" required>
             <option value="" selected disabled hidden>Seleccione...</option>
             <option value="new"> + Crear un nuevo medicamento </option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
             <?php /* foreach ($medicamentos as $medicamento): ?>
               <option value="<?= $medicamento['id_medicamento']?>"
               data-nombre="<?= $medicamento['nombre_medicamento'] ?>"
@@ -38,8 +36,6 @@
           <label for="typeInputCreate" class="form-label">Tipo de medicamento</label>
           <select id="typeInputCreate" class="form-select" required>
             <option value="" selected disabled hidden>Seleccione...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
             <?php /* foreach ($tipoMedicamentos as $tipo): ?>
               <option value="<?= $tipo['id_tipo_producto'] ?>"><?= $tipo['nombre_tipo_producto'] ?></option>
             <?php endforeach; */?>
@@ -55,8 +51,6 @@
           <label for="measurementInputCreate" class="form-label">Unidad de medida utilizada</label>
           <select id="measurementInputCreate" class="form-select" required>
             <option value="" selected disabled hidden>Seleccione...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
             <?php /* foreach ($unidadMedida as $unidad): ?>
               <option value="<?= $tipo['id_unidad'] ?>"><?= $tipo['nombre_unidad'] ?></option>
             <?php endforeach; */?>
