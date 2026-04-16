@@ -1,36 +1,35 @@
-<div class="sidebar sidebar-narrow-unfoldable border-end">
-  <div class="sidebar-header border-bottom">
-    <div class="sidebar-brand">CUI</div>
-  </div>
-  <ul class="sidebar-nav">
-    <li class="nav-title">Nav Title</li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">
-        <i class="nav-icon cil-speedometer"></i> Nav item
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">
-        <i class="nav-icon cil-speedometer"></i> With badge
-        <span class="badge bg-primary ms-auto">NEW</span>
-      </a>
-    </li>
-    <li class="nav-item nav-group show">
-      <a class="nav-link nav-group-toggle" href="#">
-        <i class="nav-icon cil-puzzle"></i> Nav dropdown
-      </a>
-      <ul class="nav-group-items">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span class="nav-icon"><span class="nav-icon-bullet"></span></span> Nav dropdown item
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span class="nav-icon"><span class="nav-icon-bullet"></span></span> Nav dropdown item
-          </a>
-        </li>
-      </ul>
-    </li>
-  </ul>
+<div class="sidebar-layout" id="body-pd">
+    <header class="header" id="header">
+        <div class="header_toggle">
+            <i class='bi bi-list' id="header-toggle"></i>
+        </div>
+    </header>
+
+    <div class="sidebar-container">
+        <div class="l-navbar" id="nav-bar">
+            <nav class="nav">
+                <div> 
+                    <a href="#" class="nav_logo">
+                        <i class='bi bi-hospital nav_logo-icon'></i>
+                        <span class="nav_logo-name">Clinicks</span>
+                    </a>
+
+                    <div class="nav_list"> 
+                        <a href="#" class="nav_link active">
+                            <i class='bi bi-plus-circle nav_icon'></i>
+                            <span class="nav_name">Agregar medicamento</span>
+                        </a> 
+                        <a href="#" class="nav_link">
+                            <i class='bi bi-pencil-square nav_icon'></i>
+                            <span class="nav_name">Modificar medicamento</span>
+                        </a> 
+                        <a href="#" class="nav_link">
+                            <i class='bi bi-file-x nav_icon'></i>
+                            <span class="nav_name">Eliminar medicamento</span>
+                        </a> 
+                    </div>
+                </div> 
+            </nav>
+        </div>
+    </div>
 </div>
