@@ -15,11 +15,11 @@
                     </a>
 
                     <div class="nav_list"> 
-                        <a href="#" class="nav_link active">
+                        <a href="<?= site_url('/') ?>" class="nav_link active">
                             <i class='bi bi-plus-circle nav_icon'></i>
                             <span class="nav_name">Agregar medicamento</span>
                         </a> 
-                        <a href="#" class="nav_link">
+                        <a href="<?= site_url('/update') ?>" class="nav_link">
                             <i class='bi bi-pencil-square nav_icon'></i>
                             <span class="nav_name">Modificar medicamento</span>
                         </a> 

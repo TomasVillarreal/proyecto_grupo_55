@@ -8,7 +8,7 @@
         <div class="col-12 col-md-6">
           <label for="medSelectCreate" class="form-label">Medicamento</label>
           <select id="medSelectCreate" class="form-select" required>
-            <option value="" selected disabled hidden>Seleccione...</option>
+            <option value="-1" selected disabled hidden>Seleccione...</option>
             <option value="new"> + Crear un nuevo medicamento </option>
             <?php /* foreach ($medicamentos as $medicamento): ?>
               <option value="<?= $medicamento['id_medicamento']?>"
