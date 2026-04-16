@@ -51,3 +51,110 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const select = document.getElementById("medSelectCreate");
+  const input = document.getElementById("nameInputCreate");
+
+  select.addEventListener("change", function () {
+    const selectedOption = this.options[this.selectedIndex];
+
+    if (this.value === "new") {
+      input.disabled = false;
+      input.required = true;
+    } else {
+      const nombre = selectedOption.getAttribute("data-nombre");
+      input.disabled = true;
+      input.required = false;
+      input.value = nombre;
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Agarro las cosas relacionadas a los medicamentos
+  const medSelect = document.getElementById("medSelectUpdate");
+  const nameInput = document.getElementById("nameInputUpdate");
+
+  // Agarro las cosas relacionadas a las descripciones
+  const descriptionSelect = document.getElementById("descriptionSelectUpdate");
+  const typeInput = document.getElementById("typeInputUpdate");
+  const dosageInput = document.getElementById("dosageInputUpdate");
+  const measurementInput = document.getElementById("measurementInputUpdate");
+  const descripcionTextarea = document.getElementById("descripcionInputCreate");
+
+  nameInput.disabled = true;
+  descriptionSelect.disabled = true;
+
+  disableDescriptionFields();
+
+  // Función para deshabilitar las cosas de la descripción
+  function disableDescriptionFields() {
+    typeInput.disabled = true;
+    dosageInput.disabled = true;
+    measurementInput.disabled = true;
+    descripcionTextarea.disabled = true;
+
+    typeInput.required = false;
+    dosageInput.required = false;
+    measurementInput.required = false;
+  }
+
+  // Funcion para limpiar los campos de las cosas de descripcion
+  function clearDescriptionFields() {
+    typeInput.value = "";
+    dosageInput.value = "";
+    measurementInput.value = "";
+    descripcionTextarea.value = "";
+  }
+
+  // Cuando se selecciona un med
+  medSelect.addEventListener("change", function () {
+    const selectedOption = this.options[this.selectedIndex];
+    const nombre = selectedOption.getAttribute("data-nombre");
+
+    // Se habilita el campo de nombre de med
+    nameInput.disabled = false;
+    nameInput.required = true;
+    nameInput.value = nombre || "";
+
+    // Se habilita el select de descripcion
+    descriptionSelect.disabled = false;
+
+    // Se resetea a la opcion por defecto del select de descripcion
+    descriptionSelect.value = "-1";
+
+    disableDescriptionFields();
+    clearDescriptionFields();
+  });
+
+  // Cuando se selecciona una descripcion
+  descriptionSelect.addEventListener("change", function () {
+    const selectedOption = this.options[this.selectedIndex];
+
+    // Si el campo seleccionado es el por defecto, reinicio todo
+    if (this.value === "-1") {
+      disableDescriptionFields();
+      clearDescriptionFields();
+      return;
+    }
+
+    // Sino, habilito las cosas de descripcion
+    typeInput.disabled = false;
+    dosageInput.disabled = false;
+    measurementInput.disabled = false;
+    descripcionTextarea.disabled = false;
+
+    typeInput.required = true;
+    dosageInput.required = true;
+    measurementInput.required = true;
+
+    // 💡 Autocompletar
+    dosageInput.value = selectedOption.dataset.dosis || "";
+    typeInput.value = selectedOption.dataset.tipoId || "";
+    measurementInput.value = selectedOption.dataset.unidadId || "";
+    descripcionTextarea.value = selectedOption.dataset.descripcion || "";
+  });
+});
