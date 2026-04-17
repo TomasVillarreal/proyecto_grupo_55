@@ -23,7 +23,7 @@
                             <i class='bi bi-pencil-square nav_icon'></i>
                             <span class="nav_name">Modificar medicamento</span>
                         </a> 
-                        <a href="#" class="nav_link">
+                        <a href="<?= site_url('/delete') ?>" class="nav_link">
                             <i class='bi bi-file-x nav_icon'></i>
                             <span class="nav_name">Eliminar medicamento</span>
                         </a> 
