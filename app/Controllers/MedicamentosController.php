@@ -19,4 +19,12 @@ class MedicamentosController extends BaseController
             'content' => view('medicamentos/update')
         ]);
     }
+
+    public function delete(): string
+    {
+            return view('layout/main_layout', [
+            'title' => 'Medicamentos - Clinicks',
+            'content' => view('medicamentos/delete')
+        ]);
+    }
 }

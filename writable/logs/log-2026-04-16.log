@@ -1,0 +1,108 @@
+CRITICAL - 2026-04-16 22:11:37 --> ParseError: syntax error, unexpected token "endforeach", expecting end of file
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 23.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(27): view('medicamentos/delete')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-16 22:12:09 --> ParseError: syntax error, unexpected token "endforeach", expecting end of file
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 21.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(27): view('medicamentos/delete')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-16 22:12:10 --> ParseError: syntax error, unexpected token "endforeach", expecting end of file
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 21.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(27): view('medicamentos/delete')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-16 22:12:24 --> ParseError: syntax error, unexpected token "endforeach", expecting end of file
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 21.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(27): view('medicamentos/delete')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-16 22:12:25 --> ParseError: syntax error, unexpected token "endforeach", expecting end of file
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 21.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(27): view('medicamentos/delete')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-16 22:12:26 --> ParseError: syntax error, unexpected token "endforeach", expecting end of file
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 21.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(27): view('medicamentos/delete')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-16 22:13:09 --> ParseError: syntax error, unexpected token "endforeach", expecting end of file
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 21.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(27): view('medicamentos/delete')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-16 22:13:10 --> ParseError: syntax error, unexpected token "endforeach", expecting end of file
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 21.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(27): view('medicamentos/delete')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-16 22:13:11 --> ParseError: syntax error, unexpected token "endforeach", expecting end of file
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 21.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(27): view('medicamentos/delete')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

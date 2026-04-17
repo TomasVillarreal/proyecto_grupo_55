@@ -7,3 +7,4 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'MedicamentosController::create');
 $routes->get('/update', 'MedicamentosController::update');
+$routes->get('/delete', 'MedicamentosController::delete');

@@ -158,3 +158,87 @@ document.addEventListener("DOMContentLoaded", function () {
     descripcionTextarea.value = selectedOption.dataset.descripcion || "";
   });
 });
+
+
+function createDescriptionCard(desc) {
+  return `
+    <div class="col-12 col-md-4">
+      <div class="card p-3 shadow-sm">
+        <h6>${desc.dosis} ${desc.unidad}</h6>
+        <p class="mb-2 text-muted">${desc.tipo}</p>
+
+        <button 
+          class="btn btn-outline-danger btn-sm delete-desc-btn"
+          data-id="${desc.id}"
+        >
+          🗑️ Eliminar
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const medSelect = document.getElementById("medSelectDelete");
+  const medInfo = document.getElementById("medInfo");
+  const medName = document.getElementById("medName");
+  const descContainer = document.getElementById("descContainer");
+  const deleteMedBtn = document.getElementById("deleteMedBtn");
+
+  let currentMedId = null;
+
+  // 🔄 Cuando selecciona medicamento
+  medSelect.addEventListener("change", async function () {
+    const medId = this.value;
+
+    if (medId === "-1") {
+      medInfo.classList.add("d-none");
+      return;
+    }
+
+    currentMedId = medId;
+
+    // 🔥 FETCH AL BACKEND (traer descripciones)
+    const response = await fetch(`/medicamentos/${medId}/descripciones`);
+    const data = await response.json();
+
+    // Mostrar info
+    medInfo.classList.remove("d-none");
+    medName.textContent = data.nombre;
+
+    // Renderizar cards
+    descContainer.innerHTML = "";
+    data.descripciones.forEach(desc => {
+      descContainer.innerHTML += createDescriptionCard(desc);
+    });
+  });
+
+  // 🗑️ Eliminar descripción (delegación de eventos)
+  descContainer.addEventListener("click", async (e) => {
+    if (!e.target.classList.contains("delete-desc-btn")) return;
+
+    const id = e.target.dataset.id;
+
+    if (!confirm("¿Eliminar esta descripción?")) return;
+
+    await fetch(`/descripciones/${id}`, {
+      method: "DELETE"
+    });
+
+    // 🔄 refrescar
+    medSelect.dispatchEvent(new Event("change"));
+  });
+
+  // 🗑️ Eliminar medicamento completo
+  deleteMedBtn.addEventListener("click", async () => {
+    if (!confirm("Esto eliminará TODAS las descripciones. ¿Continuar?")) return;
+
+    await fetch(`/medicamentos/${currentMedId}`, {
+      method: "DELETE"
+    });
+
+    // reset UI
+    medSelect.value = "-1";
+    medInfo.classList.add("d-none");
+  });
+});
