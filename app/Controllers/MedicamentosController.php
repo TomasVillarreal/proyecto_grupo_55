@@ -2,13 +2,18 @@
 
 namespace App\Controllers;
 
+use App\Models\MedicamentoModel;
+
 class MedicamentosController extends BaseController
 {
     public function create(): string
     {
+        $medicamentoModel = new MedicamentoModel();
+        $medicamentos = $medicamentoModel->findAll();
+
             return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/create')
+            'content' => view('medicamentos/create', ['medicamentos'=>$medicamentos])
         ]);
     }
 
