@@ -40,7 +40,7 @@ class MedicamentosController extends BaseController
         $tipoProductoModel = new TipoProductoModel();
         $medidaModel = new MedidaProductoModel();
 
-        $tiposProductos = $tipoProductoModel->findAll();
+        $tiposProductos = $tipoProductoModel->obtenerParaDropdown();
         $unidadesMedida = $medidaModel->obtenerParaDropdown();
         $medicamentos = $medicamentoModel->obtenerMedicamentosActivos();
 
