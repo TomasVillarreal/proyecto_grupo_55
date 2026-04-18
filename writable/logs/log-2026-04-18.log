@@ -46,3 +46,253 @@ FROM `medicamento`', [], false)
  9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
 10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 00:37:30 --> ErrorException: Undefined array key "id_unidad"
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 55.
+ 1 APPPATH\Views\medicamentos\create.php(55): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_unidad"', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php', 55)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(23): view('medicamentos/create', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 00:37:31 --> ErrorException: Undefined array key "id_unidad"
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 55.
+ 1 APPPATH\Views\medicamentos\create.php(55): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_unidad"', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php', 55)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(23): view('medicamentos/create', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:34:53 --> ParseError: syntax error, unexpected token "=", expecting "," or ";"
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 37.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(31): view('medicamentos/update')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:34:53 --> ParseError: syntax error, unexpected token "=", expecting "," or ";"
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 37.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(31): view('medicamentos/update')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:35:04 --> ParseError: syntax error, unexpected double-quoted string "?></option>", expecting "," or ";"
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 44.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(31): view('medicamentos/update')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:35:05 --> ParseError: syntax error, unexpected double-quoted string "?></option>", expecting "," or ";"
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 44.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 3 APPPATH\Controllers\MedicamentosController.php(31): view('medicamentos/update')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:38:37 --> ErrorException: Undefined variable $descriptions
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 26.
+ 1 APPPATH\Views\medicamentos\update.php(26): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $descriptions', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php', 26)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(31): view('medicamentos/update')
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:38:38 --> ErrorException: Undefined variable $descriptions
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 26.
+ 1 APPPATH\Views\medicamentos\update.php(26): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $descriptions', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php', 26)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(31): view('medicamentos/update')
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:40:48 --> ErrorException: Undefined array key "nombre_tipo_producto"
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 30.
+ 1 APPPATH\Views\medicamentos\update.php(30): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "nombre_tipo_producto"', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php', 30)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(38): view('medicamentos/update', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:47:38 --> ErrorException: Undefined variable $tipoMedicamentos
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 68.
+ 1 APPPATH\Views\medicamentos\update.php(68): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $tipoMedicamentos', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php', 68)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(42): view('medicamentos/update', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:47:55 --> ErrorException: Undefined variable $unidadMedida
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 83.
+ 1 APPPATH\Views\medicamentos\update.php(83): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $unidadMedida', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php', 83)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(42): view('medicamentos/update', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:47:57 --> ErrorException: Undefined variable $unidadMedida
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 83.
+ 1 APPPATH\Views\medicamentos\update.php(83): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $unidadMedida', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php', 83)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(42): view('medicamentos/update', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:48:16 --> ErrorException: Undefined array key "id_unidad"
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 84.
+ 1 APPPATH\Views\medicamentos\update.php(84): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_unidad"', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php', 84)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(42): view('medicamentos/update', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:48:28 --> ErrorException: Undefined array key "id_medida_producto"
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 84.
+ 1 APPPATH\Views\medicamentos\update.php(84): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "id_medida_producto"', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php', 84)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(42): view('medicamentos/update', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 13:48:48 --> ErrorException: Undefined array key "nombre_unidad"
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 84.
+ 1 APPPATH\Views\medicamentos\update.php(84): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "nombre_unidad"', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php', 84)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\update.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(42): view('medicamentos/update', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-18 13:52:02 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\proyecto_grupo_55\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\xampp\htdocs\proyecto_grupo_55\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'clinicks_db', 3306, '', 0)
+#1 C:\xampp\htdocs\proyecto_grupo_55\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\proyecto_grupo_55\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\proyecto_grupo_55\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\proyecto_grupo_55\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\proyecto_grupo_55\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\proyecto_grupo_55\app\Controllers\MedicamentosController.php(35): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\proyecto_grupo_55\system\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+#8 C:\xampp\htdocs\proyecto_grupo_55\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+#9 C:\xampp\htdocs\proyecto_grupo_55\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\proyecto_grupo_55\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\proyecto_grupo_55\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\proyecto_grupo_55\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\proyecto_grupo_55\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\xampp\htdocs\proyecto_grupo_55\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\proyecto_grupo_55\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\proyecto_grupo_55\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\proyecto_grupo_55\system\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\proyecto_grupo_55\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#5 C:\xampp\htdocs\proyecto_grupo_55\app\Controllers\MedicamentosController.php(35): CodeIgniter\BaseModel->findAll()
+#6 C:\xampp\htdocs\proyecto_grupo_55\system\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+#7 C:\xampp\htdocs\proyecto_grupo_55\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+#8 C:\xampp\htdocs\proyecto_grupo_55\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\proyecto_grupo_55\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\proyecto_grupo_55\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\xampp\htdocs\proyecto_grupo_55\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2026-04-18 13:52:02 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+[Method: GET, Route: update]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `tipo_producto`', [], false)
+ 3 SYSTEMPATH\Model.php(253): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Controllers\MedicamentosController.php(35): CodeIgniter\BaseModel->findAll()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
