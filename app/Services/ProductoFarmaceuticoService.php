@@ -1,0 +1,170 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\ProductoFarmaceuticoModel;
+use App\Models\MedicamentoModel;
+use App\Models\TipoProductoModel;
+use App\Models\MedidaProductoModel;
+use CodeIgniter\Database\Exceptions\DatabaseException;
+
+class ProductoFarmaceuticoService
+{
+    //Variables a utilizar que hacen referencia a cada modelo usado
+    protected $productoModel;
+    protected $medicamentoModel;
+    protected $tipoProductoModel;
+    protected $medidaProductoModel;
+
+    /*Creacion del constructor para evitar llamar al modelo en cada funcion.*/
+    public function __construct()
+    {
+        //Se reconocen e instancian las clases de los modelos a utilizar
+        $this->productoModel = model(ProductoFarmaceuticoModel::class);
+        $this->medicamentoModel = model(MedicamentoModel::class);
+        $this->tipoProductoModel = model(TipoProductoModel::class);
+        $this->medidaProductoModel = model(MedidaProductoModel::class);
+    }
+
+    /*Se crea un metodo que valida las dosis de acuerdo a nuestras
+    reglas de negocio. 
+    Devuelve true si cumple con las validaciones y en caso contrario
+    devuelve un string con el error*/
+    public function validarDosis($dosis): string|true
+    {
+        if (!is_numeric($dosis)) {
+            return "La dosis debe ser un número";
+        }
+        
+        //Se castea a float y se valida que sea mayor a 0 y menor 3000
+        $dosis = (float) $dosis;
+        if ($dosis <= 0 || $dosis > 3000) {
+            return "La dosis debe estar entre 0.01 y 3000";
+        }
+        
+        return true;
+    }
+
+    /*Se crea un metodo que valida las posibles descripciones de los productos
+    de acuerdo a nuestras reglas de negocio.  */
+    public function validarDescripcion(?string $descripcion): string|true
+    {
+        //Valida si el campo está vacío
+        if (empty($descripcion)) {
+            return true; // Es opcional
+        }
+        
+        //preg_match controla que no se ingresen al final cosas como #, ^, palabra y muchos espacios y un nro,etc
+        if (!preg_match('/^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ(%-]+([ ,.()%-]+[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+)*[).%]*$/u', $descripcion)) {
+            return "La descripción contiene caracteres no permitidos (#, ^,etc)";
+        }
+        
+        return true;
+    }
+
+    /*Se crea un metodo que valida que el producto farmaceutico en su totalidad
+    cumple con las validaciones establecidas.
+    En caso de que si cumpla, retorna un array vacio, en caso contrario, retorna
+    un array con los errores. */
+    public function validarProductoFarmaceutico(array $data, ?int $excludeId = null): array
+    {
+        //Se crea el array que contendrá los errores, o no-
+        $errors = [];
+
+        //Se validan las dosis haciendo uso del metodo anterior
+        $dosisCheck = $this->validarDosis($data['dosis_producto'] ?? '');
+        if ($dosisCheck !== true) {
+            $errors['dosis_producto'] = $dosisCheck;
+        }
+
+        //También se valida la despcriones haciendo uso del metodo anterior
+        $descripcionCheck = $this->validarDescripcion($data['descripcion_producto'] ?? null);
+        if ($descripcionCheck !== true) {
+            $errors['descripcion_producto'] = $descripcionCheck;
+        }
+
+
+        //Se valida que el producto entero no tenga duplicados
+        if (empty($errors)) {
+            if ($this->productoModel->existeCombinacionUnica(
+                (int) $data['id_medicamento'],
+                (float) $data['dosis_producto'],
+                (int) $data['id_medida_producto'],
+                (int) $data['id_tipo_producto'],
+                $excludeId
+            )) {
+                $errors['unique'] = 'Ya existe un producto con la misma combinación de medicamento, dosis, medida y tipo.';
+            }
+        }
+
+        return $errors;
+    }
+
+    /*Se crea un método para crear un nuevo producto farmaceutico, teniendo en cuenta que 
+    cumple con las validaciones. Retorna el id del nuevo producto*/
+    public function crearProducto(array $data): int
+    {
+        $errors = $this->validarProductoFarmaceutico($data);
+        if (!empty($errors)) {
+            throw new \InvalidArgumentException(json_encode($errors));//Transforma el array en texto formato JSON
+        }
+
+        //Se inserta el nuevo producto farmaceutico
+        $insertData = [
+            'id_medicamento' => (int) $data['id_medicamento'],
+            'id_tipo_producto' => (int) $data['id_tipo_producto'],
+            'id_medida_producto' => (int) $data['id_medida_producto'],
+            'dosis_producto' => (float) $data['dosis_producto'],
+            'descripcion_producto' => empty($data['descripcion_producto']) ? null : trim($data['descripcion_producto']),
+            'activo_producto' => 1,
+        ];
+
+        //Se asigna el nuevo id
+        $id = $this->productoModel->insert($insertData);
+        
+        //Se maneja un posible error en la inserción
+        if (!$id) {
+            throw new DatabaseException('No se pudo crear el producto.');
+        }
+
+        //Retorna el nuevo id
+        return $id;
+    }
+
+    /*Metodo para actualizar/modeificar un producto farmaceutico */
+    public function modificarProductoFarmaceutico(int $idProductoFarmaceutico, array $data): bool
+    {
+        //Se asigna a la variable el producto que se busca en el modelo. En caso de no existir, mensaje de error
+        $producto = $this->productoModel->find($idProductoFarmaceutico);
+        if (!$producto) {
+            throw new \InvalidArgumentException('El producto no existe.');
+        }
+
+        $errors = $this->validarProductoFarmaceutico($data, $idProductoFarmaceutico);
+        if (!empty($errors)) {
+            throw new \InvalidArgumentException(json_encode($errors));
+        }
+
+        //Se guarda la informacion del producto farmaceutico actualizado
+        $updateData = [
+            'id_medicamento' => (int) $data['id_medicamento'],
+            'id_tipo_producto' => (int) $data['id_tipo_producto'],
+            'id_medida_producto' => (int) $data['id_medida_producto'],
+            'dosis_producto' => (float) $data['dosis_producto'],
+            'descripcion_producto' => empty($data['descripcion_producto']) ? null : trim($data['descripcion_producto']),
+        ];
+
+        return $this->productoModel->update($idProductoFarmaceutico, $updateData);
+    }
+
+    /*Metodo para la eliminación lógica del medicamento haciendo uso del metodo de su modelo */
+    public function eliminarProducto(int $idProductoFarmaceutico): bool
+    {
+        $productoFarmaceutico = $this->productoModel->find($idProductoFarmaceutico);
+        if (!$productoFarmaceutico) {
+            throw new \InvalidArgumentException('El producto no existe.');
+        }
+
+        return $this->productoModel->eliminarProductoFarmaceutico($idProductoFarmaceutico);
+    }
+}
