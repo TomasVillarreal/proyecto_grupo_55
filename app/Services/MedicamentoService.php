@@ -73,12 +73,44 @@ class MedicamentoService
     {
         /*Primero verificamos que exista el medicamento que pasamos por param, haciendo uso de nuestro model.
         Se tiene en cuenta que no deberían aparecer medicamentos que no están activos pero se maneja por si 
-        se nos pasa alguno*/
+        se nos pasa alguno, aunque no creo que se use por las dudas lo dejo comentado.
         $medicamento = $this->medicamentoModel->find($idMedicamento);
         if(!$medicamento){
             throw new \InvalidArgumentException('El medicamento no existe');
+        }*/
+
+        /*Se verifica que sea unico el medicamento, osea el nombre*/
+        if($this->medicamentoModel->medicamentoUnico($nombreMedicamento, $idMedicamento)){
+            throw new \InvalidArgumentException('Ya existe un medicamento con ese nombre');
         }
 
-        return true;
+        return $this->medicamentoModel->update($idMedicamento, ['nombre_medicamento' => $nombreMedicamento]);
     }
+
+        /*Metodo para eliminar logicamente un medicamento*/
+        public function eliminarMedicamento(int $idMedicamento): bool
+        {
+            /*Primero se hace una busqueda y asignacion. Luego el if controla si existe lo cual no es tan necesario
+            para nuestro modelo pero no está demás.*/
+            $medicamento = $this->medicamentoModel->find($idMedicamento);
+            if(!$medicamento){
+                throw new \InvalidArgumentException('El medicamento seleccionado no existe');
+            }
+
+            return $this->medicamentoModel->eliminarMedicamento($idMedicamento);
+        }
+
+        /*Se crea este metodo para facilitar la obtencion de la lista de medicamentos,
+        asociando su ID con el nombre, presentandolos en array y asegurando de que estan
+        correctamente escritos*/
+        public function obtenerMedicamentosDropdown(): array
+        {
+            $medicamentos = $this->medicamentoModel->obtenerMedicamentosActivos();
+            $listado = [];
+            foreach($medicamentos as $medicamento){
+                $listado[$medicamento->id_medicamento] = $medicamento->nombre_medicamento;
+            }
+
+            return $listado;
+        }
 }
