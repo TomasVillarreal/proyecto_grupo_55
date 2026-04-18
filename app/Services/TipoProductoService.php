@@ -16,7 +16,7 @@ class TipoProductoService
     }
 
     /*Metodo para obtener los tipos de productos y ser utilizados en el dropdown*/
-    public function obtenerParaDropdown(): array
+    public function obtenerTiposDropdown(): array
     {
         $tipos = $this->tipoProductoModel->orderBy('nombre_tipo_producto', 'ASC')->findAll();
         $listado = [];
