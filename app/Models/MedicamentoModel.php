@@ -8,27 +8,22 @@ class MedicamentoModel extends Model
 {
     protected $table = 'medicamento'; //La tabla de nuestra bd creada en phpmyadmin
     protected $primaryKey = 'id_medicamento'; //Identificador de la tabla
-
-    protected $allowedFields = [ //Las columnas de la tabla
-        'nombre_medicamento',
-        'activo_medicamento'
-    ];
-
+    protected $allowedFields = ['nombre_medicamento','activo_medicamento']; //Las columnas de la tabla
     protected $useTimestamps = false; //Para no rellenar columnas de tiempo automaticamente.
     protected $returnType = 'object'; //Se especifica el formato de dato a devolver
 
     //Se crea un método para obtener todos los medicamentos activos en el sistema
-    public function ObtenerMedicamentosActivos()
+    public function obtenerMedicamentosActivos()
     {
-        return $this->WHERE('activo_medicamento',1) //Se realiza el filtro por el campo activo y su valor 1 (por defecto activo)
-                    ->ORDERBY ('nombre_medicamento', 'ASC') //Forma en la que se van a presentar los medicamentos
-                    ->FINDALL(); //Trae todos los registros de la BD que cumplan con los filtros previos.
+        return $this->where('activo_medicamento',1) //Se realiza el filtro por el campo activo y su valor 1 (por defecto activo)
+                    ->orderby ('nombre_medicamento', 'ASC') //Forma en la que se van a presentar los medicamentos
+                    ->findAll(); //Trae todos los registros de la BD que cumplan con los filtros previos.
     }
 
     //Se crea un método para la eliminación (baja lógica de los medicamentos)
-    public function EliminarMedicamento(int $id): bool //Se especifica el tipo de dato que se busca que retorne
+    public function eliminarMedicamento(int $id): bool //Se especifica el tipo de dato que se busca que retorne
     {
-        return $this->UPDATE($id, ['activo_medicamento' => 0]); //Se realiza la modificación del campo para el id pasado por param.
+        return $this->update($id, ['activo_medicamento' => 0]); //Se realiza la modificación del campo para el id pasado por param.
     }
 
     /*Se crea un método que verifica que el medicamento que se desea ingresar sea único, por su nombre
@@ -39,12 +34,13 @@ class MedicamentoModel extends Model
     *Con ?int $excludeId = null se permite que el param recibido sea int o null y se asigna null en caso de
     que no se pase nada como argumento*/
 
-    public function MedicamentoUnico(string $nombre, ?int $excludeId = null): bool
+    public function medicamentoUnico(string $nombre, ?int $excludeId = null): bool
     {
         $builder = $this->builder();
-        $builder->WHERE('nombre_medicamento', $nombre);
+        $builder->where('nombre_medicamento', $nombre);
+        $builder->where('activo_medicamento', 1); //Solo busca entre los activos.
         if($excludeId != NULL){
-            $builder->WHERE('id_medicamento !=', $excludeId);
+            $builder->where('id_medicamento !=', $excludeId);
         }
         return $builder->countAllResults() > 0;
         /*Booleano que verifica las coincidencias de lo solicitado en esta funcion y lo que hay en la BD
