@@ -36,9 +36,9 @@
           <label for="typeInputCreate" class="form-label">Tipo de medicamento</label>
           <select id="typeInputCreate" class="form-select" required>
             <option value="" selected disabled hidden>Seleccione...</option>
-            <?php /* foreach ($tipoMedicamentos as $tipo): ?>
+            <?php foreach ($tiposProducto as $tipo): ?>
               <option value="<?= $tipo['id_tipo_producto'] ?>"><?= $tipo['nombre_tipo_producto'] ?></option>
-            <?php endforeach; */?>
+            <?php endforeach; ?>
           </select>
         </div>
 
@@ -51,9 +51,9 @@
           <label for="measurementInputCreate" class="form-label">Unidad de medida utilizada</label>
           <select id="measurementInputCreate" class="form-select" required>
             <option value="" selected disabled hidden>Seleccione...</option>
-            <?php /* foreach ($unidadMedida as $unidad): ?>
-              <option value="<?= $tipo['id_unidad'] ?>"><?= $tipo['nombre_unidad'] ?></option>
-            <?php endforeach; */?>
+            <?php foreach ($unidadesMedida as $unidad): ?>
+              <option value="<?= $unidad['id_medida_producto'] ?>"><?= $unidad['nombre_medida'] ?></option>
+            <?php endforeach;?>
           </select>
         </div>       
       </div>

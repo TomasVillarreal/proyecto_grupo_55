@@ -1,36 +1,38 @@
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener("DOMContentLoaded", function () {
+
   const showNavbar = (toggleId, navId, bodyId, headerId) => {
-    const toggle = document.getElementById(toggleId),
-      nav = document.getElementById(navId),
-      bodypd = document.getElementById(bodyId),
-      headerpd = document.getElementById(headerId);
-    // Validate that all variables exist
+    const toggle = document.getElementById(toggleId);
+    const nav = document.getElementById(navId);
+    const bodypd = document.getElementById(bodyId);
+    const headerpd = document.getElementById(headerId);
+
     if (toggle && nav && bodypd && headerpd) {
       toggle.addEventListener("click", () => {
-        // show navbar
         nav.classList.toggle("sidebarshow");
-        // change icon
         toggle.classList.toggle("bx-x");
-        // add padding to body
         bodypd.classList.toggle("body-pd");
-        // add padding to header
         headerpd.classList.toggle("body-pd");
       });
     }
   };
+
   showNavbar("header-toggle", "nav-bar", "body-pd", "header");
-  /*===== LINK ACTIVE =====*/
-  const linkColor = document.querySelectorAll(".nav_link");
 
-  function colorLink() {
-    if (linkColor) {
-      linkColor.forEach((l) => l.classList.remove("active"));
-      this.classList.add("active");
+  /* ACTIVE SEGÚN URL */
+  const links = document.querySelectorAll(".nav_link");
+  const currentUrl = window.location.href;
+
+  links.forEach(link => {
+    link.classList.remove("active");
+
+    if (link.href === currentUrl) {
+      link.classList.add("active");
     }
-  }
-  linkColor.forEach((l) => l.addEventListener("click", colorLink));
-  // Your code to run since DOM is loaded and ready
+  });
+
 });
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -43,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (this.value === "new") {
       input.disabled = false;
       input.required = true;
+      input.value = "";
     } else {
       const nombre = selectedOption.getAttribute("data-nombre");
       input.disabled = true;
@@ -53,44 +56,26 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-document.addEventListener("DOMContentLoaded", function () {
-  const select = document.getElementById("medSelectCreate");
-  const input = document.getElementById("nameInputCreate");
-
-  select.addEventListener("change", function () {
-    const selectedOption = this.options[this.selectedIndex];
-
-    if (this.value === "new") {
-      input.disabled = false;
-      input.required = true;
-    } else {
-      const nombre = selectedOption.getAttribute("data-nombre");
-      input.disabled = true;
-      input.required = false;
-      input.value = nombre;
-    }
-  });
-});
-
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Agarro las cosas relacionadas a los medicamentos
+
+  // Agarro los componentes del form relacionados a medicamentos
   const medSelect = document.getElementById("medSelectUpdate");
   const nameInput = document.getElementById("nameInputUpdate");
 
-  // Agarro las cosas relacionadas a las descripciones
+  // Agarro los componentes del form relacionados a productos farmaceuticos
   const descriptionSelect = document.getElementById("descriptionSelectUpdate");
   const typeInput = document.getElementById("typeInputUpdate");
   const dosageInput = document.getElementById("dosageInputUpdate");
   const measurementInput = document.getElementById("measurementInputUpdate");
-  const descripcionTextarea = document.getElementById("descripcionInputCreate");
+  const descripcionTextarea = document.getElementById("descripcionInputUpdate");
 
+  // En un principio desabilito todo que no sea la seleccion de medicamentos
   nameInput.disabled = true;
   descriptionSelect.disabled = true;
-
   disableDescriptionFields();
 
-  // Función para deshabilitar las cosas de la descripción
+  // Funcion para desabilitar todo lo relacionado a productos farmaceuticos
   function disableDescriptionFields() {
     typeInput.disabled = true;
     dosageInput.disabled = true;
@@ -102,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     measurementInput.required = false;
   }
 
-  // Funcion para limpiar los campos de las cosas de descripcion
+//Funcion para limpiar todo lo escrito que relacionado a producto farma (en caso de cambiar de producto farmaceutico)
   function clearDescriptionFields() {
     typeInput.value = "";
     dosageInput.value = "";
@@ -110,38 +95,75 @@ document.addEventListener("DOMContentLoaded", function () {
     descripcionTextarea.value = "";
   }
 
-  // Cuando se selecciona un med
-  medSelect.addEventListener("change", function () {
-    const selectedOption = this.options[this.selectedIndex];
-    const nombre = selectedOption.getAttribute("data-nombre");
+  // Funcion para arrancar de 0 la seleccion de producto farma., en caso de cambiar de medicamento
+  function clearDescriptionSelect() {
+    descriptionSelect.value = "-1";
+  }
 
-    // Se habilita el campo de nombre de med
+  // Cuando un medicamento es seleccionado (o cambia el contenido del select de medicamento)
+  medSelect.addEventListener("change", async function () {
+    // Agarramos la opcion elegida, su nombre e id
+    const selectedOption = this.options[this.selectedIndex];
+    const nombre = selectedOption.dataset.nombre || "";
+    const idMedicamento = this.value;
+
+    // Habilitamos el input del nombre del medicamento, lo hacemos obligatorio, y permitimos la seleccion de un prod. farma.
     nameInput.disabled = false;
     nameInput.required = true;
-    nameInput.value = nombre || "";
-
-    // Se habilita el select de descripcion
+    nameInput.value = nombre;
     descriptionSelect.disabled = false;
 
-    // Se resetea a la opcion por defecto del select de descripcion
-    descriptionSelect.value = "-1";
-
+    // Se reinicia de 0 todo lo hecho anteriormente
     disableDescriptionFields();
     clearDescriptionFields();
+    clearDescriptionSelect();
+
+    try {
+      // intenta hacer una peticion get al backend
+      const response = await fetch(`/medicamentos/productos/${idMedicamento}`);
+
+      // Convierte la respuesta en un vector de productos farmaceuticos
+      const productos = await response.json();
+
+      productos.forEach(prod => {
+        // recorro todos los productos y voy creando opciones en base a estos
+        const option = document.createElement("option");
+
+        // tal que su valor es el id del prod. farma
+        option.value = prod.id_producto;
+        // su contenido es la dosis mas el tipo de medida (ej: 400 mg)
+        option.textContent =
+          prod.dosis_producto + " " + prod.nombre_medida;
+
+        // y donde almaceno otros datos relacionados a esta opcion
+        option.dataset.dosis = prod.dosis_producto;
+        option.dataset.tipo = prod.id_tipo_producto;
+        option.dataset.unidad = prod.id_medida_producto;
+        option.dataset.descripcion = prod.descripcion_producto;
+        
+        // se agrega la opcion al select de las descripciones farmaceuticas
+        descriptionSelect.appendChild(option);
+      });
+
+    } catch (error) {
+      console.error("Error cargando productos:", error);
+    }
   });
 
-  // Cuando se selecciona una descripcion
+  
+  // Cuando se selecciona un prod. farma.
   descriptionSelect.addEventListener("change", function () {
+    // Agarro la opcion elegida
     const selectedOption = this.options[this.selectedIndex];
 
-    // Si el campo seleccionado es el por defecto, reinicio todo
+    // Si la opcion es la opcion por default, reinicio todo lo escrito anteriormente y lo deshabilito
     if (this.value === "-1") {
       disableDescriptionFields();
       clearDescriptionFields();
       return;
     }
 
-    // Sino, habilito las cosas de descripcion
+    // Habilito todo lo que se pueda editar de prod farma, y lo hago todo obligatorio menos el comentario
     typeInput.disabled = false;
     dosageInput.disabled = false;
     measurementInput.disabled = false;
@@ -151,94 +173,118 @@ document.addEventListener("DOMContentLoaded", function () {
     dosageInput.required = true;
     measurementInput.required = true;
 
-    // 💡 Autocompletar
+    // Relleno todos estos datos con los datos del prod. farma. elegido
     dosageInput.value = selectedOption.dataset.dosis || "";
-    typeInput.value = selectedOption.dataset.tipoId || "";
-    measurementInput.value = selectedOption.dataset.unidadId || "";
+    typeInput.value = selectedOption.dataset.tipo || "";
+    measurementInput.value = selectedOption.dataset.unidad || "";
     descripcionTextarea.value = selectedOption.dataset.descripcion || "";
   });
 });
 
 
-function createDescriptionCard(desc) {
-  return `
-    <div class="col-12 col-md-4">
-      <div class="card p-3 shadow-sm">
-        <h6>${desc.dosis} ${desc.unidad}</h6>
-        <p class="mb-2 text-muted">${desc.tipo}</p>
 
-        <button 
-          class="btn btn-outline-danger btn-sm delete-desc-btn"
-          data-id="${desc.id}"
-        >
-          🗑️ Eliminar
-        </button>
-      </div>
-    </div>
-  `;
-}
 
 document.addEventListener("DOMContentLoaded", () => {
-  const medSelect = document.getElementById("medSelectDelete");
-  const medInfo = document.getElementById("medInfo");
-  const medName = document.getElementById("medName");
-  const descContainer = document.getElementById("descContainer");
-  const deleteMedBtn = document.getElementById("deleteMedBtn");
+    // agarro el select del medicamento
+    const select = document.getElementById("medSelectDelete");
+    // agarro el div que contendra a las cartas
+    const cards = document.getElementById("contenedorCards");
+    // agarro al contenedor que permira el borrado de un medicamento entero
+    const deleteMed = document.getElementById("contenedorDeleteMedicamento");
 
-  let currentMedId = null;
+    // escucho el cambio en el select del medicamento
+    select.addEventListener("change", async function () {
 
-  // 🔄 Cuando selecciona medicamento
-  medSelect.addEventListener("change", async function () {
-    const medId = this.value;
+      // agarro el id del medicamento
+        const idMedicamento = this.value;
 
-    if (medId === "-1") {
-      medInfo.classList.add("d-none");
-      return;
-    }
+        // pongo un valor nulo en ambos divs
+        cards.innerHTML = "";
+        deleteMed.innerHTML = "";
 
-    currentMedId = medId;
 
-    // 🔥 FETCH AL BACKEND (traer descripciones)
-    const response = await fetch(`/medicamentos/${medId}/descripciones`);
-    const data = await response.json();
+        try {
+            // intenta hacer una peticion get al backend
+            const response = await fetch(`/medicamentos/productos/${idMedicamento}`);
 
-    // Mostrar info
-    medInfo.classList.remove("d-none");
-    medName.textContent = data.nombre;
+            // transformo la respuesta en un vector de productos
+            const productos = await response.json();
 
-    // Renderizar cards
-    descContainer.innerHTML = "";
-    data.descripciones.forEach(desc => {
-      descContainer.innerHTML += createDescriptionCard(desc);
+            // si no hay productos farma. para es medicamento indico que no existen.
+            if (productos.length == 0) {
+
+                cards.innerHTML = `
+                    <p class="text-muted">
+                        Este medicamento no tiene productos farmaceuticos.
+                    </p>
+                `;
+
+            } else {
+                //Sino creo una carta para cada producto farma., la cual cada una tendra su opcion de borrado
+                productos.forEach(prod => {
+
+                    cards.innerHTML += `
+                        <div class="col-md-4">
+                            <div class="card shadow-sm p-3 h-100">
+
+                                <h6>
+                                    ${prod.dosis_producto}
+                                    ${prod.nombre_medida}
+                                </h6>
+
+                                <p class="text-muted mb-1">
+                                    ${prod.nombre_tipo_producto}
+                                </p>
+
+                                <p class="small text-secondary">
+                                    ${prod.comentario ?? ""}
+                                </p>
+
+                                <form
+                                  method="POST"
+                                  action="/descripciones/delete/${prod.id_producto}"
+                                >
+                                    <button
+                                      type="submit"
+                                      class="btn btn-outline-danger btn-sm w-100"
+                                    >
+                                        X
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    `;
+                });
+
+            }
+
+            // En caso contrario, en el div que permitira el borrado entero del medicamento, creo el form para borrarlo
+            deleteMed.innerHTML = `
+                <form
+                  method="POST"
+                  action="/medicamentos/delete/${idMedicamento}"
+                >
+                    <button
+                      type="submit"
+                      class="btn btn-danger"
+                    >
+                        🗑️ Eliminar medicamento completo
+                    </button>
+                </form>
+            `;
+
+        } catch (error) {
+
+            cards.innerHTML = `
+                <p class="text-danger">
+                    Error al cargar descripciones.
+                </p>
+            `;
+
+            console.error(error);
+        }
+
     });
-  });
 
-  // 🗑️ Eliminar descripción (delegación de eventos)
-  descContainer.addEventListener("click", async (e) => {
-    if (!e.target.classList.contains("delete-desc-btn")) return;
-
-    const id = e.target.dataset.id;
-
-    if (!confirm("¿Eliminar esta descripción?")) return;
-
-    await fetch(`/descripciones/${id}`, {
-      method: "DELETE"
-    });
-
-    // 🔄 refrescar
-    medSelect.dispatchEvent(new Event("change"));
-  });
-
-  // 🗑️ Eliminar medicamento completo
-  deleteMedBtn.addEventListener("click", async () => {
-    if (!confirm("Esto eliminará TODAS las descripciones. ¿Continuar?")) return;
-
-    await fetch(`/medicamentos/${currentMedId}`, {
-      method: "DELETE"
-    });
-
-    // reset UI
-    medSelect.value = "-1";
-    medInfo.classList.add("d-none");
-  });
 });
