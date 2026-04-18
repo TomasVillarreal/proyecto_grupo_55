@@ -11,10 +11,10 @@
             <option value="-1" selected disabled hidden>Seleccione...</option>
             <option value="new"> + Crear un nuevo medicamento </option>
             <?php foreach ($medicamentos as $medicamento): ?>
-              <option value="<?= $medicamento['id_medicamento']?>"
-              data-nombre="<?= $medicamento['nombre_medicamento'] ?>"
+              <option value="<?= $medicamento->id_medicamento?>"
+              data-nombre="<?= $medicamento->nombre_medicamento ?>"
               >
-              <?= $medicamento['nombre_medicamento'] ?></option>
+              <?= $medicamento->nombre_medicamento ?></option>
             <?php endforeach; ?>
           </select>
         </div>
@@ -36,9 +36,9 @@
           <label for="typeInputCreate" class="form-label">Tipo de medicamento</label>
           <select id="typeInputCreate" class="form-select" required>
             <option value="" selected disabled hidden>Seleccione...</option>
-            <?php foreach ($tiposProducto as $tipo): ?>
-              <option value="<?= $tipo['id_tipo_producto'] ?>"><?= $tipo['nombre_tipo_producto'] ?></option>
-            <?php endforeach; ?>
+              <?php foreach ($tiposProducto as $id => $nombre): ?>
+                  <option value="<?= $id ?>"><?= $nombre ?></option>
+              <?php endforeach; ?>
           </select>
         </div>
 
@@ -51,9 +51,9 @@
           <label for="measurementInputCreate" class="form-label">Unidad de medida utilizada</label>
           <select id="measurementInputCreate" class="form-select" required>
             <option value="" selected disabled hidden>Seleccione...</option>
-            <?php foreach ($unidadesMedida as $unidad): ?>
-              <option value="<?= $unidad['id_medida_producto'] ?>"><?= $unidad['nombre_medida'] ?></option>
-            <?php endforeach;?>
+              <?php foreach ($unidadesMedida as $id => $nombre): ?>
+                  <option value="<?= $id ?>"><?= $nombre ?></option>
+              <?php endforeach; ?>
           </select>
         </div>       
       </div>

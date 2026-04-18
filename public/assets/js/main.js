@@ -97,6 +97,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Funcion para arrancar de 0 la seleccion de producto farma., en caso de cambiar de medicamento
   function clearDescriptionSelect() {
+    while (descriptionSelect.options.length > 1) {
+      descriptionSelect.remove(1);
+    }
     descriptionSelect.value = "-1";
   }
 
@@ -120,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       // intenta hacer una peticion get al backend
-      const response = await fetch(`/medicamentos/productos/${idMedicamento}`);
+      const response = await fetch(`${BASE_URL}medicamentos/productos/${idMedicamento}`);
 
       // Convierte la respuesta en un vector de productos farmaceuticos
       const productos = await response.json();
@@ -133,13 +136,13 @@ document.addEventListener("DOMContentLoaded", function () {
         option.value = prod.id_producto;
         // su contenido es la dosis mas el tipo de medida (ej: 400 mg)
         option.textContent =
-          prod.dosis_producto + " " + prod.nombre_medida;
+          prod.nombre_tipo_producto + " - " + prod.dosis_producto + " " + prod.nombre_medida;
 
         // y donde almaceno otros datos relacionados a esta opcion
         option.dataset.dosis = prod.dosis_producto;
         option.dataset.tipo = prod.id_tipo_producto;
         option.dataset.unidad = prod.id_medida_producto;
-        option.dataset.descripcion = prod.descripcion_producto;
+        option.dataset.descripcion = prod.descripcion_producto ?? "";
         
         // se agrega la opcion al select de las descripciones farmaceuticas
         descriptionSelect.appendChild(option);
@@ -205,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             // intenta hacer una peticion get al backend
-            const response = await fetch(`/medicamentos/productos/${idMedicamento}`);
+            const response = await fetch(`${BASE_URL}medicamentos/productos/${idMedicamento}`);
 
             // transformo la respuesta en un vector de productos
             const productos = await response.json();

@@ -56,7 +56,7 @@ class ProductoFarmaceuticoModel extends Model
         $builder->join('medida_producto mp', 'mp.id_medida_producto = pf.id_medida_producto');//Se hace el JOIN con la tabla medida producto
         $builder->where('pf.id_medicamento', $idMedicamento);
 
-        return $builder->get()->getResult();
+        return $builder->get()->getResultArray();
     }
 
     //Se crea una función para la eliminación lógica de un producto farmacéutico

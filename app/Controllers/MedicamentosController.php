@@ -15,9 +15,9 @@ class MedicamentosController extends BaseController
         $tipoProductoModel = new TipoProductoModel();
         $medidaModel = new MedidaProductoModel();
 
-        $medicamentos = $medicamentoModel->findAll();
-        $tiposProductos = $tipoProductoModel->findAll();
-        $unidadesMedida = $medidaModel->findAll();
+        $medicamentos = $medicamentoModel->obtenerMedicamentosActivos();
+        $tiposProductos = $tipoProductoModel->obtenerParaDropdown();
+        $unidadesMedida = $medidaModel->obtenerParaDropdown();
 
             return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
@@ -25,21 +25,28 @@ class MedicamentosController extends BaseController
         ]);
     }
 
+    public function productosPorMedicamento($idMedicamento)
+    {
+        $productoModel = new \App\Models\ProductoFarmaceuticoModel();
+
+        $productos = $productoModel->obtenerProductosPorMedicamento((int)$idMedicamento);
+
+        return $this->response->setJSON($productos);
+    }
+
     public function update(): string
     {
         $medicamentoModel = new MedicamentoModel();
-        $productoModel = new ProductoFarmaceuticoModel();
         $tipoProductoModel = new TipoProductoModel();
         $medidaModel = new MedidaProductoModel();
 
-        $tiposProductos = $tipoProductoModel->findAll();
-        $unidadesMedida = $medidaModel->findAll();
-        $medicamentos = $medicamentoModel->findAll();
-        $productos = $productoModel->findAll();
+        $tiposProductos = $tipoProductoModel->obtenerParaDropdown();
+        $unidadesMedida = $medidaModel->obtenerParaDropdown();
+        $medicamentos = $medicamentoModel->obtenerMedicamentosActivos();
 
             return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/update', ['medicamentos'=>$medicamentos, 'productos'=>$productos, 'unidadesMedida'=>$unidadesMedida, 'tiposProducto'=>$tiposProductos])
+            'content' => view('medicamentos/update', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadesMedida, 'tiposProducto'=>$tiposProductos])
         ]);
     }
 

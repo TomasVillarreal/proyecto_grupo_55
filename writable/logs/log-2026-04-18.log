@@ -296,3 +296,306 @@ FROM `tipo_producto`', [], false)
  9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
 10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:30:33 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 14.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:31:05 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 14.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:31:34 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 14.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:31:34 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 14.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:31:35 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 14.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:31:43 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 14.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:31:48 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 14.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:33:47 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 17.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:33:49 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 17.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:34:40 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 17.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:34:41 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 17.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:34:42 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 17.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:34:51 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 40.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:34:52 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 40.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:35:23 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 55.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:39:32 --> ErrorException: Attempt to read property "id_tipo_producto" on string
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 40.
+ 1 APPPATH\Views\medicamentos\create.php(40): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "id_tipo_producto" on string', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php', 40)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:39:33 --> ErrorException: Attempt to read property "id_tipo_producto" on string
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 40.
+ 1 APPPATH\Views\medicamentos\create.php(40): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "id_tipo_producto" on string', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php', 40)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:41:04 --> ErrorException: Attempt to read property "id_tipo_producto" on string
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 40.
+ 1 APPPATH\Views\medicamentos\create.php(40): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "id_tipo_producto" on string', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php', 40)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:42:40 --> ErrorException: Attempt to read property "id_medida_producto" on string
+[Method: GET, Route: /]
+in APPPATH\Views\medicamentos\create.php on line 55.
+ 1 APPPATH\Views\medicamentos\create.php(55): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Attempt to read property "id_medida_producto" on string', 'C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php', 55)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\proyecto_grupo_55\\app\\Views\\medicamentos\\create.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/create', [], true)
+ 5 APPPATH\Controllers\MedicamentosController.php(24): view('medicamentos/create', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->create()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:43:41 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 12.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(49): view('medicamentos/update', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:45:16 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 15.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(49): view('medicamentos/update', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:45:29 --> Error: Object of class stdClass could not be converted to string
+[Method: GET, Route: update]
+in APPPATH\Views\medicamentos\update.php on line 56.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/update', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(49): view('medicamentos/update', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->update()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-18 22:46:50 --> Error: Cannot use object of type stdClass as array
+[Method: GET, Route: delete]
+in APPPATH\Views\medicamentos\delete.php on line 20.
+ 1 SYSTEMPATH\View\View.php(240): include()
+ 2 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 3 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('medicamentos/delete', [], true)
+ 4 APPPATH\Controllers\MedicamentosController.php(61): view('medicamentos/delete', [...])
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\MedicamentosController->delete()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MedicamentosController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

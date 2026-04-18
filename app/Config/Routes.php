@@ -8,3 +8,8 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'MedicamentosController::create');
 $routes->get('/update', 'MedicamentosController::update');
 $routes->get('/delete', 'MedicamentosController::delete');
+
+$routes->get(
+    'medicamentos/productos/(:num)',
+    'MedicamentosController::productosPorMedicamento/$1'
+);

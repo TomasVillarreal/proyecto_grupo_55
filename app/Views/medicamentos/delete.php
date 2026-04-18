@@ -17,8 +17,8 @@
                     </option>
 
                     <?php foreach ($medicamentos as $med): ?>
-                        <option value="<?= $med['id_medicamento'] ?>">
-                            <?= $med['nombre_medicamento'] ?>
+                        <option value="<?= $med->id_medicamento ?>">
+                            <?= $med->nombre_medicamento ?>
                         </option>
                     <?php endforeach; ?>
 
