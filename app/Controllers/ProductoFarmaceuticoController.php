@@ -25,15 +25,6 @@ class Productos extends BaseController
         $this->medidaProductoService = new MedidaProductoService();
     }
 
-    //Se crea este metodo para usar en la vista
-    public function index()
-    {
-        $productoModel = model('App\Models\ProductoFarmaceuticoModel');
-        $data['productos'] = $productoModel->obtenerProductosConRelaciones();
-        $data['formateador'] = $this->productoService; 
-        return view('productos/index', $data);
-    }
-
     //Metodo para la creacion de un nuevo producto farmaceutico que hace uso de los servicios
     public function create()
     {
