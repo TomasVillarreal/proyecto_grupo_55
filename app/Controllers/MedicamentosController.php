@@ -46,17 +46,18 @@ class MedicamentosController extends BaseController
     en la bd.*/
     public function altaMedicamento()
     {
-        dd("ENTRE AL METODO");
             $db = \Config\Database::connect();//Se hace la conexión a la bd.
-            $db->transStart(); //Para iniciar la transacción
+            $db->transBegin();//Para iniciar la transacción
 
         try {
             //Tomamos daots del medicamento (del post)
+            dd($this->request->getPost());
             $idMedicamentoPost= $this->request->getPost('id_medicamento');//Asigna a esa variable el id del medicamento del post
             $nombreMedicamentoPost = $this->request->getPost('nombre_medicamento');//Asigna a esa variable el nombre del medicamento del post
 
             //Tomamos datos del producto farmaceutico (del post)
             $productoData = [
+                'id_medicamento' => null,
                 'id_tipo_producto' => (int) $this->request->getPost('id_tipo_producto'),
                 'id_medida_producto' => (int) $this->request->getPost('id_medida_producto'),
                 'dosis_producto' => $this->request->getPost('dosis_producto'),
@@ -65,14 +66,12 @@ class MedicamentosController extends BaseController
 
             //Se determina mediante un if (a modo de filtro) si el ID del medicamento es nuevo o es para un nuevo producto farmaceutico.
             if($idMedicamentoPost === 'new'){//Verifica si lo que recibe del post es un nuevo id de medicamento
-
-                $idMedicamento = $this->medicamentoService->crearMedicamento($nombreMedicamentoPost);//En caso de ser nuevo lo crea.
-
                 if(empty($nombreMedicamentoPost)){
                     throw new \Exception("Debe ingresar el nombre del medicamento");
                 }
 
                 $idMedicamentoNuevo = $this->medicamentoService->crearMedicamento($nombreMedicamentoPost);//Se crea un nuevo medicamento haciendo uso del service de medicamento.
+                $productoData['id_medicamento'] = $idMedicamentoNuevo;
 
 
             } else {//El medicamento no es nuevo si no que fue seleccionado del dropdown
@@ -90,27 +89,20 @@ class MedicamentosController extends BaseController
             $productoData['id_medicamento'] = $idMedicamento;
             $idProducto = $this->productoFarmaceuticoService->crearProducto($productoData);
 
-            //Se confirma y finaliza la transacción.
-            $db->transComplete();
-
-            //if de seguridad en caso de un error durante la transacción
-            if ($db->transStatus() === false) {
-                throw new \Exception('Error en la transacción de base de datos.');
-            }
+            $db->transCommit(); //Si todo salió bien, se confirma la transacción
             
             return redirect()->to('/')->with('success', 'Medicamento y producto creados correctamente.');//Si todo es un éxito.
 
         //Manejo de errores de los posibles rollbacks en caso de fallas.
         } catch (\InvalidArgumentException $e) {
-            $db->transRollback();
+            $db->transRollback(); //Revierte todos los cambios si hay error de validación
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         } catch (\Exception $e) {
-            $db->transRollback();
+            $db->transRollback(); //Revierte todos los cambios si hay error inesperado
             log_message('error', '[altaMedicamento] ' . $e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Ocurrió un error inesperado al procesar la solicitud.');
         }
     }
-        
     
     
     /*Metodo para obtener los productos farmaceuticos por medicamento seleccionado.

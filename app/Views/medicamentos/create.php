@@ -68,5 +68,16 @@
       <button type="submit" class="btn btn-primary px-4">Crear</button>
     </div>
 
+  <?php if (session()->getFlashdata('error')): ?>
+    <div class="alert alert-danger">
+      <?= session()->getFlashdata('error') ?>
+    </div>
+  <?php endif; ?>
+
+  <?php if (session()->getFlashdata('success')): ?>
+    <div class="alert alert-success">
+      <?= session()->getFlashdata('success') ?>
+    </div>
+  <?php endif; ?>
   </form>
 </div>
