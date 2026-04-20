@@ -1,0 +1,16 @@
+# Carpetas temporales
+/writable/*
+!/writable/index.html
+
+# Logs
+*.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Config local (si lo usás)
+.env
+
+# Dependencias
+/vendor/
