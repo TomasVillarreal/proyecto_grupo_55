@@ -10,12 +10,11 @@
           <select id="medSelectCreate" class="form-select" required>
             <option value="-1" selected disabled hidden>Seleccione...</option>
             <option value="new"> + Crear un nuevo medicamento </option>
-            <?php foreach ($medicamentos as $medicamento): ?>
-              <option value="<?= $medicamento->id_medicamento?>"
-              data-nombre="<?= $medicamento->nombre_medicamento ?>"
-              >
-              <?= $medicamento->nombre_medicamento ?></option>
-            <?php endforeach; ?>
+              <?php foreach ($medicamentos as $id => $nombre): ?>
+                <option value="<?= $id ?>" data-nombre="<?= esc($nombre) ?>">
+                  <?= esc($nombre) ?>
+                </option>
+              <?php endforeach; ?>
           </select>
         </div>
 
