@@ -167,4 +167,18 @@ class ProductoFarmaceuticoService
 
         return $this->productoModel->eliminarProductoFarmaceutico($idProductoFarmaceutico);
     }
+
+    /*Metodo que va a ser utilizado para cargar dinamicamente los campos del producto
+    farmaceutico una vez se seleccione un medicamento en la vista de UPDATE*/
+    public function obtenerProductosPorMedicamento(int $idMedicamento): array
+    {
+        $productoFarmaceutico = $this->productoModel
+                                    ->where('id_medicamento', $idMedicamento)->findAll();
+        $listadoProductos = [];
+        foreach($productoFarmaceutico as $producto){
+            $listadoProductos[] = ['id' => $producto->id_producto, 'descripcion' => $producto->descripcion_producto];
+        }
+
+        return $listadoProductos;
+    }
 }
