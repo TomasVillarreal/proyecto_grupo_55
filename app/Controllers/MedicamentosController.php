@@ -3,38 +3,83 @@
 namespace App\Controllers;
 
 use App\Services\MedicamentoService;
-use App\Models\ProductoFarmaceuticoModel;
+use App\Services\MedidaProductoService;
+use App\Services\TipoProductoService;
+use App\Services\ProductoFarmaceuticoService;
 
-class Medicamentos extends BaseController
+class MedicamentosController extends BaseController
 {
     //Se crea la variable a utilizar del servicio de los medicamentos
     protected $medicamentoService;
+    protected $unidadesMedidaService;
+    protected $tiposProductoService;
+    protected $productoFarmaceuticoService;
 
     /*Creacion del constructor para evitar llamar al servicio en cada funcion*/
     public function __construct()
     {
-        //Se instancia un servicio de medicamento
+        //Se instancian los servicios
         $this->medicamentoService = new MedicamentoService();
+        $this->unidadesMedidaService = new MedidaProductoService();
+        $this->tiposProductoService = new TipoProductoService();
+        $this->productoFarmaceuticoService = new ProductoFarmaceuticoService();
     }
 
-    /*Se obtienen los medicamentos activos utilizando el model de los medicamentos*/
-    public function index(): string
+    /*Metodo que carga los datos a la vista de la creacion de los medicamentos*/
+    public function create(): string
     {
-        $medicamentoModel = model('App\Models\MedicamentoModel');
-        $medicamentos = $medicamentoModel->ObtenerMedicamentosActivos();
+        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
+        $unidadMedida = $this->unidadesMedidaService->obtenerMedidaDropdown();
+        $tiposProducto = $this->tiposProductoService->obtenerTiposDropdown();
 
-        //Retorna a la vista con los medicamentos obtenidos
         return view('layout/main_layout', [
-            'title'   => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/index', ['medicamentos' => $medicamentos])
+            'title' => 'Medicamentos - Clinicks',
+            'content' => view('medicamentos/create', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
         ]);
     }
-
-    /*Funcion/formulario para crear medicamento o procesar los datos (POST)
+    
+    /*Metodo para obtener los productos farmaceuticos por medicamento seleccionado.
+     * Retorna JSON.
+     * Es usada en el UPDATE.
      */
-    public function create()
+    public function productosPorMedicamento(int $idMedicamento)
     {
-        //Verificacion si es POST y se asigna al campo el nombre de medicamento ingresado.
+        $productoFarmaceutico = $this->productoFarmaceuticoService->obtenerProductosPorMedicamento($idMedicamento);
+
+        return $this->response->setJSON($productoFarmaceutico);
+    }
+
+    /*public function update(): string
+    {
+        $medicamentoModel = new MedicamentoModel();
+        $tipoProductoModel = new TipoProductoModel();
+        $medidaModel = new MedidaProductoModel();
+
+        $tiposProductos = $tipoProductoModel->obtenerParaDropdown();
+        $unidadesMedida = $medidaModel->obtenerParaDropdown();
+        $medicamentos = $medicamentoModel->obtenerMedicamentosActivos();
+
+            return view('layout/main_layout', [
+            'title' => 'Medicamentos - Clinicks',
+            'content' => view('medicamentos/update', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadesMedida, 'tiposProducto'=>$tiposProductos])
+        ]);
+    }*/
+
+    /*public function delete(): string
+    {
+        $medicamentoModel = new MedicamentoModel();
+
+        $medicamentos = $medicamentoModel->findAll();
+
+            return view('layout/main_layout', [
+            'title' => 'Medicamentos - Clinicks',
+            'content' => view('medicamentos/delete', ['medicamentos'=>$medicamentos])
+        ]);
+    }*/
+}
+
+    /*
+    //Verificacion si es POST y se asigna al campo el nombre de medicamento ingresado.
         if ($this->request->getMethod() === 'post') {
             $nombre = $this->request->getPost('nombre_medicamento');
 
@@ -54,17 +99,27 @@ class Medicamentos extends BaseController
                                 ->withInput()
                                 ->with('error', 'Error inesperado al crear el medicamento.');
             }
-        }
+    */
 
-        //Se muestra el form
-        return view('layout/main_layout', [
-            'title'   => 'Nuevo Medicamento - Clinicks',
-            'content' => view('medicamentos/create')
-        ]);
+
+/*
+public function productosPorMedicamento($idMedicamento)
+    {
+        $productoModel = new \App\Models\ProductoFarmaceuticoModel();
+
+        $productos = $productoModel->obtenerProductosPorMedicamento((int)$idMedicamento);
+
+        return $this->response->setJSON($productos);
     }
+}
+*/
 
+
+//CODIGO CON SERVICES
+
+/*
     /*Funcion para modificar los datos de un medicamento existente junto con
-    el procesamiento de los datos POST*/
+    el procesamiento de los datos POST
     public function update(int $idMedicamento)
     {
         $medicamentoModel = model('App\Models\MedicamentoModel');
@@ -101,9 +156,10 @@ class Medicamentos extends BaseController
             'title'   => 'Editar Medicamento - Clinicks',
             'content' => view('medicamentos/update', ['medicamento' => $medicamento])
         ]);
-    }
+    }**/
 
-    /*Metodo para el procesamiento de la eliminación l´ogica de un medicamento*/
+
+/*Metodo para el procesamiento de la eliminación l´ogica de un medicamento
     public function delete(int $idMedicamento)
     {
         $medicamentoModel = model('App\Models\MedicamentoModel');
@@ -132,17 +188,4 @@ class Medicamentos extends BaseController
             'title'   => 'Eliminar Medicamento - Clinicks',
             'content' => view('medicamentos/delete', ['medicamento' => $medicamento])
         ]);
-    }
-
-    /**
-     * Endpoint AJAX para obtener los productos farmacéuticos asociados a un medicamento.
-     * Retorna JSON.
-     */
-    public function productosPorMedicamento(int $idMedicamento)
-    {
-        $productoModel = model(ProductoFarmaceuticoModel::class);
-        $productos = $productoModel->obtenerProductosPorMedicamento($idMedicamento);
-
-        return $this->response->setJSON($productos);
-    }
-}
+    } */
