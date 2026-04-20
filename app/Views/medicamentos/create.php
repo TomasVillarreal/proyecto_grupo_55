@@ -1,5 +1,5 @@
 <div class="caja-cb">
-  <form>
+  <form method="post" action="<?= base_url('medicamentos/alta') ?>">
 
     <div class="mb-4">
       <h4 class="border-bottom pb-2 mb-3">Opciones del medicamento</h4>
@@ -7,8 +7,8 @@
       <div class="row g-3">
         <div class="col-12 col-md-6">
           <label for="medSelectCreate" class="form-label">Medicamento</label>
-          <select id="medSelectCreate" class="form-select" required>
-            <option value="-1" selected disabled hidden>Seleccione...</option>
+          <select id="medSelectCreate" name="id_medicamento" class="form-select" required>
+          <option value="-1" selected disabled hidden>Seleccione...</option>
             <option value="new"> + Crear un nuevo medicamento </option>
               <?php foreach ($medicamentos as $id => $nombre): ?>
                 <option value="<?= $id ?>" data-nombre="<?= esc($nombre) ?>">
@@ -20,7 +20,7 @@
 
         <div class="col-12 col-md-6">
           <label for="nameInputCreate" class="form-label">Nombre del medicamento</label>
-          <input id="nameInputCreate" type="text" class="form-control" placeholder="Ej: Ibuprofeno" disabled>
+          <input id="nameInputCreate" name="nombre_medicamento" type="text" class="form-control" placeholder="Ej: Ibuprofeno" disabled>
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@
 
         <div class="col-12 col-md-4">
           <label for="typeInputCreate" class="form-label">Tipo de medicamento</label>
-          <select id="typeInputCreate" class="form-select" required>
+          <select id="typeInputCreate" name="id_tipo_producto" class="form-select" required>
             <option value="" selected disabled hidden>Seleccione...</option>
               <?php foreach ($tiposProducto as $id => $nombre): ?>
                   <option value="<?= $id ?>"><?= $nombre ?></option>
@@ -43,12 +43,12 @@
 
         <div class="col-12 col-md-4">
           <label for="dosageInputCreate" class="form-label">Dosis recomendada</label>
-          <input id="dosageInputCreate" type="text" class="form-control" placeholder="Ej: 400" required>
+          <input id="dosageInputCreate" name="dosis_producto" type="text" class="form-control" placeholder="Ej: 400" required>
         </div>
 
         <div class="col-12 col-md-4">
           <label for="measurementInputCreate" class="form-label">Unidad de medida utilizada</label>
-          <select id="measurementInputCreate" class="form-select" required>
+          <select id="measurementInputCreate" name="id_medida_producto"class="form-select" required>
             <option value="" selected disabled hidden>Seleccione...</option>
               <?php foreach ($unidadesMedida as $id => $nombre): ?>
                   <option value="<?= $id ?>"><?= $nombre ?></option>
@@ -60,7 +60,7 @@
 
     <div class="mb-4">
       <label for="descripcionInputCreate" class="form-label mb-1">Descripción</label>
-      <textarea class="form-control" id="descripcionInputCreate" rows="3"
+      <textarea class="form-control" id="descripcionInputCreate" name="descripcion_producto" rows="3"
         placeholder="Deje una descripción de la utilización del producto"></textarea>
     </div>
 

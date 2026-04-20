@@ -20,12 +20,6 @@ class MedicamentoModel extends Model
                     ->findAll(); //Trae todos los registros de la BD que cumplan con los filtros previos.
     }
 
-    //Se crea un método para la eliminación (baja lógica de los medicamentos)
-    public function eliminarMedicamento(int $id): bool //Se especifica el tipo de dato que se busca que retorne
-    {
-        return $this->update($id, ['activo_medicamento' => 0]); //Se realiza la modificación del campo para el id pasado por param.
-    }
-
     /*Se crea un método que verifica que el medicamento que se desea ingresar sea único, por su nombre
     Se realiza en esta capa porque es el primer filtro de datos previo a una inserción
     Las demas validaciones se encuentran en la capa de negocios (helper)
@@ -45,5 +39,11 @@ class MedicamentoModel extends Model
         return $builder->countAllResults() > 0;
         /*Booleano que verifica las coincidencias de lo solicitado en esta funcion y lo que hay en la BD
         En caso de devolver true indica que el nombre ya está ocupado, caso contrario con false.*/
+    }
+
+        //Se crea un método para la eliminación (baja lógica de los medicamentos)
+    public function eliminarMedicamento(int $id): bool //Se especifica el tipo de dato que se busca que retorne
+    {
+        return $this->update($id, ['activo_medicamento' => 0]); //Se realiza la modificación del campo para el id pasado por param.
     }
 }
