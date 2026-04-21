@@ -159,6 +159,27 @@ class ProductoFarmaceuticoService
         return $this->productoModel->update($idProductoFarmaceutico, $updateData);
     }
 
+    /*Metodo que va a ser utilizado para cargar dinamicamente los campos del producto
+    farmaceutico una vez se seleccione un medicamento en la vista de UPDATE*/
+    public function obtenerProductosPorMedicamento(int $idMedicamento): array
+    {
+        $productos = $this->productoModel->obtenerProductosPorMedicamento($idMedicamento);
+        $listadoProductos = [];//array que contendrá todos los productos de un medicamento
+
+        foreach ($productos as $producto) {
+            $listadoProductos[] = [
+                'id_producto' => $producto->id_producto,
+                'dosis_producto' => $producto->dosis_producto,
+                'descripcion_producto' => $producto->descripcion_producto,
+                'id_tipo_producto' => $producto->id_tipo_producto,
+                'id_medida_producto' => $producto->id_medida_producto,
+                'nombre_tipo_producto' => $producto->nombre_tipo_producto,
+                'nombre_medida' => $producto->nombre_medida,
+            ];
+        }
+        return $listadoProductos;
+    }
+
     /*Metodo para la eliminación lógica del medicamento haciendo uso del metodo de su modelo */
     public function eliminarProducto(int $idProductoFarmaceutico): bool
     {
@@ -168,19 +189,5 @@ class ProductoFarmaceuticoService
         }
 
         return $this->productoModel->eliminarProductoFarmaceutico($idProductoFarmaceutico);
-    }
-
-    /*Metodo que va a ser utilizado para cargar dinamicamente los campos del producto
-    farmaceutico una vez se seleccione un medicamento en la vista de UPDATE*/
-    public function obtenerProductosPorMedicamento(int $idMedicamento): array
-    {
-        $productoFarmaceutico = $this->productoModel
-                                    ->where('id_medicamento', $idMedicamento)->findAll();
-        $listadoProductos = [];
-        foreach($productoFarmaceutico as $producto){
-            $listadoProductos[] = ['id' => $producto->id_producto, 'descripcion' => $producto->descripcion_producto];
-        }
-
-        return $listadoProductos;
     }
 }

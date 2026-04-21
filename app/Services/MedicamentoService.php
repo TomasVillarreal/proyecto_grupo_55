@@ -67,18 +67,10 @@ class MedicamentoService
         return $id; //Retorna el id del nuevo medicamento
     }
 
-    /*Se crea un metodo que se utilizara para editar un medicamento, siempre y cuando cumpla,
+    /*Se crea un metodo que se utilizara para editar un medicamento (el nombre), siempre y cuando cumpla,
     con las validaciones*/
     public function modificarMedicamento(int $idMedicamento, string $nombreMedicamento): bool
     {
-        /*Primero verificamos que exista el medicamento que pasamos por param, haciendo uso de nuestro model.
-        Se tiene en cuenta que no deberían aparecer medicamentos que no están activos pero se maneja por si 
-        se nos pasa alguno, aunque no creo que se use por las dudas lo dejo comentado.
-        $medicamento = $this->medicamentoModel->find($idMedicamento);
-        if(!$medicamento){
-            throw new \InvalidArgumentException('El medicamento no existe');
-        }*/
-
         /*Se verifica que sea unico el medicamento, osea el nombre*/
         if($this->medicamentoModel->medicamentoUnico($nombreMedicamento, $idMedicamento)){
             throw new \InvalidArgumentException('Ya existe un medicamento con ese nombre');
