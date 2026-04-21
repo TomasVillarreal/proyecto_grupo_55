@@ -100,18 +100,6 @@ class MedicamentosController extends BaseController
         }
     }
 
-    /*Metodo que carga los datos a la vista de la eliminacion de los medicamentos*/
-    public function delete(): string
-    {
-        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
-
-            return view('layout/main_layout', [
-            'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/delete', ['medicamentos'=>$medicamentos])
-        ]);
-    }
-
-
     /*Metodo que carga los datos a la vista de la modificacion de los medicamentos*/
     public function update(): string
     {
@@ -191,5 +179,38 @@ class MedicamentosController extends BaseController
         return $this->response->setJSON($productoFarmaceutico);
     }
 
+    /*Metodo que carga los datos a la vista de la eliminacion de los medicamentos*/
+    public function delete(): string
+    {
+        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
 
+            return view('layout/main_layout', [
+            'title' => 'Medicamentos - Clinicks',
+            'content' => view('medicamentos/delete', ['medicamentos'=>$medicamentos])
+        ]);
+    }
+
+    /*Metodo para la eliminacion de los medicamentos y productos farmaceuticos*/
+    public function bajaMedicamento($idMedicamento)
+    {
+        $db = \Config\Database::connect();//Conexion a la bd
+        $db->transBegin(); //Se inicia la transaccion
+        
+        try {            
+            $this->medicamentoService->eliminarMedicamento((int)$idMedicamento);//Llamada al service para su eliminacion
+
+            $db->transCommit();//Se finaliza la eliminacion del medicamento
+
+            return redirect()->back()->with('success', 'Medicamento eliminado correctamente.');
+
+        } catch (\InvalidArgumentException $e) {
+            $db->transRollback();
+            return redirect()->back()->with('error', $e->getMessage());
+
+        } catch (\Exception $e) {
+            $db->transRollback();
+            log_message('error', '[bajaMedicamento] ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error al eliminar el medicamento.');
+        }
+    }
 }
