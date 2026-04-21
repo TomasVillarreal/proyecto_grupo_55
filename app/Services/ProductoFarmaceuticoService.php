@@ -86,7 +86,7 @@ class ProductoFarmaceuticoService
 
         //Se valida que el producto entero no tenga duplicados
         if (empty($errors)) {
-            if ($this->productoModel->existeCombinacionUnica(
+            if ($this->productoModel->productoFarmaceuticoUnico(
                 (int) $data['id_medicamento'],
                 (float) $data['dosis_producto'],
                 (int) $data['id_medida_producto'],
@@ -104,8 +104,10 @@ class ProductoFarmaceuticoService
     cumple con las validaciones. Retorna el id del nuevo producto*/
     public function crearProducto(array $data): int
     {
+        
         $errors = $this->validarProductoFarmaceutico($data);
         if (!empty($errors)) {
+            dd("ERRORES VALIDACION", $errors);
             throw new \InvalidArgumentException(json_encode($errors));//Transforma el array en texto formato JSON
         }
 
