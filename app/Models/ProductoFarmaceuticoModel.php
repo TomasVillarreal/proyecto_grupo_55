@@ -55,8 +55,8 @@ class ProductoFarmaceuticoModel extends Model
         $builder->join('medicamento m', 'm.id_medicamento = pf.id_medicamento');//JOIN con medicamento
         $builder->join('tipo_producto tp', 'tp.id_tipo_producto = pf.id_tipo_producto');//JOIN con tipo producto
         $builder->join('medida_producto mp', 'mp.id_medida_producto = pf.id_medida_producto');//JOIN con medida producto
-
         $builder->where('pf.id_medicamento', $idMedicamento);//Donde coincida el id de medicamento
+        $builder->where('pf.activo_producto', 1);//Siempre y cuando este activo el producto
 
         return $builder->get()->getResult();
     }
