@@ -47,16 +47,18 @@ class ProductoFarmaceuticoModel extends Model
         return $builder->get()->getResult();
     }
 
-    //Se crea un método que obtiene los productos farmacéuticos de un medicamento en específico
+    //Se crea un método que obtiene los productos farmacéuticos de un medicamento en específico, usado en el main.js para el update
     public function obtenerProductosPorMedicamento(int $idMedicamento): array
     {
-        $builder = $this->db->table('producto_farmaceutico pf');//Crea la consulta sobre la tabla especificada
-        $builder->join('medicamento m', 'm.id_medicamento = pf.id_medicamento');//Se hace el JOIN con la tabla medicamento
-        $builder->join('tipo_producto tp', 'tp.id_tipo_producto = pf.id_tipo_producto');//Se hace el JOIN con la tabla tipo producto
-        $builder->join('medida_producto mp', 'mp.id_medida_producto = pf.id_medida_producto');//Se hace el JOIN con la tabla medida producto
-        $builder->where('pf.id_medicamento', $idMedicamento);
+        $builder = $this->db->table('producto_farmaceutico pf'); 
+        $builder->select('pf.*, m.nombre_medicamento, tp.nombre_tipo_producto, mp.nombre_medida');
+        $builder->join('medicamento m', 'm.id_medicamento = pf.id_medicamento');//JOIN con medicamento
+        $builder->join('tipo_producto tp', 'tp.id_tipo_producto = pf.id_tipo_producto');//JOIN con tipo producto
+        $builder->join('medida_producto mp', 'mp.id_medida_producto = pf.id_medida_producto');//JOIN con medida producto
 
-        return $builder->get()->getResultArray();
+        $builder->where('pf.id_medicamento', $idMedicamento);//Donde coincida el id de medicamento
+
+        return $builder->get()->getResult();
     }
 
     //Se crea una función para la eliminación lógica de un producto farmacéutico
