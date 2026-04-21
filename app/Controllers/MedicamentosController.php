@@ -99,19 +99,20 @@ class MedicamentosController extends BaseController
             return redirect()->back()->withInput()->with('error', 'Ocurrió un error inesperado al procesar la solicitud.');
         }
     }
-    
-    
-    /*Metodo para obtener los productos farmaceuticos por medicamento seleccionado.
-     * Retorna JSON.
-     * Es usada en el UPDATE.
-     */
-    public function productosPorMedicamento(int $idMedicamento)
-    {
-        $productoFarmaceutico = $this->productoFarmaceuticoService->obtenerProductosPorMedicamento($idMedicamento);
 
-        return $this->response->setJSON($productoFarmaceutico);
+    /*Metodo que carga los datos a la vista de la eliminacion de los medicamentos*/
+    public function delete(): string
+    {
+        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
+
+            return view('layout/main_layout', [
+            'title' => 'Medicamentos - Clinicks',
+            'content' => view('medicamentos/delete', ['medicamentos'=>$medicamentos])
+        ]);
     }
 
+
+    /*Metodo que carga los datos a la vista de la modificacion de los medicamentos*/
     public function update(): string
     {
         $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
@@ -124,13 +125,71 @@ class MedicamentosController extends BaseController
         ]);
     }
 
-    public function delete(): string
+    /*Metodo para la modificacion de los medicamentos (form POST)*/
+    public function modificacionMedicamento()
     {
-        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
+        $huboCambios = false;//Variable para detectar si hubo cambios y proporcionar el msj correcto
+        $db = \Config\Database::connect();//Se hace la conexión a la bd.
+        $db->transBegin();//Se inicia la transacción.
 
-            return view('layout/main_layout', [
-            'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/delete', ['medicamentos'=>$medicamentos])
-        ]);
+        try {//Se obtienen los valores del post
+            $idMedicamento = (int) $this->request->getPost('id_medicamento');//id del medicamento modificado (o su producto)
+            $nombreMedicamento = $this->request->getPost('nombre_medicamento');//nombre del medicamento modificado (o su producto)
+            $idProducto = $this->request->getPost('id_producto');//id del producto modificado
+
+            //Primero se valida el id del medicamento
+            if (!$idMedicamento) {
+                throw new \Exception("Medicamento inválido");
+            }
+
+            //Luego de la validación, se hace uso del servicio de medicamento para la modificacion del nombre del mismo (caso que corresponda)
+            if (!empty($nombreMedicamento)) {
+                $this->medicamentoService->modificarMedicamento($idMedicamento, $nombreMedicamento);
+                $huboCambios = true;
+            }
+
+            //En caso de que se haya actualizado algun dato del producto farmaceutico, entra acá
+            if ($idProducto && $idProducto != "-1") {//Si se selecciono un producto para modificar
+
+                $productoData = [
+                    'id_producto' => (int) $idProducto,
+                    'id_tipo_producto' => (int) $this->request->getPost('id_tipo_producto'),
+                    'id_medida_producto' => (int) $this->request->getPost('id_medida_producto'),
+                    'id_medicamento' => (int) $idMedicamento,
+                    'dosis_producto' => $this->request->getPost('dosis_producto'),
+                    'descripcion_producto' => $this->request->getPost('descripcion_producto')
+                ];
+
+                $this->productoFarmaceuticoService->modificarProductoFarmaceutico($idProducto, $productoData);
+                $huboCambios = true;
+            }
+
+
+            $db->transCommit();//Cierra la transacción
+
+            //Si no se modifico nada
+            if (!$huboCambios) {
+                return redirect()->back()->with('info', 'No se realizaron cambios.');
+            }
+
+            return redirect()->to('/update')->with('success', 'Modificación realizada correctamente');
+
+        } catch (\Exception $e) {
+            $db->transRollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
+
+    /*Metodo para obtener los productos farmaceuticos por medicamento seleccionado.
+     * Retorna JSON.
+     * Es usada en el UPDATE.
+     */
+    public function productosPorMedicamento(int $idMedicamento)
+    {
+        $productoFarmaceutico = $this->productoFarmaceuticoService->obtenerProductosPorMedicamento($idMedicamento);
+
+        return $this->response->setJSON($productoFarmaceutico);
+    }
+
+
 }
