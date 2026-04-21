@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
 document.addEventListener("DOMContentLoaded", function () {
 
   // Agarro los componentes del form relacionados a medicamentos
@@ -186,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
+//Para la vista "delete"
 document.addEventListener("DOMContentLoaded", () => {
     // agarro el select del medicamento
     const select = document.getElementById("medSelectDelete");
