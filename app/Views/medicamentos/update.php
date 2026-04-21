@@ -1,5 +1,5 @@
 <div class="caja-cb">
-  <form>
+  <form action="<?= base_url('medicamentos/modificacion') ?>">
     <div class="mb-4">
       <h4 class="border-bottom pb-2 mb-3">Elija lo que quiere modificar</h4>
 
@@ -8,12 +8,11 @@
           <label for="medSelectUpdate" class="form-label">Medicamento</label>
           <select id="medSelectUpdate" class="form-select">
             <option value="-1" selected disabled hidden>Seleccione...</option>
-            <?php foreach ($medicamentos as $medicamento): ?>
-              <option value="<?= $medicamento->id_medicamento?>"
-              data-nombre="<?= $medicamento->nombre_medicamento ?>"
-              >
-              <?= $medicamento->nombre_medicamento ?></option>
-            <?php endforeach;?>
+              <?php foreach ($medicamentos as $id => $nombre): ?>
+                <option value="<?= $id ?>" data-nombre="<?= esc($nombre) ?>">
+                  <?= esc($nombre) ?>
+                </option>
+              <?php endforeach; ?>
           </select>
         </div>
 
