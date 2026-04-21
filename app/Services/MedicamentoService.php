@@ -80,16 +80,23 @@ class MedicamentoService
     }
 
         /*Metodo para eliminar logicamente un medicamento*/
-        public function eliminarMedicamento(int $idMedicamento): bool
+        public function eliminarMedicamento(int $idMedicamento): void
         {
-            /*Primero se hace una busqueda y asignacion. Luego el if controla si existe lo cual no es tan necesario
-            para nuestro modelo pero no está demás.*/
             $medicamento = $this->medicamentoModel->find($idMedicamento);
-            if(!$medicamento){
-                throw new \InvalidArgumentException('El medicamento seleccionado no existe');
+
+            if (!$medicamento || !$medicamento->activo_medicamento) {
+                throw new \InvalidArgumentException("El medicamento no existe o ya está inactivo.");
             }
 
-            return $this->medicamentoModel->eliminarMedicamento($idMedicamento);
+            //Se elimina el medicamento
+            $this->medicamentoModel->update($idMedicamento, [
+                'activo_medicamento' => 0
+            ]);
+
+            //Se eliminan los productos farmaceuticos asociados a dicho medicamento
+            $productoModel = model('App\Models\ProductoFarmaceuticoModel');
+
+            $productoModel->where('id_medicamento', $idMedicamento)->set(['activo_producto' => 0])->update();
         }
 
         /*Se crea este metodo para facilitar la obtencion de la lista de medicamentos,
@@ -102,7 +109,6 @@ class MedicamentoService
             foreach($medicamentos as $medicamento){
                 $listado[$medicamento->id_medicamento] = $medicamento->nombre_medicamento;
             }
-
             return $listado;
         }
 }
