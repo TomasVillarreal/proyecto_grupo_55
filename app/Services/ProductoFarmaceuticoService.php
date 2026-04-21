@@ -181,13 +181,16 @@ class ProductoFarmaceuticoService
     }
 
     /*Metodo para la eliminación lógica del medicamento haciendo uso del metodo de su modelo */
-    public function eliminarProducto(int $idProductoFarmaceutico): bool
+    public function eliminarProducto(int $idProductoFarmaceutico): void
     {
-        $productoFarmaceutico = $this->productoModel->find($idProductoFarmaceutico);
-        if (!$productoFarmaceutico) {
-            throw new \InvalidArgumentException('El producto no existe.');
+        $producto = $this->productoModel->find($idProductoFarmaceutico);
+
+        if (!$producto || !$producto->activo_producto) {
+            throw new \InvalidArgumentException("El producto no existe o ya está inactivo.");
         }
 
-        return $this->productoModel->eliminarProductoFarmaceutico($idProductoFarmaceutico);
+        $this->productoModel->update($idProductoFarmaceutico, [
+            'activo_producto' => 0
+        ]);
     }
 }
