@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 <form
                                   method="POST"
-                                  action="/descripciones/delete/${prod.id_producto}"
+                                  action="${BASE_URL}productos/delete/${prod.id_producto}"
                                 >
                                     <button
                                       type="submit"
@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
             deleteMed.innerHTML = `
                 <form
                   method="POST"
-                  action="/medicamentos/delete/${idMedicamento}"
+                  action="${BASE_URL}medicamentos/delete/${idMedicamento}"
                 >
                     <button
                       type="submit"
