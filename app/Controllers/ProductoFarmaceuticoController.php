@@ -3,51 +3,50 @@
 namespace App\Controllers;
 
 use App\Services\ProductoFarmaceuticoService;
-use App\Services\MedicamentoService;
-use App\Services\TipoProductoService;
-use App\Services\MedidaProductoService;
 
-class Productos extends BaseController
+class ProductoFarmaceuticoController extends BaseController
 {
     //Se crean las variables a utilizar de los respectivos servicios
     protected $productoService;
-    protected $medicamentoService;
-    protected $tipoProductoService;
-    protected $medidaProductoService;
 
     /*Creacion del constructor para evitar llamar al servicio en cada funcion*/
     public function __construct()
     {
         //Se instancian nuevos objetos de los servicios
         $this->productoService = new ProductoFarmaceuticoService();
-        $this->medicamentoService = new MedicamentoService();
-        $this->tipoProductoService = new TipoProductoService();
-        $this->medidaProductoService = new MedidaProductoService();
     }
 
-    //Metodo para la creacion de un nuevo producto farmaceutico que hace uso de los servicios
-    public function create()
+    //Metodo que realiza la eliminacion de un producto farmaceutico
+    public function bajaProducto($idProducto)
     {
-        if ($this->request->getMethod() === 'post') {
-            try {
-                $id = $this->productoService->crearProducto($this->request->getPost());
-                return redirect()->to('/productos')->with('success', 'Producto creado correctamente.');
-            } catch (\InvalidArgumentException $e) {
-                $errors = json_decode($e->getMessage(), true) ?? ['error' => $e->getMessage()];
-                return redirect()->back()->withInput()->with('errors', $errors);
-            } catch (\Exception $e) {
-                return redirect()->back()->withInput()->with('error', 'Error al crear el producto.');
-            }
-        }
+        try {
 
-        //Se llaman a los servicios que contienen los metodos para la carga de los dropdowns
-        $data['medicamentos'] = $this->medicamentoService->obtenerMedicamentosDropdown();
-        $data['tipos'] = $this->tipoProductoService->obtenerTiposDropdown();
-        $data['medidas'] = $this->medidaProductoService->obtenerMedidaDropdown();
-        return view('productos/create', $data);
+        $this->productoService->eliminarProducto((int)$idProducto);
+
+        return redirect()->back()->with('success', 'Producto eliminado correctamente.');
+
+        } catch (\InvalidArgumentException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+
+        } catch (\Exception $e) {
+            log_message('error', '[bajaProducto] ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error al eliminar el producto.');
+        }
     }
 
-    //Metodo que permite la modificacion/edificion de los productos farmaceuticos
+    /*
+    use App\Services\MedicamentoService;
+    use App\Services\TipoProductoService;
+    use App\Services\MedidaProductoService;
+    protected $medicamentoService;
+    protected $tipoProductoService;
+    protected $medidaProductoService;
+    $this->medicamentoService = new MedicamentoService();
+    $this->tipoProductoService = new TipoProductoService();
+    $this->medidaProductoService = new MedidaProductoService();
+    
+    
+    Metodo que permite la modificacion/edificion de los productos farmaceuticos
     public function edit(int $id)
     {
         $productoModel = model('App\Models\ProductoFarmaceuticoModel');
@@ -73,15 +72,25 @@ class Productos extends BaseController
         $data['medidas'] = $this->medidaProductoService->obtenerMedidaDropdown();
         return view('productos/edit', $data);
     }
-
-    //Metodo que realiza la eliminacion de un producto farmaceutico
-    public function delete(int $id)
+            //Metodo para la creacion de un nuevo producto farmaceutico que hace uso de los servicios
+    public function create()
     {
-        try {
-            $this->productoService->eliminarProducto($id);
-            return redirect()->to('/productos')->with('success', 'Producto eliminado.');
-        } catch (\Exception $e) {
-            return redirect()->to('/productos')->with('error', $e->getMessage());
+        if ($this->request->getMethod() === 'post') {
+            try {
+                $id = $this->productoService->crearProducto($this->request->getPost());
+                return redirect()->to('/productos')->with('success', 'Producto creado correctamente.');
+            } catch (\InvalidArgumentException $e) {
+                $errors = json_decode($e->getMessage(), true) ?? ['error' => $e->getMessage()];
+                return redirect()->back()->withInput()->with('errors', $errors);
+            } catch (\Exception $e) {
+                return redirect()->back()->withInput()->with('error', 'Error al crear el producto.');
+            }
         }
-    }
+
+        //Se llaman a los servicios que contienen los metodos para la carga de los dropdowns
+        $data['medicamentos'] = $this->medicamentoService->obtenerMedicamentosDropdown();
+        $data['tipos'] = $this->tipoProductoService->obtenerTiposDropdown();
+        $data['medidas'] = $this->medidaProductoService->obtenerMedidaDropdown();
+        return view('productos/create', $data);
+    }*/
 }
