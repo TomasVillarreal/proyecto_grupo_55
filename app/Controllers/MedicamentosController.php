@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\MedicamentoModel;
 use App\Services\MedicamentoService;
 use App\Services\MedidaProductoService;
 use App\Services\TipoProductoService;
@@ -51,7 +50,6 @@ class MedicamentosController extends BaseController
 
         try {
             //Tomamos daots del medicamento (del post)
-            dd($this->request->getPost());
             $idMedicamentoPost= $this->request->getPost('id_medicamento');//Asigna a esa variable el id del medicamento del post
             $nombreMedicamentoPost = $this->request->getPost('nombre_medicamento');//Asigna a esa variable el nombre del medicamento del post
 
@@ -69,10 +67,8 @@ class MedicamentosController extends BaseController
                 if(empty($nombreMedicamentoPost)){
                     throw new \Exception("Debe ingresar el nombre del medicamento");
                 }
-
-                $idMedicamentoNuevo = $this->medicamentoService->crearMedicamento($nombreMedicamentoPost);//Se crea un nuevo medicamento haciendo uso del service de medicamento.
-                $productoData['id_medicamento'] = $idMedicamentoNuevo;
-
+                
+                $idMedicamento = $this->medicamentoService->crearMedicamento($nombreMedicamentoPost);//Se crea un nuevo medicamento haciendo uso del service de medicamento.
 
             } else {//El medicamento no es nuevo si no que fue seleccionado del dropdown
                 $idMedicamento = (int) $idMedicamentoPost;
@@ -116,125 +112,25 @@ class MedicamentosController extends BaseController
         return $this->response->setJSON($productoFarmaceutico);
     }
 
-    /*public function update(): string
+    public function update(): string
     {
-        $medicamentoModel = new MedicamentoModel();
-        $tipoProductoModel = new TipoProductoModel();
-        $medidaModel = new MedidaProductoModel();
-
-        $tiposProductos = $tipoProductoModel->obtenerParaDropdown();
-        $unidadesMedida = $medidaModel->obtenerParaDropdown();
-        $medicamentos = $medicamentoModel->obtenerMedicamentosActivos();
+        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
+        $unidadMedida = $this->unidadesMedidaService->obtenerMedidaDropdown();
+        $tiposProducto = $this->tiposProductoService->obtenerTiposDropdown();
 
             return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/update', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadesMedida, 'tiposProducto'=>$tiposProductos])
+            'content' => view('medicamentos/update', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
         ]);
-    }*/
+    }
 
-    /*public function delete(): string
+    public function delete(): string
     {
-        $medicamentoModel = new MedicamentoModel();
-
-        $medicamentos = $medicamentoModel->findAll();
+        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
 
             return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
             'content' => view('medicamentos/delete', ['medicamentos'=>$medicamentos])
         ]);
-    }*/
-}
-
-    /*
-    //Verificacion si es POST y se asigna al campo el nombre de medicamento ingresado.
-
-    */
-
-
-/*
-public function productosPorMedicamento($idMedicamento)
-    {
-        $productoModel = new \App\Models\ProductoFarmaceuticoModel();
-
-        $productos = $productoModel->obtenerProductosPorMedicamento((int)$idMedicamento);
-
-        return $this->response->setJSON($productos);
     }
 }
-*/
-
-
-//CODIGO CON SERVICES
-
-/*
-    /*Funcion para modificar los datos de un medicamento existente junto con
-    el procesamiento de los datos POST
-    public function update(int $idMedicamento)
-    {
-        $medicamentoModel = model('App\Models\MedicamentoModel');
-        $medicamento = $medicamentoModel->find($idMedicamento);
-
-        if (!$medicamento) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-            //En caso de que no se encuentre el medicamento se muestra una vista amigable al usuario
-        }
-
-        //POST para procesar la actualización/modificacion
-        if ($this->request->getMethod() === 'post') {
-            $nombre = $this->request->getPost('nombre_medicamento');
-
-            try {
-                //Se hace uso del metodo del servicio de medicamento
-                $this->medicamentoService->modificarMedicamento($idMedicamento, $nombre);
-                return redirect()->to('/medicamentos')
-                                ->with('success', 'Medicamento actualizado correctamente.');
-            } catch (\InvalidArgumentException $e) {
-                return redirect()->back()
-                                ->withInput()
-                                ->with('error', $e->getMessage());
-            } catch (\Exception $e) {
-                log_message('error', '[Medicamentos::update] ' . $e->getMessage());
-                return redirect()->back()
-                                ->withInput()
-                                ->with('error', 'Error inesperado al actualizar el medicamento.');
-            }
-        }
-
-        //Se muestra el formulario con los datos actualizados
-        return view('layout/main_layout', [
-            'title'   => 'Editar Medicamento - Clinicks',
-            'content' => view('medicamentos/update', ['medicamento' => $medicamento])
-        ]);
-    }**/
-
-
-/*Metodo para el procesamiento de la eliminación l´ogica de un medicamento
-    public function delete(int $idMedicamento)
-    {
-        $medicamentoModel = model('App\Models\MedicamentoModel');
-        $medicamento = $medicamentoModel->find($idMedicamento);
-
-        if (!$medicamento) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-
-        //Si el form es POST, se ejecuta la eliminación (baja)
-        if ($this->request->getMethod() === 'post') {
-            try {
-                //Se hace uso del metodo del service de medicamento
-                $this->medicamentoService->eliminarMedicamento($idMedicamento);
-                return redirect()->to('/medicamentos')
-                                ->with('success', 'Medicamento eliminado correctamente.');
-            } catch (\Exception $e) {
-                log_message('error', '[Medicamentos::delete] ' . $e->getMessage());
-                return redirect()->to('/medicamentos')
-                                ->with('error', 'No se pudo eliminar el medicamento.');
-            }
-        }
-
-        //Se muestra la vista
-        return view('layout/main_layout', [
-            'title'   => 'Eliminar Medicamento - Clinicks',
-            'content' => view('medicamentos/delete', ['medicamento' => $medicamento])
-        ]);
-    } */
