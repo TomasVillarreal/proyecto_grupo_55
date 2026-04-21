@@ -16,11 +16,11 @@
                         Seleccione...
                     </option>
 
-                    <?php foreach ($medicamentos as $med): ?>
-                        <option value="<?= $med->id_medicamento ?>">
-                            <?= $med->nombre_medicamento ?>
-                        </option>
-                    <?php endforeach; ?>
+                <?php foreach ($medicamentos as $id => $nombre): ?>
+                    <option value="<?= $id ?>" data-nombre="<?= esc($nombre) ?>">
+                    <?= esc($nombre) ?>
+                    </option>
+                <?php endforeach; ?>
 
                 </select>
 
