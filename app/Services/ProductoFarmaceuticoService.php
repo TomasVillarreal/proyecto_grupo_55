@@ -107,8 +107,7 @@ class ProductoFarmaceuticoService
         
         $errors = $this->validarProductoFarmaceutico($data);
         if (!empty($errors)) {
-            dd("ERRORES VALIDACION", $errors);
-            throw new \InvalidArgumentException(json_encode($errors));//Transforma el array en texto formato JSON
+            throw new \InvalidArgumentException(implode(' ', $errors));//Transforma el array en texto formato JSON
         }
 
         //Se inserta el nuevo producto farmaceutico
@@ -162,7 +161,7 @@ class ProductoFarmaceuticoService
 
         $errors = $this->validarProductoFarmaceutico($data, $idProductoFarmaceutico);
         if (!empty($errors)) {
-            throw new \InvalidArgumentException(json_encode($errors));
+            throw new \InvalidArgumentException(implode(' ', $errors));
         }
 
         //Se guarda la informacion del producto farmaceutico actualizado
