@@ -71,6 +71,13 @@ class MedicamentoService
     con las validaciones*/
     public function modificarMedicamento(int $idMedicamento, string $nombreMedicamento): bool
     {
+        $medicamento = $this->medicamentoModel->find($idMedicamento);//Primero se busca el id del medicamento
+
+        //Si el nombre es igual a uno ya almacenado, devuelve false al controller
+        if ($medicamento->nombre_medicamento === $nombreMedicamento) {
+            return false;
+        }
+
         /*Se verifica que sea unico el medicamento, osea el nombre*/
         if($this->medicamentoModel->medicamentoUnico($nombreMedicamento, $idMedicamento)){
             throw new \InvalidArgumentException('Ya existe un medicamento con ese nombre');

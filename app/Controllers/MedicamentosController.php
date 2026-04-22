@@ -87,7 +87,7 @@ class MedicamentosController extends BaseController
 
             $db->transCommit(); //Si todo salió bien, se confirma la transacción
             
-            return redirect()->to('/')->with('success', 'Medicamento y producto creados correctamente.');//Si todo es un éxito.
+            return redirect()->to('/')->with('success', 'Medicamento y/o producto creados correctamente.');//Si todo es un éxito.
 
         //Manejo de errores de los posibles rollbacks en caso de fallas.
         } catch (\InvalidArgumentException $e) {
@@ -96,7 +96,7 @@ class MedicamentosController extends BaseController
         } catch (\Exception $e) {
             $db->transRollback(); //Revierte todos los cambios si hay error inesperado
             log_message('error', '[altaMedicamento] ' . $e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Ocurrió un error inesperado al procesar la solicitud.');
+            return redirect()->back()->withInput()->with('error', 'Ocurrió un error. Producto farmaceutico ya ingresado!');
         }
     }
 
@@ -132,8 +132,12 @@ class MedicamentosController extends BaseController
 
             //Luego de la validación, se hace uso del servicio de medicamento para la modificacion del nombre del mismo (caso que corresponda)
             if (!empty($nombreMedicamento)) {
-                $this->medicamentoService->modificarMedicamento($idMedicamento, $nombreMedicamento);
-                $huboCambios = true;
+                $nuevoMed = $this->medicamentoService->modificarMedicamento($idMedicamento, $nombreMedicamento);
+
+                //Comprobacion si hubo cambios o no
+                if($nuevoMed){
+                    $huboCambios = true;
+                }
             }
 
             //En caso de que se haya actualizado algun dato del producto farmaceutico, entra acá
@@ -147,9 +151,12 @@ class MedicamentosController extends BaseController
                     'dosis_producto' => $this->request->getPost('dosis_producto'),
                     'descripcion_producto' => $this->request->getPost('descripcion_producto')
                 ];
-
-                $this->productoFarmaceuticoService->modificarProductoFarmaceutico($idProducto, $productoData);
-                $huboCambios = true;
+                $nuevoProd = $this->productoFarmaceuticoService->modificarProductoFarmaceutico($idProducto, $productoData);
+                
+                //Comprobacion si hubo cambios o no
+                if($nuevoProd){
+                    $huboCambios = true;
+                }
             }
 
 

@@ -141,6 +141,24 @@ class ProductoFarmaceuticoService
         if (!$producto) {
             throw new \InvalidArgumentException('El producto no existe.');
         }
+        
+        //Se toman los valores recibidos y se almacenan para su posterior comparacion
+        $updateData = [
+            'id_medicamento' => (int) $data['id_medicamento'],
+            'id_tipo_producto' => (int) $data['id_tipo_producto'],
+            'id_medida_producto' => (int) $data['id_medida_producto'],
+            'dosis_producto' => (float) $data['dosis_producto'],
+            'descripcion_producto' => empty($data['descripcion_producto']) ? null : trim($data['descripcion_producto']),
+        ];
+        
+        //Se comparan valores recibidos con valores en bd para determinar si hubo cambios
+        if ($producto->id_medicamento == $updateData['id_medicamento'] &&
+            $producto->id_tipo_producto == $updateData['id_tipo_producto'] &&
+            $producto->id_medida_producto == $updateData['id_medida_producto'] &&
+            (float)$producto->dosis_producto == (float)$updateData['dosis_producto'] &&
+            ($producto->descripcion_producto ?? null) == $updateData['descripcion_producto']){
+            return false;
+        }
 
         $errors = $this->validarProductoFarmaceutico($data, $idProductoFarmaceutico);
         if (!empty($errors)) {
