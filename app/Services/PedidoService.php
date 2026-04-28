@@ -24,7 +24,7 @@ class PedidoService
         foreach ($pedidos as $pedido) {
             $listadoPedidos[] = [
                 'id_pedido' => $pedido->id_pedido,
-                'fecha'=> $pedido->fecha_solicitud,
+                'fecha'=> $pedido->fecha_solicitud_pedido,
                 'estado'=> $pedido->tipo_estado_pedido,
                 'servicio_medico' => $pedido->nombre_servicio_medico
             ];
