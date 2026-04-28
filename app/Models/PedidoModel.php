@@ -20,7 +20,15 @@ class PedidoModel extends Model
 
     public function obtenerPedidos()
     {
-        return $this->orderby ('fecha_solicitud_pedido', 'ASC') // Ordenar los pedidos segun su fecha, de forma ascendente
-                    ->findAll(); //Trae todos los pedidos que hay en la base de datos
+        $builder = $this->db->table('Pedido p');//Crea la consulta sobre la tabla especificada
+        $builder->select('pd.*, ep.tipo_estado_pedido, sm_nombre_servicio_medico');
+        $builder->join('Estado_pedido ep', 'ep.id_estado_pedido = pf.id_estado_pedido');//Se hace el JOIN con la tabla Estado_pedido
+        $builder->join('Servicio_medico sm', 'sm.id_servicio_medico = pf.id_servicio_medico');//Se hace el JOIN con la tabla Servicio_medico
+
+        // Se devuelve los pedidos de mas nuevos a mas viejos, en principio.
+        $builder->orderBy('m.nombre_medicamento', 'ASC');
+
+        //Se obtienen los resultados
+        return $builder->get()->getResult();
     }
 }
