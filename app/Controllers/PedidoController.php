@@ -22,27 +22,28 @@ class PedidoController extends BaseController
         $this->servicioService = new ServicioMedicoService();
     }
 
-    /*Metodo que carga los datos a la vista de la lista de pedidos*/
+    /*Metodo que carga los datos a la vista de la lista de pedidos, y para el filtrado en caso de que se desee*/
     public function listaPedidos(): string
     {
-        $pedidos = $this->pedidoService->obtenerPedidos();
+        $idEstado = $this->request->getGet('idEstado') ?? 0;
+        $idServicio = $this->request->getGet('idServicio') ?? 0;
+
+        $pedidos = $this->pedidoService->obtenerPedidos((int)$idEstado, (int)$idServicio);
+
+        if ($this->request->isAJAX()) {
+            return view('pedidos/_tabla', ['pedidos' => $pedidos]);
+        }
+
         $estados = $this->estadoService->obtenerEstadosDropdown();
         $servicios = $this->servicioService->obtenerServiciosDropdown();
 
         return view('layout/main_layout', [
             'title' => 'Lista de Pedidos - Clinicks',
-            'content' => view('pedidos/lista', ['pedidos'=>$pedidos, 'estados'=>$estados, 'servicios'=>$servicios])
+            'content' => view('pedidos/lista', [
+                'pedidos' => $pedidos,
+                'estados' => $estados,
+                'servicios' => $servicios
+            ])
         ]);
-    }
-    
-    /*Metodo para obtener los pedidos filtrados segun el estado y el servicio medico.
-     * Retorna JSON.
-     * Es usada en la vista de la lista de pedidos.
-     */
-    public function filtrarPedidos(int $idEstado, int $idServicio)
-    {
-        $pedidosFiltrados = $this->pedidoService->realizarFiltradoPedidos($idEstado, $idServicio);
-
-        return $this->response->setJSON($pedidosFiltrados);
     }
 }

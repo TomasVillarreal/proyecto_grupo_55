@@ -1,9 +1,9 @@
 <div class="container mt-4">
     <h2 class="mb-4">Listado de Pedidos</h2>
-    
+
     <label for="selectFiltradoEstados" class="form-label">Estados</label>
     <select id="selectFiltradoEstados" name="nombre_estado" class="form-select" required>
-        <option value="-1" selected> Todos </option>
+        <option value="0" selected> Todos </option>
         <?php foreach ($estados as $id => $nombre): ?>
             <option value="<?= $id ?>" data-nombre="<?= esc($nombre) ?>">
             <?= esc($nombre) ?>
@@ -12,7 +12,7 @@
     </select>
 
     <select id="selectFiltradoServicios" name="nombre_servicio" class="form-select" required>
-        <option value="-1" selected> Todos </option>
+        <option value="0" selected> Todos </option>
         <?php foreach ($servicios as $id => $nombre): ?>
             <option value="<?= $id ?>" data-nombre="<?= esc($nombre) ?>">
             <?= esc($nombre) ?>
@@ -29,47 +29,15 @@
             </tr>
         </thead>
 
-        <tbody>
-            <?php if (!empty($pedidos)): ?>
-                <?php foreach ($pedidos as $pedido): ?>
-                    <?php
-                        $estado = (string)$pedido['estado'];
-
-                        switch ($estado) {
-                            case 'Rechazado':
-                                $claseBadge = 'text-bg-danger';
-                                break;
-
-                            case 'Pendiente':
-                                $claseBadge = 'text-bg-warning';
-                                break;
-
-                            case 'Aprobado':
-                                $claseBadge = 'text-bg-success';
-                                break;
-
-                            default:
-                                $claseBadge = 'text-bg-primary';
-                                break;
-                        }
-                    ?>
-
-                    <tr onclick="window.location.href='#';" style="cursor:pointer;">
-                        <td><?= esc((string)$pedido['id_pedido']) ?></td>
-                        <td><?= esc((string)$pedido['fecha']) ?></td>
-                        <td><?= esc((string)$pedido['servicio_medico']) ?></td>
-                        <td>
-                            <span class="badge rounded-pill <?= $claseBadge ?>">
-                                <?= esc($estado) ?>
-                            </span>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
+        <tbody id="tablaPedidos">
+            <?php foreach ($pedidos as $pedido): ?>
                 <tr>
-                    <td colspan="4" class="text-center">No hay pedidos registrados.</td>
+                    <td><?= esc($pedido['id_pedido']) ?></td>
+                    <td><?= esc($pedido['fecha']) ?></td>
+                    <td><?= esc($pedido['servicio_medico']) ?></td>
+                    <td><?= esc($pedido['estado']) ?></td>
                 </tr>
-            <?php endif; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </div>

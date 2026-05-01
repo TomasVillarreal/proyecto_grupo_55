@@ -16,25 +16,9 @@ class PedidoService
     }
 
     /*Metodo para obtener los pedidos existentes, utilizando el método de la bd*/
-    public function obtenerPedidos(): array
+    public function obtenerPedidos(int $idEstado, int $idServicio): array
     {
-        $pedidos = $this->pedidoModel->obtenerPedidos();
-        $listadoPedidos = [];//array que contendrá todos los pedidos existentes
-
-        foreach ($pedidos as $pedido) {
-            $listadoPedidos[] = [
-                'id_pedido' => $pedido->id_pedido,
-                'fecha'=> $pedido->fecha_solicitud_pedido,
-                'estado'=> $pedido->tipo_estado_pedido,
-                'servicio_medico' => $pedido->nombre_servicio_medico
-            ];
-        }
-        return $listadoPedidos;
-    }
-
-    public function realizarFiltradoPedidos(int $idEstado, int $idServicio): array
-    {
-        $pedidos = $this->pedidoModel->filtradoPedidos($idEstado, $idServicio);
+        $pedidos = $this->pedidoModel->obtenerPedidos($idEstado, $idServicio);
         $listadoPedidos = [];//array que contendrá todos los pedidos existentes
 
         foreach ($pedidos as $pedido) {

@@ -290,3 +290,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+
+// PEDIDOS
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const estadoSelect = document.getElementById("selectFiltradoEstados");
+    const servicioSelect = document.getElementById("selectFiltradoServicios");
+
+    estadoSelect.addEventListener("change", filtrar);
+    servicioSelect.addEventListener("change", filtrar);
+
+    function filtrar() {
+        const estado = estadoSelect.value;
+        const servicio = servicioSelect.value;
+
+        fetch(`${BASE_URL}/listaPedidos/?idEstado=${estado}&idServicio=${servicio}`, {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        })
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById("tablaPedidos").innerHTML = html;
+        })
+        .catch(err => console.error("Error:", err));
+    }
+
+});
