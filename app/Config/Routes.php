@@ -13,6 +13,7 @@ $routes->get(
     'medicamentos/productos/(:num)',
     'MedicamentosController::productosPorMedicamento/$1'
 );
+$routes->get('/listaPedidos', 'PedidoController::listaPedidos');
 
 //POST
 $routes->post('medicamentos/alta', 'MedicamentosController::altaMedicamento');//Ruta con el POST para la cracion de medicamentos y/o productos farm.

@@ -290,3 +290,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+
+// PEDIDOS
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // agarra el select para el filtrado segun estados
+    const estadoSelect = document.getElementById("selectFiltradoEstados");
+    // agarra el select para el filtrado segun servicios
+    const servicioSelect = document.getElementById("selectFiltradoServicios");
+
+    // se fija cuando cambian esos selects, y en caso de que cambien, llama al metodo filtrar
+    estadoSelect.addEventListener("change", filtrar);
+    servicioSelect.addEventListener("change", filtrar);
+
+    function filtrar() {
+        // define el estado y al servicio segun el ID que se obtiene al elegir una opcion de los select.
+        const estado = estadoSelect.value;
+        const servicio = servicioSelect.value;
+
+        // envia los datos del estado y servicio a través de una query string, para trabajar con estos
+
+        // en el fetch se hace lo siguiente:
+        // 1- envia una request get con los filtros y le coloca el header:  "X-Requested-With": "XMLHttpRequest"
+        fetch(`${BASE_URL}/listaPedidos/?idEstado=${estado}&idServicio=${servicio}`, {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+            // este header se usa para que el if($this->request->isAJAX()) devuelva true
+        })
+        // agarro la respuesta del server y lo transformo en texto (para usarlo como html)
+        .then(res => res.text())
+        // ahora agarro el html recibido y lo encajo en el body de la tabla pedidos
+        .then(html => {
+            document.getElementById("tablaPedidos").innerHTML = html;
+        })
+        .catch(err => console.error("Error:", err));
+    }
+
+});
