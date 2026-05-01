@@ -31,4 +31,20 @@ class PedidoService
         }
         return $listadoPedidos;
     }
+
+    public function realizarFiltradoPedidos(int $idEstado, int $idServicio): array
+    {
+        $pedidos = $this->pedidoModel->filtradoPedidos($idEstado, $idServicio);
+        $listadoPedidos = [];//array que contendrá todos los pedidos existentes
+
+        foreach ($pedidos as $pedido) {
+            $listadoPedidos[] = [
+                'id_pedido' => $pedido->id_pedido,
+                'fecha'=> $pedido->fecha_solicitud_pedido,
+                'estado'=> $pedido->tipo_estado_pedido,
+                'servicio_medico' => $pedido->nombre_servicio_medico
+            ];
+        }
+        return $listadoPedidos;
+    }
 }

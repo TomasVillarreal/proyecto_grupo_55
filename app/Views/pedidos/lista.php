@@ -1,6 +1,24 @@
 <div class="container mt-4">
     <h2 class="mb-4">Listado de Pedidos</h2>
+    
+    <label for="selectFiltradoEstados" class="form-label">Estados</label>
+    <select id="selectFiltradoEstados" name="nombre_estado" class="form-select" required>
+        <option value="-1" selected> Todos </option>
+        <?php foreach ($estados as $id => $nombre): ?>
+            <option value="<?= $id ?>" data-nombre="<?= esc($nombre) ?>">
+            <?= esc($nombre) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
 
+    <select id="selectFiltradoServicios" name="nombre_servicio" class="form-select" required>
+        <option value="-1" selected> Todos </option>
+        <?php foreach ($servicios as $id => $nombre): ?>
+            <option value="<?= $id ?>" data-nombre="<?= esc($nombre) ?>">
+            <?= esc($nombre) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
     <table class="table table-bordered table-hover align-middle">
         <thead class="table-dark">
             <tr>
@@ -41,7 +59,7 @@
                         <td><?= esc((string)$pedido['fecha']) ?></td>
                         <td><?= esc((string)$pedido['servicio_medico']) ?></td>
                         <td>
-                            <span class="badge <?= $claseBadge ?>">
+                            <span class="badge rounded-pill <?= $claseBadge ?>">
                                 <?= esc($estado) ?>
                             </span>
                         </td>
