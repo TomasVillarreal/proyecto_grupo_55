@@ -26,7 +26,7 @@ class MedicamentosController extends BaseController
     }
 
     /*Metodo que carga los datos a la vista de la creacion de los medicamentos*/
-    public function create(): string
+    public function vista_alta_medicamentos(): string
     {
         $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
         $unidadMedida = $this->unidadesMedidaService->obtenerMedidaDropdown();
@@ -34,7 +34,7 @@ class MedicamentosController extends BaseController
 
         return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/create', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
+            'content' => view('medicamentos/creacion_medicamento', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
         ]);
     }
 
@@ -101,7 +101,7 @@ class MedicamentosController extends BaseController
     }
 
     /*Metodo que carga los datos a la vista de la modificacion de los medicamentos*/
-    public function update(): string
+    public function vista_modificacion_medicamento(): string
     {
         $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
         $unidadMedida = $this->unidadesMedidaService->obtenerMedidaDropdown();
@@ -109,7 +109,7 @@ class MedicamentosController extends BaseController
 
             return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/update', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
+            'content' => view('medicamentos/modificacion_medicamento', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
         ]);
     }
 
@@ -167,7 +167,7 @@ class MedicamentosController extends BaseController
                 return redirect()->back()->with('info', 'No se realizaron cambios.');
             }
 
-            return redirect()->to('/update')->with('success', 'Modificación realizada correctamente');
+            return redirect()->to('/modificacion_medicamento')->with('success', 'Modificación realizada correctamente');
 
         } catch (\Exception $e) {
             $db->transRollback();
@@ -187,13 +187,13 @@ class MedicamentosController extends BaseController
     }
 
     /*Metodo que carga los datos a la vista de la eliminacion de los medicamentos*/
-    public function delete(): string
+    public function vista_baja_medicamento(): string
     {
         $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
 
             return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/delete', ['medicamentos'=>$medicamentos])
+            'content' => view('medicamentos/eliminacion_medicamento', ['medicamentos'=>$medicamentos])
         ]);
     }
 
