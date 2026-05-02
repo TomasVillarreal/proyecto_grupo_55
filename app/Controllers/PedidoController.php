@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Services\DetallePedidoService;
 use App\Services\PedidoService;
 use App\Services\EstadoPedidoService;
 use App\Services\ServicioMedicoService;
@@ -12,6 +13,7 @@ class PedidoController extends BaseController
     protected $pedidoService;
     protected $estadoService;
     protected $servicioService;
+    protected $detalleService;
 
     /*Creacion del constructor para evitar llamar al servicio en cada funcion*/
     public function __construct()
@@ -20,6 +22,7 @@ class PedidoController extends BaseController
         $this->pedidoService = new PedidoService();
         $this->estadoService = new EstadoPedidoService();
         $this->servicioService = new ServicioMedicoService();
+        $this->detalleService = new DetallePedidoService();
     }
 
     /*Metodo que carga los datos a la vista de la lista de pedidos, y para el filtrado en caso de que se desee*/
@@ -53,10 +56,19 @@ class PedidoController extends BaseController
         ]);
     }
 
-    /*public function detallePedido($idPedido) : string
+    public function detallePedido($idPedido) : string
     {
-        $this->p
-    }*/
+        $pedido = $this->pedidoService->obtenerPedidoEspecifico($idPedido);
+        $detalles_pedido = $this->detalleService->obtenerDetallesPedido($idPedido);
+
+        return view('layout/main_layout', [
+            'title' => 'Lista de Pedidos - Clinicks',
+            'content' => view('pedidos/detallePedido', [
+                'pedido' => $pedido,
+                'detalles' => $detalles_pedido,
+            ])
+        ]);
+    }
 
     public function aprobar()
     {
