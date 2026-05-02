@@ -12,14 +12,14 @@ class DetallePedidoService
     /*Creacion del constructor para evitar llamar al modelo en cada funcion*/
     public function __construct()
     {
-        $this->detalleModel = model(DetallePedidoService::class);//Se reconoce e instancia la clase
+        $this->detalleModel = model(DetallePedidoModel::class);//Se reconoce e instancia la clase
     }
 
     /*Metodo para obtener los detalles de un pedido particular, 
     haciendo uso del metodo del modelo, y devolviendolo*/
     public function obtenerDetallesPedido(int $id_pedido): array
     {
-        $detalles = $this->detalleModel->obtenerDetallesPedido($id_pedido);
+        $detalles = $this->detalleModel->obtenerDetallesPorPedido($id_pedido);
 
         if (!$detalles) {
             throw new \Exception("Pedido no encontrado");

@@ -13,7 +13,6 @@
 
         <div class="card-body">
             <p><strong>Fecha:</strong> <?= $p->fecha_solicitud_pedido ?></p>
-            <p><strong>Estado:</strong> <?= $p->tipo_estado_pedido ?></p>
             <p><strong>Servicio Médico:</strong> <?= $p->nombre_servicio_medico ?></p>
             <p><strong>Comentario:</strong> <?= $p->comentario_pedido ?: 'Sin comentarios' ?></p>
         </div>

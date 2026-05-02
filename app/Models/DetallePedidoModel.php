@@ -25,10 +25,10 @@ class DetallePedidoModel extends Model
     public function obtenerDetallesPorPedido(int $pedido): array
     {
         $builder = $this->db->table('detalle_pedido dp');//Crea la consulta sobre la tabla especificada
-        $builder->select('dp.cantidad_medicamento, pv.nombre_proveedor 
+        $builder->select('dp.cantidad_medicamento, pv.nombre_proveedor, 
         p.id_producto, p.dosis_producto, m.nombre_medicamento, tp.nombre_tipo_producto, mp.nombre_medida');
         $builder->join('proveedor pv', 'pv.id_proveedor = dp.id_proveedor');//Se hace el JOIN con la tabla proveedor
-        $builder->join('producto p', 'p.id_producto = dp.id_producto');//Se hace el JOIN con la tabla producto farmaceutico
+        $builder->join('producto_farmaceutico p', 'p.id_producto = dp.id_producto');//Se hace el JOIN con la tabla producto farmaceutico
         $builder->join('medicamento m', 'm.id_medicamento = p.id_medicamento');//Se hace el JOIN con la tabla medicamento, para los datos del producto
         $builder->join('tipo_producto tp', 'tp.id_tipo_producto = p.id_tipo_producto');//Se hace el JOIN con la tabla tipo producto, para los datos del producto
         $builder->join('medida_producto mp', 'mp.id_medida_producto = p.id_medida_producto');//Se hace el JOIN con la tabla medida producto, para los datos del producto

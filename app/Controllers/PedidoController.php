@@ -56,7 +56,7 @@ class PedidoController extends BaseController
         ]);
     }
 
-    public function detallePedido($idPedido) : string
+    public function detallePedido(int $idPedido) : string
     {
         $pedido = $this->pedidoService->obtenerPedidoEspecifico($idPedido);
         $detalles_pedido = $this->detalleService->obtenerDetallesPedido($idPedido);
