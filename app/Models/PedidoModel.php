@@ -52,6 +52,7 @@ class PedidoModel extends Model
             'p.id_pedido,
             DATE(p.fecha_solicitud_pedido) as fecha_solicitud_pedido,
             p.comentario_pedido,
+            p.motivo_cancelacion_pedido,
             ep.tipo_estado_pedido, 
             sm.nombre_servicio_medico');
         $builder->join('Estado_pedido ep', 'ep.id_estado_pedido = p.id_estado_pedido');//Se hace el JOIN con la tabla Estado_pedido

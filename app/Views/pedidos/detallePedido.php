@@ -1,113 +1,207 @@
+<?php
+$estado = $pedido->tipo_estado_pedido;
+
+$esPendiente = $estado === 'Pendiente';
+$esRechazado = $estado === 'Rechazado';
+$esAprobado  = $estado === 'Aprobado';
+?>
+
 <div class="container mt-4">
 
     <!-- ===================== -->
-    <!-- 🧾 DATOS DEL PEDIDO -->
+    <!-- 🔔 ALERTAS -->
     <!-- ===================== -->
 
-    <?php $p = $pedido; ?>
+    <?php if ($esRechazado): ?>
+        <div class="alert alert-danger shadow-sm">
+            ❌ El pedido ya fue rechazado
+        </div>
+    <?php elseif ($esAprobado): ?>
+        <div class="alert alert-success shadow-sm">
+            ✅ El pedido ya fue aprobado
+        </div>
+    <?php endif; ?>
 
-    <div class="card mb-4">
-        <div class="card-header bg-dark text-white">
-            <h5>Detalle del Pedido #<?= $p->id_pedido ?></h5>
+    <?php if (session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm">
+            <?= session()->getFlashdata('error') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('success')): ?>
+        <div class="alert alert-success alert-dismissible fade show shadow-sm">
+            <?= session()->getFlashdata('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
+
+
+    <!-- ===================== -->
+    <!-- 🧾 HEADER + INFO -->
+    <!-- ===================== -->
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
+            <h5 class="mb-0">
+                Pedido #<?= $pedido->id_pedido ?>
+            </h5>
+
+            <!-- Badge de estado -->
+            <?php
+                $badge = 'secondary';
+                if ($esPendiente) $badge = 'warning text-dark';
+                if ($esAprobado)  $badge = 'success';
+                if ($esRechazado) $badge = 'danger';
+            ?>
+            <span class="badge bg-<?= $badge ?> px-3 py-2">
+                <?= $estado ?>
+            </span>
         </div>
 
         <div class="card-body">
-            <p><strong>Fecha:</strong> <?= $p->fecha_solicitud_pedido ?></p>
-            <p><strong>Servicio Médico:</strong> <?= $p->nombre_servicio_medico ?></p>
-            <p><strong>Comentario:</strong> <?= $p->comentario_pedido ?: 'Sin comentarios' ?></p>
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <small class="text-muted">Fecha</small>
+                    <div class="fw-semibold"><?= $pedido->fecha_solicitud_pedido ?></div>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted">Servicio Médico</small>
+                    <div class="fw-semibold"><?= $pedido->nombre_servicio_medico ?></div>
+                </div>
+
+                <div class="col-md-12">
+                    <small class="text-muted">Comentario</small>
+                    <div class="fw-semibold">
+                        <?= $pedido->comentario_pedido ?: 'Sin comentarios' ?>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
 
     <!-- ===================== -->
-    <!-- 💊 TABLA DE DETALLES -->
-    <!-- ===================== -->
+<!-- 💊 PRODUCTOS -->
+<!-- ===================== -->
 
-    <div class="card mb-4">
-        <div class="card-header bg-secondary text-white">
-            <h5>Productos del Pedido</h5>
-        </div>
+<div class="card mb-4 shadow-sm border-0">
 
-        <div class="card-body">
-            <table class="table table-bordered table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Medicamento</th>
-                        <th>Tipo Producto</th>
-                        <th>Dosis</th>
-                        <th>Proveedor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($detalles as $d): ?>
-                        <tr>
-                            <td><?= $d->nombre_medicamento ?></td>
-                            <td><?= $d->nombre_tipo_producto ?></td>
-                            <td>
-                                <?= $d->dosis_producto . ' ' . $d->nombre_medida ?>
-                            </td>
-                            <td><?= $d->nombre_proveedor ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+    <!-- Header consistente -->
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0">Productos del Pedido</h5>
     </div>
+
+    <div class="card-body">
+
+        <?php foreach ($detalles as $d): ?>
+            <div class="border rounded p-3 mb-3">
+
+                <div class="row align-items-center">
+
+                    <!-- Medicamento -->
+                    <div class="col-md-3">
+                        <small class="text-muted">Medicamento</small>
+                        <div class="fw-semibold">
+                            <?= esc($d->nombre_medicamento) ?>
+                        </div>
+                    </div>
+
+                    <!-- Tipo -->
+                    <div class="col-md-3">
+                        <small class="text-muted">Tipo</small>
+                        <div class="fw-semibold"><?= esc($d->nombre_tipo_producto) ?></div>
+                    </div>
+
+                    <!-- Dosis -->
+                    <div class="col-md-3">
+                        <small class="text-muted">Dosis</small>
+                        <div>
+                            <span class="badge bg-light text-dark border">
+                                <?= esc($d->dosis_producto . ' ' . $d->nombre_medida) ?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Proveedor -->
+                    <div class="col-md-3">
+                        <small class="text-muted">Proveedor</small>
+                        <div class="fw-semibold"><?= esc($d->nombre_proveedor) ?></div>
+                    </div>
+
+                </div>
+
+            </div>
+        <?php endforeach; ?>
+
+    </div>
+</div>
 
 
     <!-- ===================== -->
     <!-- 🔘 ACCIONES -->
     <!-- ===================== -->
 
-    <div id="acciones">
+    <?php if ($esPendiente): ?>
+        <div id="acciones" class="d-flex gap-2">
 
-        <!-- Aprobar -->
-        <form method="post" action="<?= base_url('pedidos/aprobar') ?>" style="display:inline;">
-            <input type="hidden" name="idPedido" value="<?= $p->id_pedido ?>">
-            <button type="submit" class="btn btn-primary">
-                Aprobar
+            <form method="post" action="<?= base_url('pedidos/aprobar') ?>">
+                <input type="hidden" name="idPedido" value="<?= $pedido->id_pedido ?>">
+                <button class="btn btn-primary">
+                    ✔ Aprobar
+                </button>
+            </form>
+
+            <button class="btn btn-outline-danger" onclick="mostrarRechazo()">
+                ✖ Rechazar
             </button>
-        </form>
 
-        <!-- Botón inicial Rechazar -->
-        <button class="btn btn-danger" onclick="mostrarRechazo()">
-            Rechazar
-        </button>
-
-    </div>
+        </div>
+    <?php endif; ?>
 
 
     <!-- ===================== -->
-    <!-- ❌ FORMULARIO RECHAZO -->
+    <!-- ❌ RECHAZO -->
     <!-- ===================== -->
 
-    <div id="formRechazo" style="display:none;" class="mt-3">
+    <div id="formRechazo"
+         class="mt-4"
+         style="<?= ($esRechazado ? 'display:block;' : 'display:none;') ?>">
 
-        <form method="post" action="<?= base_url('pedidos/rechazar') ?>">
-
-            <input type="hidden" name="idPedido" value="<?= $p->id_pedido ?>">
-
-            <div class="mb-3">
-                <label for="comentario" class="form-label">
-                    Motivo del rechazo (opcional)
-                </label>
-                <textarea name="comentario" id="comentario" class="form-control" rows="3"></textarea>
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white">
+                Motivo del rechazo
             </div>
 
-            <button type="submit" class="btn btn-danger">
-                Confirmar Rechazo
-            </button>
+            <div class="card-body">
 
-        </form>
+                <form method="post" action="<?= base_url('pedidos/rechazar') ?>">
 
+                    <input type="hidden" name="idPedido" value="<?= $pedido->id_pedido ?>">
+
+                    <textarea name="comentario"
+                              class="form-control mb-3"
+                              rows="3"
+                              placeholder="Opcional..."
+                              <?= !$esPendiente ? 'readonly' : '' ?>><?= $esRechazado ? esc($pedido->motivo_cancelacion_pedido) : '' ?></textarea>
+
+                    <?php if ($esPendiente): ?>
+                        <button class="btn btn-danger">
+                            Confirmar Rechazo
+                        </button>
+                    <?php endif; ?>
+
+                </form>
+
+            </div>
+        </div>
     </div>
 
 </div>
 
-
-<!-- ===================== -->
-<!-- ⚙️ SCRIPT -->
-<!-- ===================== -->
 
 <script>
 function mostrarRechazo() {
