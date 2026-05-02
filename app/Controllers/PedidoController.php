@@ -52,4 +52,38 @@ class PedidoController extends BaseController
             ])
         ]);
     }
+
+    /*public function detallePedido($idPedido) : string
+    {
+        $this->p
+    }*/
+
+    public function aprobar()
+    {
+        try {
+            $idPedido = $this->request->getPost('idPedido');
+            $this->pedidoService->aprobarPedido((int)$idPedido);
+            return redirect()->back()->with('success', 'Pedido aprobado correctamente.');       
+        } catch (\InvalidArgumentException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+            
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error inesperado.');
+        }
+    }
+
+    public function rechazar()
+    {
+        try {
+            $idPedido = $this->request->getPost('idPedido');
+            $mensaje_rechazo = $this->request->getPost('motivo_rechazo');
+            $this->pedidoService->rechazarPedido((int)$idPedido, $mensaje_rechazo);
+            return redirect()->back()->with('success', 'Pedido rechazado correctamente.');       
+        } catch (\InvalidArgumentException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+            
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error inesperado.');
+        }
+    }
 }
