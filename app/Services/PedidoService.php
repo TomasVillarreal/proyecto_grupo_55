@@ -16,9 +16,9 @@ class PedidoService
     }
 
     /*Metodo para obtener los pedidos existentes, utilizando el método de la bd*/
-    public function obtenerPedidos(int $idEstado, int $idServicio): array
+    public function obtenerPedidos(int $idEstado, int $idServicio, string $orden = 'ASC'): array
     {
-        $pedidos = $this->pedidoModel->obtenerPedidos($idEstado, $idServicio);
+        $pedidos = $this->pedidoModel->obtenerPedidos($idEstado, $idServicio, $orden);
         $listadoPedidos = [];//array que contendrá todos los pedidos existentes
 
         foreach ($pedidos as $pedido) {

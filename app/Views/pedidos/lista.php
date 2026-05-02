@@ -30,7 +30,12 @@
         <thead class="table-dark">
             <tr>
                 <th>ID Pedido</th>
-                <th>Fecha</th>
+                <th>
+                    Fecha
+                    <button type="button" id="btnOrdenFecha" class="btn btn-sm btn-dark ms-1">
+                        <i id="iconOrdenFecha" class="bi bi-caret-up-fill"></i>
+                    </button>
+                </th>
                 <th>Servicio Médico</th>
                 <th>Estado</th>
             </tr>

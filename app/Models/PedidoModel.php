@@ -19,7 +19,7 @@ class PedidoModel extends Model
     protected $useTimestamps = false; //Para no rellenar columnas de tiempo automaticamente.
     protected $returnType = 'object'; //Se especifica el formato de dato a devolver
 
-    public function obtenerPedidos(int $id_estado, int $id_servicio)
+    public function obtenerPedidos(int $id_estado, int $id_servicio, string $orden)
     {
         $builder = $this->db->table('Pedido p');//Crea la consulta sobre la tabla especificada
         $builder->select(
@@ -38,8 +38,8 @@ class PedidoModel extends Model
             $builder->where('p.id_servicio_medico', $id_servicio);
         }
 
-        // Se devuelve los pedidos de mas nuevos a mas viejos, en principio.
-        $builder->orderBy('p.fecha_solicitud_pedido', 'ASC');
+        // Ordeno los pedidos segun el valor del argumento
+        $builder->orderBy('p.fecha_solicitud_pedido', $orden);
 
         //Se obtienen los resultados
         return $builder->get()->getResult();
