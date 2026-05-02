@@ -32,6 +32,15 @@ class PedidoService
         return $listadoPedidos;
     }
 
+    public function obtenerPedidoEspecifico(int $id_pedido)
+    {
+        $pedido = $this->pedidoModel->obtenerPedidoEspecifico($id_pedido);
+        if (!$pedido) {
+            throw new \Exception("Pedido no encontrado");
+        }
+        return $pedido;
+    }
+
     // Metodo para el rechazo de un pedido, consiste en cambiar el estado del pedido unicamente.
     public function rechazarPedido(int $idPedido, string $mensajeRechazo): bool
     {
