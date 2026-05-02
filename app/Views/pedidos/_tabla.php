@@ -24,7 +24,7 @@
                     $claseBadge = 'text-bg-primary';
             }
         ?>
-        <tr>
+        <tr onclick="window.location.href='<?= site_url('pedido/' . $pedido['id_pedido']) ?>';" style="cursor:pointer;">
             <td><?= esc($pedido['id_pedido']) ?></td>
             <td><?= esc($pedido['fecha']) ?></td>
             <td><?= esc($pedido['servicio_medico']) ?></td>
