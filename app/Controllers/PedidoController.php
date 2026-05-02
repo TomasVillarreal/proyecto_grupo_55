@@ -88,7 +88,7 @@ class PedidoController extends BaseController
     {
         try {
             $idPedido = $this->request->getPost('idPedido');
-            $mensaje_rechazo = $this->request->getPost('motivo_rechazo');
+            $mensaje_rechazo = trim($this->request->getPost('motivo_rechazo')) ?: '-';
             $this->pedidoService->rechazarPedido((int)$idPedido, $mensaje_rechazo);
             return redirect()->back()->with('success', 'Pedido rechazado correctamente.');       
         } catch (\InvalidArgumentException $e) {

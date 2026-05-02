@@ -42,7 +42,7 @@ class PedidoService
     }
 
     // Metodo para el rechazo de un pedido, consiste en cambiar el estado del pedido unicamente.
-    public function rechazarPedido(int $idPedido, string $mensajeRechazo = null): bool
+    public function rechazarPedido(int $idPedido, string $mensajeRechazo): bool
     {
         $pedido = $this->pedidoModel->find($idPedido);
 

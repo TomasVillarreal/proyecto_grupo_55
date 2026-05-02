@@ -22,19 +22,6 @@ $esAprobado  = $estado === 'Aprobado';
         </div>
     <?php endif; ?>
 
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show shadow-sm">
-            <?= session()->getFlashdata('error') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    <?php endif; ?>
-
-    <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show shadow-sm">
-            <?= session()->getFlashdata('success') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    <?php endif; ?>
 
 
     <!-- ===================== -->
@@ -150,13 +137,13 @@ $esAprobado  = $estado === 'Aprobado';
 
             <form method="post" action="<?= base_url('pedidos/aprobar') ?>">
                 <input type="hidden" name="idPedido" value="<?= $pedido->id_pedido ?>">
-                <button class="btn btn-primary">
-                    ✔ Aprobar
+                <button class="btn btn-outline-primary">
+                    Aprobar
                 </button>
             </form>
 
             <button class="btn btn-outline-danger" onclick="mostrarRechazo()">
-                ✖ Rechazar
+                Rechazar
             </button>
 
         </div>
@@ -182,7 +169,7 @@ $esAprobado  = $estado === 'Aprobado';
 
                     <input type="hidden" name="idPedido" value="<?= $pedido->id_pedido ?>">
 
-                    <textarea name="comentario"
+                    <textarea name="motivo_rechazo"
                               class="form-control mb-3"
                               rows="3"
                               placeholder="Opcional..."
