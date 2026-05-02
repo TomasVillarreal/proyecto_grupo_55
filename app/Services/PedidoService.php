@@ -32,6 +32,7 @@ class PedidoService
         return $listadoPedidos;
     }
 
+    // Metodo que obtiene un pedido especifico, usando el metodo del model
     public function obtenerPedidoEspecifico(int $id_pedido)
     {
         $pedido = $this->pedidoModel->obtenerPedidoEspecifico($id_pedido);

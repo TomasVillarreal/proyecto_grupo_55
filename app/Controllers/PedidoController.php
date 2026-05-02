@@ -36,6 +36,7 @@ class PedidoController extends BaseController
         $idServicio = $this->request->getGet('idServicio') ?? 0;
         $orden = $this->request->getGet('orden') ?? 'ASC';
 
+        // validacion para que el orden solo pueda ser ASC o DESC, y no cualquier otra cosa
         $orden = strtoupper($orden) === 'DESC' ? 'DESC' : 'ASC';
 
         // cargo los pedidos a mandar
@@ -80,7 +81,7 @@ class PedidoController extends BaseController
         try {
             $idPedido = $this->request->getPost('idPedido');
             $this->pedidoService->aprobarPedido((int)$idPedido);
-            return redirect()->back()->with('success', 'Pedido aprobado correctamente.');       
+            return redirect()->back();       
         } catch (\InvalidArgumentException $e) {
             return redirect()->back()->with('error', $e->getMessage());
             
@@ -95,7 +96,7 @@ class PedidoController extends BaseController
             $idPedido = $this->request->getPost('idPedido');
             $mensaje_rechazo = trim($this->request->getPost('motivo_rechazo')) ?: '-';
             $this->pedidoService->rechazarPedido((int)$idPedido, $mensaje_rechazo);
-            return redirect()->back()->with('success', 'Pedido rechazado correctamente.');       
+            return redirect()->back();       
         } catch (\InvalidArgumentException $e) {
             return redirect()->back()->with('error', $e->getMessage());
             

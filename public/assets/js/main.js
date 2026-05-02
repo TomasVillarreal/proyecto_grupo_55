@@ -303,14 +303,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const servicioSelect = document.getElementById("selectFiltradoServicios");
     // escucha el boton para cambiar el orden de la tabla segun la fecha
     const btnOrden = document.getElementById("btnOrdenFecha");
-    // es el icono para el cambio del orden de la tabla
+    // es el icono para el cambio del orden de la tabla, es para cambiarlo dsp
     const icon = document.getElementById("iconOrdenFecha");
 
     // se fija cuando cambian esos selects, y en caso de que cambien, llama al metodo filtrar
     estadoSelect.addEventListener("change", filtrar);
     servicioSelect.addEventListener("change", filtrar);
 
+    // escucha cuando se clickea sobre el boton para el orden
     btnOrden.addEventListener("click", () => {
+        // si el orden no es ASC, le coloco DESC
         ordenFecha = (ordenFecha === "ASC") ? "DESC" : "ASC";
 
         // cambio el icono
@@ -321,6 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
             icon.classList.remove("bi-caret-up-fill");
             icon.classList.add("bi-caret-down-fill");
         }
+        // filtro la tabla
         filtrar();
     });
 
@@ -329,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const estado = estadoSelect.value;
         const servicio = servicioSelect.value;
 
-        // envia los datos del estado y servicio a través de una query string, para trabajar con estos
+        // envia los datos del estado, servicio  y el orden segun fecha a través de una query string, para trabajar con estos
 
         // en el fetch se hace lo siguiente:
         // 1- envia una request get con los filtros y le coloca el header:  "X-Requested-With": "XMLHttpRequest"

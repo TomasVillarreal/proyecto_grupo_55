@@ -1,4 +1,5 @@
 <?php
+// Establezco los distintos estados en los que puede estar el pedido
 $estado = $pedido->tipo_estado_pedido;
 
 $esPendiente = $estado === 'Pendiente';
@@ -8,25 +9,33 @@ $esAprobado  = $estado === 'Aprobado';
 
 <div class="container mt-4">
 
-    <!-- ===================== -->
-    <!-- 🔔 ALERTAS -->
-    <!-- ===================== -->
-
+    <!-- Verifico si es rechazado, y si ya fue rechazado, creo un flashdata avisando esto -->
     <?php if ($esRechazado): ?>
         <div class="alert alert-danger shadow-sm">
             ❌ El pedido ya fue rechazado
         </div>
+    <!-- Verifico si el estado es aprobado, y si ya fue aprobado, creo un flashdata avisando esto -->
     <?php elseif ($esAprobado): ?>
         <div class="alert alert-success shadow-sm">
             ✅ El pedido ya fue aprobado
         </div>
     <?php endif; ?>
 
+    <!-- Flashdata correspondientes -->
+    <?php if (session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm">
+            <?= session()->getFlashdata('error') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
 
+    <?php if (session()->getFlashdata('success')): ?>
+        <div class="alert alert-success alert-dismissible fade show shadow-sm">
+            <?= session()->getFlashdata('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
 
-    <!-- ===================== -->
-    <!-- 🧾 HEADER + INFO -->
-    <!-- ===================== -->
 
     <div class="card mb-4 shadow-sm border-0">
         <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
@@ -34,7 +43,7 @@ $esAprobado  = $estado === 'Aprobado';
                 Pedido #<?= $pedido->id_pedido ?>
             </h5>
 
-            <!-- Badge de estado -->
+            <!-- Badge para los colores de los estados -->
             <?php
                 $badge = 'secondary';
                 if ($esPendiente) $badge = 'warning text-dark';
@@ -71,68 +80,63 @@ $esAprobado  = $estado === 'Aprobado';
     </div>
 
 
-    <!-- ===================== -->
-<!-- 💊 PRODUCTOS -->
-<!-- ===================== -->
 
-<div class="card mb-4 shadow-sm border-0">
+    <div class="card mb-4 shadow-sm border-0">
 
-    <!-- Header consistente -->
-    <div class="card-header bg-dark text-white">
-        <h5 class="mb-0">Productos del Pedido</h5>
-    </div>
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Productos del Pedido</h5>
+        </div>
 
-    <div class="card-body">
+        <div class="card-body">
 
-        <?php foreach ($detalles as $d): ?>
-            <div class="border rounded p-3 mb-3">
+            <?php foreach ($detalles as $d): ?>
+                <div class="border rounded p-3 mb-3">
 
-                <div class="row align-items-center">
+                    <div class="row align-items-center">
 
-                    <!-- Medicamento -->
-                    <div class="col-md-3">
-                        <small class="text-muted">Medicamento</small>
-                        <div class="fw-semibold">
-                            <?= esc($d->nombre_medicamento) ?>
+                        <!-- Medicamento -->
+                        <div class="col-md-3">
+                            <small class="text-muted">Medicamento</small>
+                            <div class="fw-semibold">
+                                <?= esc($d->nombre_medicamento) ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Tipo -->
-                    <div class="col-md-3">
-                        <small class="text-muted">Tipo</small>
-                        <div class="fw-semibold"><?= esc($d->nombre_tipo_producto) ?></div>
-                    </div>
-
-                    <!-- Dosis -->
-                    <div class="col-md-3">
-                        <small class="text-muted">Dosis</small>
-                        <div>
-                            <span class="badge bg-light text-dark border">
-                                <?= esc($d->dosis_producto . ' ' . $d->nombre_medida) ?>
-                            </span>
+                        <!-- Tipo -->
+                        <div class="col-md-3">
+                            <small class="text-muted">Tipo</small>
+                            <div class="fw-semibold"><?= esc($d->nombre_tipo_producto) ?></div>
                         </div>
-                    </div>
 
-                    <!-- Proveedor -->
-                    <div class="col-md-3">
-                        <small class="text-muted">Proveedor</small>
-                        <div class="fw-semibold"><?= esc($d->nombre_proveedor) ?></div>
+                        <!-- Dosis -->
+                        <div class="col-md-3">
+                            <small class="text-muted">Dosis</small>
+                            <div>
+                                <span class="badge bg-light text-dark border">
+                                    <?= esc($d->dosis_producto . ' ' . $d->nombre_medida) ?>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Proveedor -->
+                        <div class="col-md-3">
+                            <small class="text-muted">Proveedor</small>
+                            <div class="fw-semibold"><?= esc($d->nombre_proveedor) ?></div>
+                        </div>
+
                     </div>
 
                 </div>
+            <?php endforeach; ?>
 
-            </div>
-        <?php endforeach; ?>
-
+        </div>
     </div>
-</div>
 
 
-    <!-- ===================== -->
-    <!-- 🔘 ACCIONES -->
-    <!-- ===================== -->
 
+    <!-- Div que contiene los botones de aprobado o rechazado, solo aparece si el pedido es pendiente-->
     <?php if ($esPendiente): ?>
+        <!-- Le agrego un id para ocultarlo luego -->
         <div id="acciones" class="d-flex gap-2">
 
             <form method="post" action="<?= base_url('pedidos/aprobar') ?>">
@@ -142,7 +146,8 @@ $esAprobado  = $estado === 'Aprobado';
                 </button>
             </form>
 
-            <button class="btn btn-outline-danger" onclick="mostrarRechazo()">
+            <!-- Boton que cuando se aprieta hace que el div "formRechazo" aparezca -->
+            <button type="button" class="btn btn-outline-danger" onclick="mostrarRechazo()">
                 Rechazar
             </button>
 
@@ -150,13 +155,9 @@ $esAprobado  = $estado === 'Aprobado';
     <?php endif; ?>
 
 
-    <!-- ===================== -->
-    <!-- ❌ RECHAZO -->
-    <!-- ===================== -->
-
+    <!-- El div no aparece si el pedido no fue rechazado -->
     <div id="formRechazo"
-         class="mt-4"
-         style="<?= ($esRechazado ? 'display:block;' : 'display:none;') ?>">
+         class="mt-4 <?= $esRechazado ? '' : 'd-none' ?>">
 
         <div class="card border-danger shadow-sm">
             <div class="card-header bg-danger text-white">
@@ -164,25 +165,20 @@ $esAprobado  = $estado === 'Aprobado';
             </div>
 
             <div class="card-body">
-
                 <form method="post" action="<?= base_url('pedidos/rechazar') ?>">
-
                     <input type="hidden" name="idPedido" value="<?= $pedido->id_pedido ?>">
-
+                    <!-- El textarea es unicamente escribible si el pedido esta en pendiente, sino no se puede escribir-->
                     <textarea name="motivo_rechazo"
                               class="form-control mb-3"
                               rows="3"
                               placeholder="Opcional..."
                               <?= !$esPendiente ? 'readonly' : '' ?>><?= $esRechazado ? esc($pedido->motivo_cancelacion_pedido) : '' ?></textarea>
-
                     <?php if ($esPendiente): ?>
                         <button class="btn btn-danger">
                             Confirmar Rechazo
                         </button>
                     <?php endif; ?>
-
                 </form>
-
             </div>
         </div>
     </div>
@@ -191,8 +187,9 @@ $esAprobado  = $estado === 'Aprobado';
 
 
 <script>
-function mostrarRechazo() {
-    document.getElementById('acciones').style.display = 'none';
-    document.getElementById('formRechazo').style.display = 'block';
-}
+    // Si se aprieta el boton de rechazo, oculto el div de acciones y hago que el de formRechazo aparezca
+    function mostrarRechazo() {
+        document.getElementById('acciones').classList.add('d-none');
+        document.getElementById('formRechazo').classList.remove('d-none');
+    }
 </script>

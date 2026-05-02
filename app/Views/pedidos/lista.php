@@ -32,6 +32,7 @@
                 <th>ID Pedido</th>
                 <th>
                     Fecha
+            <!-- Boton para ordenar segun la fecha de los pedidos-->
                     <button type="button" id="btnOrdenFecha" class="btn btn-sm btn-dark ms-1">
                         <i id="iconOrdenFecha" class="bi bi-caret-up-fill"></i>
                     </button>
