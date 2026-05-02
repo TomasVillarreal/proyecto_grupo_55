@@ -5,7 +5,10 @@ namespace App\Controllers;
 use App\Services\DetallePedidoService;
 use App\Services\PedidoService;
 use App\Services\EstadoPedidoService;
+use App\Services\ProductoFarmaceuticoService;
 use App\Services\ServicioMedicoService;
+use App\Services\ProveedorService;
+use App\Services\MedicamentoService;
 
 class PedidoController extends BaseController
 {
@@ -14,6 +17,9 @@ class PedidoController extends BaseController
     protected $estadoService;
     protected $servicioService;
     protected $detalleService;
+    protected $proveedorService;
+    protected $medicamentoService;
+    protected $productoService;
 
     /*Creacion del constructor para evitar llamar al servicio en cada funcion*/
     public function __construct()
@@ -23,6 +29,9 @@ class PedidoController extends BaseController
         $this->estadoService = new EstadoPedidoService();
         $this->servicioService = new ServicioMedicoService();
         $this->detalleService = new DetallePedidoService();
+        $this->proveedorService = new ProveedorService();
+        $this->medicamentoService = new MedicamentoService();
+        $this->productoService = new ProductoFarmaceuticoService();
     }
 
     /*Metodo que carga los datos a la vista de la lista de pedidos, y para el filtrado en caso de que se desee*/
@@ -103,5 +112,21 @@ class PedidoController extends BaseController
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error inesperado.');
         }
+    }
+
+    public function crearPedido() : string
+    {
+        $servicios = $this->servicioService->obtenerServiciosDropdown();
+        $proveedores = $this->proveedorService->obtenerProveedoresDropdown();
+        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
+
+        return view('layout/main_layout', [
+            'title' => 'Crear pedido - Clinicks',
+            'content' => view('pedidos/crearPedido', [
+                'servicios' => $servicios,
+                'proveedores' => $proveedores,
+                'medicamentos'=> $medicamentos
+            ])
+        ]);
     }
 }
