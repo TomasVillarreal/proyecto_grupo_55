@@ -61,13 +61,6 @@ class ProductoFarmaceuticoModel extends Model
         return $builder->get()->getResult();
     }
 
-    //Se crea una función para la eliminación lógica de un producto farmacéutico
-    
-    public function eliminarProductoFarmaceutico(int $id):bool
-    {
-        return $this->update($id, ['activo_producto' => 0]);//Se modifica el campo activo del producto que se pasa por id.
-    }
-
     /*Se crea una función para verificar si el producto farmacéutico es único.
     Su utilidad se va a dar en caso de que se quiera crear un nuevo producto farmacéutico,
     para evitar duplicados.*/

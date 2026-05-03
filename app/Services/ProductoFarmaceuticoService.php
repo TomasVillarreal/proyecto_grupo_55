@@ -3,27 +3,31 @@
 namespace App\Services;
 
 use App\Models\ProductoFarmaceuticoModel;
-use App\Models\MedicamentoModel;
 use App\Models\TipoProductoModel;
 use App\Models\MedidaProductoModel;
+use App\Models\MedicamentoModel;
+use App\Services\MedicamentoService;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class ProductoFarmaceuticoService
 {
     //Variables a utilizar que hacen referencia a cada modelo usado
     protected $productoModel;
-    protected $medicamentoModel;
     protected $tipoProductoModel;
     protected $medidaProductoModel;
+    protected $medicamentoModel;
+    protected $medicamentoService;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.*/
     public function __construct()
     {
         //Se reconocen e instancian las clases de los modelos a utilizar
         $this->productoModel = model(ProductoFarmaceuticoModel::class);
-        $this->medicamentoModel = model(MedicamentoModel::class);
         $this->tipoProductoModel = model(TipoProductoModel::class);
         $this->medidaProductoModel = model(MedidaProductoModel::class);
+        $this->medicamentoModel = model(MedicamentoModel::class);
+        $this->medicamentoService = new MedicamentoService();
+
     }
 
     /*Se crea un metodo que valida las dosis de acuerdo a nuestras
@@ -132,6 +136,49 @@ class ProductoFarmaceuticoService
         return $id;
     }
 
+    //Se crea un metodo que recibe los datos del POST para la creacion de un medicamento, a través de su servicio
+    //y luego crea el producto a través de su propio servicio.
+    public function crearProductoCompleto(int|string $idMedicamentoPost, ?string $nombreMedicamentoPost, array $productoDataPost)
+    {
+        $db = \Config\Database::connect();//Se crea la conexión con la BD
+        $db->transBegin();//Comienza la transaccion
+
+        try {
+            //Se determina mediante un if (a modo de filtro) si el ID del medicamento es nuevo o es para un nuevo producto farmaceutico.
+            if ($idMedicamentoPost === 'new') {
+                if (empty($nombreMedicamentoPost)) {
+                    throw new \InvalidArgumentException("Debe ingresar el nombre del medicamento");
+                }
+
+                //Llamamos al servicio ed medicamento para la creacion del mismo
+                $idMedicamentoNuevo = $this->medicamentoService->crearMedicamento($nombreMedicamentoPost);
+
+            } else {
+                $idMedicamentoNuevo = (int) $idMedicamentoPost;//El medicamento no es nuevo si no que fue seleccionado del dropdown
+                $this->validarMedicamentoActivo($idMedicamentoNuevo);//Se realiza una validacion llamando al model de medicamentos
+            }
+
+            //Se crea el nuevo producto con el id del medicamento asignado
+            $productoDataPost['id_medicamento'] = $idMedicamentoNuevo;
+            $this->crearProducto($productoDataPost);//Se hace uso del metodo que antes ya creaba el producto
+
+            $db->transCommit();//Se finaliza la transaccion
+        } catch (\Exception $e) {
+            $db->transRollback();
+            throw $e; //Re-lanzamos para que el controlador la atrape
+        }
+    }
+
+    //Metodo que realiza la validacion de un medicamento para saber si esta aactivo o no.
+    //Hace uso del model de medicamento
+    private function validarMedicamentoActivo(int $id)
+    {
+        $medicamento = $this->medicamentoModel->find($id);
+        if (!$medicamento || !$medicamento->activo_medicamento) {
+            throw new \InvalidArgumentException('El medicamento seleccionado no es válido o está inactivo.');
+        }
+    }
+
     /*Metodo para actualizar/modeificar un producto farmaceutico */
     public function modificarProductoFarmaceutico(int $idProductoFarmaceutico, array $data): bool
     {
@@ -176,6 +223,18 @@ class ProductoFarmaceuticoService
         return $this->productoModel->update($idProductoFarmaceutico, $updateData);
     }
 
+    /*Metodo para la eliminación lógica del medicamento haciendo uso del metodo de su modelo */
+    public function eliminarProducto(int $idProductoFarmaceutico): void
+    {
+        $producto = $this->productoModel->find($idProductoFarmaceutico);
+
+        if (!$producto || !$producto->activo_producto) {
+            throw new \InvalidArgumentException("El producto no existe o ya está inactivo.");
+        }
+
+        $this->productoModel->update($idProductoFarmaceutico, ['activo_producto' => 0]);
+    }
+
     /*Metodo que va a ser utilizado para cargar dinamicamente los campos del producto
     farmaceutico una vez se seleccione un medicamento en la vista de UPDATE*/
     public function obtenerProductosPorMedicamento(int $idMedicamento): array
@@ -197,17 +256,5 @@ class ProductoFarmaceuticoService
         return $listadoProductos;
     }
 
-    /*Metodo para la eliminación lógica del medicamento haciendo uso del metodo de su modelo */
-    public function eliminarProducto(int $idProductoFarmaceutico): void
-    {
-        $producto = $this->productoModel->find($idProductoFarmaceutico);
 
-        if (!$producto || !$producto->activo_producto) {
-            throw new \InvalidArgumentException("El producto no existe o ya está inactivo.");
-        }
-
-        $this->productoModel->update($idProductoFarmaceutico, [
-            'activo_producto' => 0
-        ]);
-    }
 }
