@@ -353,51 +353,94 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+// Cantidad maxima de detalles que habra por pedido
+const MAX_DETALLES = 10;
+// Contador que se ira actualizando en base a las cartas
 let contadorDetalles = 0;
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
+    // Si el boton para agregar multiples cartas se clickea, llamo a esa funcion
     document.getElementById("crearMultiplesCards")
         .addEventListener("click", crearMultiplesCards);
+
     document.getElementById("crearCardIndividual")
-        .addEventListener("click", () => crearCard());
-    // Crear una card inicial
+        .addEventListener("click", crearCard);
+
     crearCard();
 });
 
-function crearMultiplesCards() {
-    const cantidad = parseInt(document.getElementById("cantidadCards").value);
+function mostrarAlerta() {
+    document.getElementById("alertaLimite").classList.remove("d-none");
+}
 
-    if (isNaN(cantidad) || cantidad < 1 || cantidad > 20) {
-        alert("Número inválido (1-20)");
+function ocultarAlerta() {
+    document.getElementById("alertaLimite").classList.add("d-none");
+}
+
+function actualizarBotones() {
+    const disabled = contadorDetalles >= MAX_DETALLES;
+
+    document.getElementById("crearCardIndividual").disabled = disabled;
+    document.getElementById("crearMultiplesCards").disabled = disabled;
+
+    if (disabled) mostrarAlerta();
+    else ocultarAlerta();
+}
+
+function crearMultiplesCards() {
+
+    const cantidadInput = document.getElementById("cantidadCards");
+    let cantidad = parseInt(cantidadInput.value);
+
+    if (isNaN(cantidad) || cantidad < 1) return;
+
+    // 🔥 calcular cuántos puedo crear realmente
+    const disponibles = MAX_DETALLES - contadorDetalles;
+
+    if (disponibles <= 0) {
+        mostrarAlerta();
         return;
+    }
+
+    // 🔥 si se pasa, lo ajusto automáticamente
+    if (cantidad > disponibles) {
+        cantidad = disponibles;
     }
 
     for (let i = 0; i < cantidad; i++) {
         crearCard();
     }
 
-    document.getElementById("cantidadCards").value = "";
+    cantidadInput.value = "";
+
+    actualizarBotones();
 }
 
 function crearCard() {
+
+    if (contadorDetalles >= MAX_DETALLES) {
+        mostrarAlerta();
+        return;
+    }
+
     contadorDetalles++;
 
     const template = document.getElementById("detalleCardTemplate");
     const clone = template.content.cloneNode(true);
 
-    const wrapper = clone.querySelector(".col-md-6"); // contenedor real
+    const wrapper = clone.querySelector(".col-md-6");
 
-    // Reemplazar INDEX en TODOS los atributos name
     wrapper.innerHTML = wrapper.innerHTML.replace(/INDEX/g, contadorDetalles);
 
-    // Setear número visible
     wrapper.querySelector(".detalleNumero").textContent = contadorDetalles;
     wrapper.querySelector(".detalleId").value = contadorDetalles;
 
     document.getElementById("cardsContainer").appendChild(wrapper);
 
     configurarEventosCard(wrapper);
+
+    actualizarBotones();
 }
 
 function configurarEventosCard(card) {
@@ -406,73 +449,55 @@ function configurarEventosCard(card) {
     const productSelect = card.querySelector(".producto-select");
     const btnEliminar = card.querySelector(".btn-eliminar-card");
 
-    // 🔥 CAMBIO DE MEDICAMENTO
     medSelect.addEventListener("change", async function () {
 
-        const idMedicamento = this.value;
+        const id = this.value;
 
-        if (!idMedicamento) {
-            productSelect.innerHTML = `<option>Primero seleccione medicamento</option>`;
-            productSelect.disabled = true;
-            return;
-        }
+        if (!id) return;
 
         productSelect.innerHTML = `<option>Cargando...</option>`;
         productSelect.disabled = true;
 
         try {
-            const response = await fetch(`${BASE_URL}medicamentos/productos/${idMedicamento}`);
+            const res = await fetch(`${BASE_URL}medicamentos/productos/${id}`);
+            const productos = await res.json();
 
-            if (!response.ok) {
-                throw new Error("Error en fetch");
-            }
+            productSelect.innerHTML = `<option disabled selected>Seleccione...</option>`;
 
-            const productos = await response.json();
-
-            productSelect.innerHTML = `<option value="" disabled selected>Seleccione producto...</option>`;
-
-            productos.forEach(prod => {
-                const option = document.createElement("option");
-
-                option.value = prod.id_producto;
-                option.textContent = `${prod.nombre_tipo_producto} - ${prod.dosis_producto} ${prod.nombre_medida}`;
-
-                productSelect.appendChild(option);
+            productos.forEach(p => {
+                const opt = document.createElement("option");
+                opt.value = p.id_producto;
+                opt.textContent = `${p.nombre_tipo_producto} - ${p.dosis_producto} ${p.nombre_medida}`;
+                productSelect.appendChild(opt);
             });
 
             productSelect.disabled = false;
 
-        } catch (error) {
-            console.error("Error cargando productos:", error);
-            productSelect.innerHTML = `<option>Error al cargar</option>`;
+        } catch {
+            productSelect.innerHTML = `<option>Error</option>`;
         }
     });
 
-    // ❌ ELIMINAR CARD
-    btnEliminar.addEventListener("click", function () {
+    btnEliminar.addEventListener("click", () => {
         card.remove();
-        reordenarNumerosDetalles();
+        reordenar();
     });
 }
 
-function reordenarNumerosDetalles() {
+function reordenar() {
     const cards = document.querySelectorAll("#cardsContainer .col-md-6");
 
-    cards.forEach((card, index) => {
+    cards.forEach((card, i) => {
+        const n = i + 1;
 
-        const nuevoNumero = index + 1;
+        card.querySelector(".detalleNumero").textContent = n;
+        card.querySelector(".detalleId").value = n;
 
-        card.querySelector(".detalleNumero").textContent = nuevoNumero;
-        card.querySelector(".detalleId").value = nuevoNumero;
-
-        const inputs = card.querySelectorAll("[name^='detalles']");
-
-        inputs.forEach(input => {
-            const name = input.getAttribute("name");
-            const nuevo = name.replace(/detalles\[\d+\]/, `detalles[${nuevoNumero}]`);
-            input.setAttribute("name", nuevo);
+        card.querySelectorAll("[name^='detalles']").forEach(input => {
+            input.name = input.name.replace(/detalles\[\d+\]/, `detalles[${n}]`);
         });
     });
 
     contadorDetalles = cards.length;
+    actualizarBotones();
 }
