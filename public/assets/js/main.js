@@ -350,5 +350,129 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(err => console.error("Error:", err));
     }
-
 });
+
+
+let contadorDetalles = 0;
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.getElementById("crearMultiplesCards")
+        .addEventListener("click", crearMultiplesCards);
+    document.getElementById("crearCardIndividual")
+        .addEventListener("click", () => crearCard());
+    // Crear una card inicial
+    crearCard();
+});
+
+function crearMultiplesCards() {
+    const cantidad = parseInt(document.getElementById("cantidadCards").value);
+
+    if (isNaN(cantidad) || cantidad < 1 || cantidad > 20) {
+        alert("Número inválido (1-20)");
+        return;
+    }
+
+    for (let i = 0; i < cantidad; i++) {
+        crearCard();
+    }
+
+    document.getElementById("cantidadCards").value = "";
+}
+
+function crearCard() {
+    contadorDetalles++;
+
+    const template = document.getElementById("detalleCardTemplate");
+    const clone = template.content.cloneNode(true);
+
+    const wrapper = clone.querySelector(".col-md-6"); // contenedor real
+
+    // Reemplazar INDEX en TODOS los atributos name
+    wrapper.innerHTML = wrapper.innerHTML.replace(/INDEX/g, contadorDetalles);
+
+    // Setear número visible
+    wrapper.querySelector(".detalleNumero").textContent = contadorDetalles;
+    wrapper.querySelector(".detalleId").value = contadorDetalles;
+
+    document.getElementById("cardsContainer").appendChild(wrapper);
+
+    configurarEventosCard(wrapper);
+}
+
+function configurarEventosCard(card) {
+
+    const medSelect = card.querySelector(".medicamento-select");
+    const productSelect = card.querySelector(".producto-select");
+    const btnEliminar = card.querySelector(".btn-eliminar-card");
+
+    // 🔥 CAMBIO DE MEDICAMENTO
+    medSelect.addEventListener("change", async function () {
+
+        const idMedicamento = this.value;
+
+        if (!idMedicamento) {
+            productSelect.innerHTML = `<option>Primero seleccione medicamento</option>`;
+            productSelect.disabled = true;
+            return;
+        }
+
+        productSelect.innerHTML = `<option>Cargando...</option>`;
+        productSelect.disabled = true;
+
+        try {
+            const response = await fetch(`${BASE_URL}medicamentos/productos/${idMedicamento}`);
+
+            if (!response.ok) {
+                throw new Error("Error en fetch");
+            }
+
+            const productos = await response.json();
+
+            productSelect.innerHTML = `<option value="" disabled selected>Seleccione producto...</option>`;
+
+            productos.forEach(prod => {
+                const option = document.createElement("option");
+
+                option.value = prod.id_producto;
+                option.textContent = `${prod.nombre_tipo_producto} - ${prod.dosis_producto} ${prod.nombre_medida}`;
+
+                productSelect.appendChild(option);
+            });
+
+            productSelect.disabled = false;
+
+        } catch (error) {
+            console.error("Error cargando productos:", error);
+            productSelect.innerHTML = `<option>Error al cargar</option>`;
+        }
+    });
+
+    // ❌ ELIMINAR CARD
+    btnEliminar.addEventListener("click", function () {
+        card.remove();
+        reordenarNumerosDetalles();
+    });
+}
+
+function reordenarNumerosDetalles() {
+    const cards = document.querySelectorAll("#cardsContainer .col-md-6");
+
+    cards.forEach((card, index) => {
+
+        const nuevoNumero = index + 1;
+
+        card.querySelector(".detalleNumero").textContent = nuevoNumero;
+        card.querySelector(".detalleId").value = nuevoNumero;
+
+        const inputs = card.querySelectorAll("[name^='detalles']");
+
+        inputs.forEach(input => {
+            const name = input.getAttribute("name");
+            const nuevo = name.replace(/detalles\[\d+\]/, `detalles[${nuevoNumero}]`);
+            input.setAttribute("name", nuevo);
+        });
+    });
+
+    contadorDetalles = cards.length;
+}

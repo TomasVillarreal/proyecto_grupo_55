@@ -19,10 +19,10 @@ class ProveedorService
     public function obtenerProveedoresDropdown(): array
     {
         $proveedores = $this->proveedorModel->orderBy('nombre_proveedor', 'ASC')->findAll();
-        $proveedores = [];
+        $listado = [];
         foreach ($proveedores as $proveedor) {
-            $listado[$proveedor->id_medida_producto] = $proveedor->nombre_medida;
+            $listado[$proveedor->id_proveedor] = $proveedor->nombre_proveedor;
         }
-        return $proveedores;
+        return $listado;
     }
 }

@@ -14,6 +14,7 @@ $routes->get(
     'MedicamentosController::productosPorMedicamento/$1'
 );
 $routes->get('/listaPedidos', 'PedidoController::listaPedidos');
+$routes->get('/crearPedido', 'PedidoController::crearPedido');
 $routes->get('/pedido/(:num)', 'PedidoController::detallePedido/$1');
 
 //POST
