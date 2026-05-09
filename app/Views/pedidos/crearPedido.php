@@ -88,7 +88,7 @@
         </div>
 
         <div class="d-flex justify-content-end gap-3 align-items-center">
-            <button type="reset" class="btn btn-light border px-4 py-2">
+            <button type="reset" id="reset_button" class="btn btn-light border px-4 py-2">
                 Limpiar campos
             </button>
             <button type="submit" class="btn btn-success px-5 py-2 fw-semibold shadow-sm">

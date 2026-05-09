@@ -353,6 +353,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
+
 // Cantidad maxima de detalles que habra por pedido
 const MAX_DETALLES = 10;
 // Contador que se ira actualizando en base a las cartas
@@ -360,110 +362,131 @@ let contadorDetalles = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Si el boton para agregar multiples cartas se clickea, llamo a esa funcion
+    // Si el boton para agregar multiples cartas se clickea, llamo a la funcion esa
     document.getElementById("crearMultiplesCards")
         .addEventListener("click", crearMultiplesCards);
 
+    // Si el boton para agregar una unica carta se clickea, llamo a la funcion esa
     document.getElementById("crearCardIndividual")
         .addEventListener("click", crearCard);
 
+    
+    document.getElementById("crearPedidoForm")
+        .addEventListener("reset", resetearFormulario);
+
+    // Creo una siempre
     crearCard();
 });
 
+// Metodo para crear una alerta del limite
 function mostrarAlerta() {
     document.getElementById("alertaLimite").classList.remove("d-none");
 }
 
+// Metodo para ocultar la alerta del limite
 function ocultarAlerta() {
     document.getElementById("alertaLimite").classList.add("d-none");
 }
 
-function actualizarBotones() {
+// Metodo que actualiza la vista en caso de que se haya alcanzado el limite de detalles
+function actualizarVistaLimitesAlcanzados() {
     const disabled = contadorDetalles >= MAX_DETALLES;
 
+    // Activo o desactivo los botones en base a la cantidad de detalles que hay
     document.getElementById("crearCardIndividual").disabled = disabled;
     document.getElementById("crearMultiplesCards").disabled = disabled;
 
+    // Muestro o desactivo la alerta de limite en base a la cantidad de detalles
     if (disabled) mostrarAlerta();
     else ocultarAlerta();
 }
 
+// Metodo para crear multiples cartas
 function crearMultiplesCards() {
 
+    // Agarro el valor del input que establece cuantos detalles se desea crear de una
     const cantidadInput = document.getElementById("cantidadCards");
     let cantidad = parseInt(cantidadInput.value);
 
+    // Si el valor es null, o menor a uno, no creo nada
     if (isNaN(cantidad) || cantidad < 1) return;
 
-    // 🔥 calcular cuántos puedo crear realmente
+    // Calculo la cantidad de detalles que puedo crear
     const disponibles = MAX_DETALLES - contadorDetalles;
 
-    if (disponibles <= 0) {
-        mostrarAlerta();
-        return;
-    }
 
-    // 🔥 si se pasa, lo ajusto automáticamente
+    // Si la cantidad a crear es mayor que los disponibles, ajusto esta cantidad para crear unicamente los detalles que puedo
     if (cantidad > disponibles) {
         cantidad = disponibles;
     }
 
+    // Creo las cartas
     for (let i = 0; i < cantidad; i++) {
         crearCard();
     }
 
+    // limpio el input de cantidad de cartas
     cantidadInput.value = "";
 
-    actualizarBotones();
+    actualizarVistaLimitesAlcanzados();
 }
 
+// Funcion para crear una carta individual
 function crearCard() {
-
-    if (contadorDetalles >= MAX_DETALLES) {
-        mostrarAlerta();
-        return;
-    }
-
+    // Sumo uno al contador de detalles 
     contadorDetalles++;
 
+    // Agarro el template establecido en el html de las cartas y lo clono
     const template = document.getElementById("detalleCardTemplate");
     const clone = template.content.cloneNode(true);
 
+    // Agarro al contenedor donde estan las cartas
     const wrapper = clone.querySelector(".col-md-6");
 
+    // Sustituyo los atributos que posee el template por el valor de la carta
     wrapper.innerHTML = wrapper.innerHTML.replace(/INDEX/g, contadorDetalles);
 
+    // Actualizo el numero de la carta que es visible
     wrapper.querySelector(".detalleNumero").textContent = contadorDetalles;
+    // Guardo el numero de la carta en un valor invisible
     wrapper.querySelector(".detalleId").value = contadorDetalles;
 
+    // Agrego la carta
     document.getElementById("cardsContainer").appendChild(wrapper);
 
+    // Agrego las funcionalidades a la carta
     configurarEventosCard(wrapper);
 
-    actualizarBotones();
+    actualizarVistaLimitesAlcanzados();
 }
 
 function configurarEventosCard(card) {
 
+    // Agarro el select del medicamento, del producto, y el boton de eliminar de la carta
     const medSelect = card.querySelector(".medicamento-select");
     const productSelect = card.querySelector(".producto-select");
     const btnEliminar = card.querySelector(".btn-eliminar-card");
 
+    // Si el select del medicamento cambia
     medSelect.addEventListener("change", async function () {
-
+        // Agarro el id del medicamento seleccionado
         const id = this.value;
-
+        // Si no se agarra nada, vuelvo para atras
         if (!id) return;
 
+        // Pongo temporalmente la opcion de "Cargando" en el select del producto y lo desabilito
         productSelect.innerHTML = `<option>Cargando...</option>`;
         productSelect.disabled = true;
-
+        // De ahi pruebo el fetch
         try {
+            // Hago un pedido al backend para obtener los productos de ese medicamento y espero su respuesta
             const res = await fetch(`${BASE_URL}medicamentos/productos/${id}`);
             const productos = await res.json();
 
+            // Agrego la opcion placeholder del select 
             productSelect.innerHTML = `<option disabled selected>Seleccione...</option>`;
 
+            // Voy agregando las opciones del producto farmaceutico
             productos.forEach(p => {
                 const opt = document.createElement("option");
                 opt.value = p.id_producto;
@@ -471,6 +494,7 @@ function configurarEventosCard(card) {
                 productSelect.appendChild(opt);
             });
 
+            // Habilito la seleccion de los productos
             productSelect.disabled = false;
 
         } catch {
@@ -478,26 +502,49 @@ function configurarEventosCard(card) {
         }
     });
 
+    // Si se elimina una carta, la elimino y reordeno las restantes
     btnEliminar.addEventListener("click", () => {
         card.remove();
         reordenar();
     });
 }
 
+// Funcion para la reordenacion de las cartas en caso de su eliminacion
 function reordenar() {
+    // Agarro el div que posee todas las cartas
     const cards = document.querySelectorAll("#cardsContainer .col-md-6");
 
+    // Voy recorriendo una a una las cartas
     cards.forEach((card, i) => {
+        // Creo un valor nuevo
         const n = i + 1;
-
+        // Asigno ese valor al numero visible, y lo agrego como id invisible de la carta
         card.querySelector(".detalleNumero").textContent = n;
         card.querySelector(".detalleId").value = n;
 
+        /* Busca todos los inputs cuyo atributo name empieza con `detalles` y corrijo sus nombres.  
+        Ejemplo: si antes era detalles[3][campo], lo reemplaza por detalles[1][campo] segun la nueva posicion.*/
         card.querySelectorAll("[name^='detalles']").forEach(input => {
             input.name = input.name.replace(/detalles\[\d+\]/, `detalles[${n}]`);
         });
     });
 
     contadorDetalles = cards.length;
-    actualizarBotones();
+    actualizarVistaLimitesAlcanzados();
+}
+
+// Metodo para borrar todas las cartas, en caso de que se apriete el boton de reset
+function resetearFormulario() {
+    setTimeout(() => {
+        // Borro todas las cards
+        document.getElementById("cardsContainer").innerHTML = "";
+        // Reinicio el contador de cartas
+        contadorDetalles = 0;
+        // En caso de haber estado activada, oculto la alerta de limite de cartas
+        ocultarAlerta();
+        // Reactivo los controles, por las dudas, en caso de que hayan estado desactivados
+        actualizarVistaLimitesAlcanzados();
+        // Creo una card vacía inicial
+        crearCard();
+    }, 0);
 }
