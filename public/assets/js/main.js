@@ -388,6 +388,18 @@ function ocultarAlerta() {
     document.getElementById("alertaLimite").classList.add("d-none");
 }
 
+// Metodo para mostrar la alerta toast del html
+function mostrarToast() {
+    // Agarra el elemento toast
+    const toastElement = document.getElementById("toastDuplicado");
+
+    // Creo el toast
+    const toast = new bootstrap.Toast(toastElement);
+
+    // Lo muestra
+    toast.show();
+}
+
 // Metodo que actualiza la vista en caso de que se haya alcanzado el limite de detalles
 function actualizarVistaLimitesAlcanzados() {
     const disabled = contadorDetalles >= MAX_DETALLES;
@@ -462,10 +474,11 @@ function crearCard() {
 
 function configurarEventosCard(card) {
 
-    // Agarro el select del medicamento, del producto, y el boton de eliminar de la carta
+    // Agarro el select del medicamento, del producto, el boton de eliminar de la carta, y el cambio del stock
     const medSelect = card.querySelector(".medicamento-select");
     const productSelect = card.querySelector(".producto-select");
     const btnEliminar = card.querySelector(".btn-eliminar-card");
+    const cantidadInput = card.querySelector("[name*='cantidad_medicamento']");
 
     // Si el select del medicamento cambia
     medSelect.addEventListener("change", async function () {
@@ -507,6 +520,9 @@ function configurarEventosCard(card) {
         card.remove();
         reordenar();
     });
+
+    // Verifica duplicados recien cuando cambia la cantidad
+    cantidadInput.addEventListener("blur", () => verificarDuplicados(card));
 }
 
 // Funcion para la reordenacion de las cartas en caso de su eliminacion
@@ -547,4 +563,81 @@ function resetearFormulario() {
         // Creo una card vacía inicial
         crearCard();
     }, 0);
+}
+
+// Funcion para evitar medicamentos/productos duplicados
+function verificarDuplicados(cardActual) {
+
+    // Obtengo los valores de la carta nueva
+    const medicamentoActual = cardActual.querySelector(".medicamento-select").value;
+    const productoActual = cardActual.querySelector(".producto-select").value;
+
+    // Si los datos no estan completos, vuelvo
+    if (!medicamentoActual || !productoActual) return;
+
+    // Agarro la cantidad deseada de la nueva carta
+    const cantidadActualInput = cardActual.querySelector("[name*='cantidad_medicamento']");
+    const cantidadActual = parseInt(cantidadActualInput.value) || 0;
+
+    // Recorro todas las cards
+    const cards = document.querySelectorAll("#cardsContainer .col-md-6");
+    cards.forEach(card => {
+
+        // Si la carta es la actual, vuelvo
+        if (card === cardActual) return;
+
+        // Sino, agarro el producto y medicamento de la carta sobre la cual estoy
+        const medicamento = card.querySelector(".medicamento-select").value;
+        const producto = card.querySelector(".producto-select").value;
+
+        // Si el medicamento y el producto son iguales que la de la carta actual
+        if (
+            medicamento === medicamentoActual &&
+            producto === productoActual
+        ) {
+
+            // Sumo las cantidades a pedir
+            const cantidadExistenteInput =
+                card.querySelector("[name*='cantidad_medicamento']");
+
+            const cantidadExistente =
+                parseInt(cantidadExistenteInput.value) || 0;
+
+            cantidadExistenteInput.value =
+                cantidadExistente + cantidadActual;
+
+            // Agarro la carta vieja
+            const cardVisual = card.querySelector(".card"); 
+            // Le agrego la clase css de "card-destacada" para resaltar la carta vieja
+            cardVisual.classList.add("card-destacada");
+
+            // Elimino la card repetida (la actual)
+            cardActual.remove();
+
+            // Reordeno
+            reordenar();
+
+            // Espero un toque para que el DOM se actualice
+            setTimeout(() => {
+
+                // Le hago un scroll hasta la carta vieja
+                cardVisual.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }, 100);
+
+            // Quito el resaltado despues de un tiempo
+            setTimeout(() => {
+                cardVisual.classList.remove("card-destacada");
+            }, 2500);
+
+            // Muestro el toast
+            mostrarToast("Se combinaron los detalles repetidos");
+
+            // Corto el recorrido
+            return;
+        }
+    });
 }
