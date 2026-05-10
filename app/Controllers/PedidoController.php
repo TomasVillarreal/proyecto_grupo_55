@@ -35,7 +35,7 @@ class PedidoController extends BaseController
     }
 
     /*Metodo que carga los datos a la vista de la lista de pedidos, y para el filtrado en caso de que se desee*/
-    public function listaPedidos(): string
+    public function mostrarListaPedidos(): string
     {
         /* agarro los datos de los filtros que vienen en la query string (si es que viene por ajax)
          en caso contrario les coloco un 0 (el 0 actua como el valor default).
@@ -71,7 +71,7 @@ class PedidoController extends BaseController
         ]);
     }
 
-    public function detallePedido(int $idPedido) : string
+    public function mostrarDetallesPedidos(int $idPedido) : string
     {
         $pedido = $this->pedidoService->obtenerPedidoEspecifico($idPedido);
         $detalles_pedido = $this->detalleService->obtenerDetallesPedido($idPedido);
@@ -85,7 +85,7 @@ class PedidoController extends BaseController
         ]);
     }
 
-    public function aprobar()
+    public function aprobarPedido()
     {
         try {
             $idPedido = $this->request->getPost('idPedido');
@@ -99,7 +99,7 @@ class PedidoController extends BaseController
         }
     }
 
-    public function rechazar()
+    public function rechazarPedido()
     {
         try {
             $idPedido = $this->request->getPost('idPedido');
@@ -114,7 +114,7 @@ class PedidoController extends BaseController
         }
     }
 
-    public function crearPedido() : string
+    public function mostrarCreacionPedidos() : string
     {
         $servicios = $this->servicioService->obtenerServiciosDropdown();
         $proveedores = $this->proveedorService->obtenerProveedoresDropdown();
