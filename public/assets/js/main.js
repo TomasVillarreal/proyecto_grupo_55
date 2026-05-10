@@ -350,5 +350,291 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(err => console.error("Error:", err));
     }
-
 });
+
+
+
+
+// Cantidad maxima de detalles que habra por pedido
+const MAX_DETALLES = 10;
+// Contador que se ira actualizando en base a las cartas
+let contadorDetalles = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Si el boton para agregar multiples cartas se clickea, llamo a la funcion esa
+    document.getElementById("crearMultiplesCards")
+        .addEventListener("click", crearMultiplesCards);
+
+    // Si el boton para agregar una unica carta se clickea, llamo a la funcion esa
+    document.getElementById("crearCardIndividual")
+        .addEventListener("click", crearCard);
+
+    
+    document.getElementById("crearPedidoForm")
+        .addEventListener("reset", resetearFormulario);
+
+    // Creo una siempre
+    crearCard();
+});
+
+// Metodo para crear una alerta del limite
+function mostrarAlerta() {
+    document.getElementById("alertaLimite").classList.remove("d-none");
+}
+
+// Metodo para ocultar la alerta del limite
+function ocultarAlerta() {
+    document.getElementById("alertaLimite").classList.add("d-none");
+}
+
+// Metodo para mostrar la alerta toast del html
+function mostrarToast() {
+    // Agarra el elemento toast
+    const toastElement = document.getElementById("toastDuplicado");
+
+    // Creo el toast
+    const toast = new bootstrap.Toast(toastElement);
+
+    // Lo muestra
+    toast.show();
+}
+
+// Metodo que actualiza la vista en caso de que se haya alcanzado el limite de detalles
+function actualizarVistaLimitesAlcanzados() {
+    const disabled = contadorDetalles >= MAX_DETALLES;
+
+    // Activo o desactivo los botones en base a la cantidad de detalles que hay
+    document.getElementById("crearCardIndividual").disabled = disabled;
+    document.getElementById("crearMultiplesCards").disabled = disabled;
+
+    // Muestro o desactivo la alerta de limite en base a la cantidad de detalles
+    if (disabled) mostrarAlerta();
+    else ocultarAlerta();
+}
+
+// Metodo para crear multiples cartas
+function crearMultiplesCards() {
+
+    // Agarro el valor del input que establece cuantos detalles se desea crear de una
+    const cantidadInput = document.getElementById("cantidadCards");
+    let cantidad = parseInt(cantidadInput.value);
+
+    // Si el valor es null, o menor a uno, no creo nada
+    if (isNaN(cantidad) || cantidad < 1) return;
+
+    // Calculo la cantidad de detalles que puedo crear
+    const disponibles = MAX_DETALLES - contadorDetalles;
+
+
+    // Si la cantidad a crear es mayor que los disponibles, ajusto esta cantidad para crear unicamente los detalles que puedo
+    if (cantidad > disponibles) {
+        cantidad = disponibles;
+    }
+
+    // Creo las cartas
+    for (let i = 0; i < cantidad; i++) {
+        crearCard();
+    }
+
+    // limpio el input de cantidad de cartas
+    cantidadInput.value = "";
+
+    actualizarVistaLimitesAlcanzados();
+}
+
+// Funcion para crear una carta individual
+function crearCard() {
+    // Sumo uno al contador de detalles 
+    contadorDetalles++;
+
+    // Agarro el template establecido en el html de las cartas y lo clono
+    const template = document.getElementById("detalleCardTemplate");
+    const clone = template.content.cloneNode(true);
+
+    // Agarro al contenedor donde estan las cartas
+    const wrapper = clone.querySelector(".col-md-6");
+
+    // Sustituyo los atributos que posee el template por el valor de la carta
+    wrapper.innerHTML = wrapper.innerHTML.replace(/INDEX/g, contadorDetalles);
+
+    // Actualizo el numero de la carta que es visible
+    wrapper.querySelector(".detalleNumero").textContent = contadorDetalles;
+
+    // Agrego la carta
+    document.getElementById("cardsContainer").appendChild(wrapper);
+
+    // Agrego las funcionalidades a la carta
+    configurarEventosCard(wrapper);
+
+    actualizarVistaLimitesAlcanzados();
+}
+
+function configurarEventosCard(card) {
+
+    // Agarro el select del medicamento, del producto, el boton de eliminar de la carta, y el cambio del stock
+    const medSelect = card.querySelector(".medicamento-select");
+    const productSelect = card.querySelector(".producto-select");
+    const btnEliminar = card.querySelector(".btn-eliminar-card");
+    const cantidadInput = card.querySelector("[name*='cantidad_medicamento']");
+
+    // Si el select del medicamento cambia
+    medSelect.addEventListener("change", async function () {
+        // Agarro el id del medicamento seleccionado
+        const id = this.value;
+        // Si no se agarra nada, vuelvo para atras
+        if (!id) return;
+
+        // Pongo temporalmente la opcion de "Cargando" en el select del producto y lo desabilito
+        productSelect.innerHTML = `<option>Cargando...</option>`;
+        productSelect.disabled = true;
+        // De ahi pruebo el fetch
+        try {
+            // Hago un pedido al backend para obtener los productos de ese medicamento y espero su respuesta
+            const res = await fetch(`${BASE_URL}medicamentos/productos/${id}`);
+            const productos = await res.json();
+
+            // Agrego la opcion placeholder del select 
+            productSelect.innerHTML = `<option disabled selected>Seleccione...</option>`;
+
+            // Voy agregando las opciones del producto farmaceutico
+            productos.forEach(p => {
+                const opt = document.createElement("option");
+                opt.value = p.id_producto;
+                opt.textContent = `${p.nombre_tipo_producto} - ${p.dosis_producto} ${p.nombre_medida}`;
+                productSelect.appendChild(opt);
+            });
+
+            // Habilito la seleccion de los productos
+            productSelect.disabled = false;
+
+        } catch {
+            productSelect.innerHTML = `<option>Error</option>`;
+        }
+    });
+
+    // Si se elimina una carta, la elimino y reordeno las restantes
+    btnEliminar.addEventListener("click", () => {
+        card.remove();
+        reordenar();
+    });
+
+    // Verifica duplicados recien cuando cambia la cantidad
+    cantidadInput.addEventListener("blur", () => verificarDuplicados(card));
+}
+
+// Funcion para la reordenacion de las cartas en caso de su eliminacion
+function reordenar() {
+    // Agarro el div que posee todas las cartas
+    const cards = document.querySelectorAll("#cardsContainer .col-md-6");
+
+    // Voy recorriendo una a una las cartas
+    cards.forEach((card, i) => {
+        // Creo un valor nuevo
+        const n = i + 1;
+        // Asigno ese valor al numero visible, y lo agrego como id invisible de la carta
+        card.querySelector(".detalleNumero").textContent = n;
+
+        /* Busca todos los inputs cuyo atributo name empieza con `detalles` y corrijo sus nombres.  
+        Ejemplo: si antes era detalles[3][campo], lo reemplaza por detalles[1][campo] segun la nueva posicion.*/
+        card.querySelectorAll("[name^='detalles']").forEach(input => {
+            input.name = input.name.replace(/detalles\[\d+\]/, `detalles[${n}]`);
+        });
+    });
+
+    contadorDetalles = cards.length;
+    actualizarVistaLimitesAlcanzados();
+}
+
+// Metodo para borrar todas las cartas, en caso de que se apriete el boton de reset
+function resetearFormulario() {
+    setTimeout(() => {
+        // Borro todas las cards
+        document.getElementById("cardsContainer").innerHTML = "";
+        // Reinicio el contador de cartas
+        contadorDetalles = 0;
+        // En caso de haber estado activada, oculto la alerta de limite de cartas
+        ocultarAlerta();
+        // Reactivo los controles, por las dudas, en caso de que hayan estado desactivados
+        actualizarVistaLimitesAlcanzados();
+        // Creo una card vacía inicial
+        crearCard();
+    }, 0);
+}
+
+// Funcion para evitar medicamentos/productos duplicados
+function verificarDuplicados(cardActual) {
+
+    // Obtengo los valores de la carta nueva
+    const medicamentoActual = cardActual.querySelector(".medicamento-select").value;
+    const productoActual = cardActual.querySelector(".producto-select").value;
+
+    // Si los datos no estan completos, vuelvo
+    if (!medicamentoActual || !productoActual) return;
+
+    // Agarro la cantidad deseada de la nueva carta
+    const cantidadActualInput = cardActual.querySelector("[name*='cantidad_medicamento']");
+    const cantidadActual = parseInt(cantidadActualInput.value) || 0;
+
+    // Recorro todas las cards
+    const cards = document.querySelectorAll("#cardsContainer .col-md-6");
+    cards.forEach(card => {
+
+        // Si la carta es la actual, vuelvo
+        if (card === cardActual) return;
+
+        // Sino, agarro el producto y medicamento de la carta sobre la cual estoy
+        const medicamento = card.querySelector(".medicamento-select").value;
+        const producto = card.querySelector(".producto-select").value;
+
+        // Si el medicamento y el producto son iguales que la de la carta actual
+        if (
+            medicamento === medicamentoActual &&
+            producto === productoActual
+        ) {
+
+            // Sumo las cantidades a pedir
+            const cantidadExistenteInput =
+                card.querySelector("[name*='cantidad_medicamento']");
+
+            const cantidadExistente =
+                parseInt(cantidadExistenteInput.value) || 0;
+
+            cantidadExistenteInput.value =
+                cantidadExistente + cantidadActual;
+
+            // Agarro la carta vieja
+            const cardVisual = card.querySelector(".card"); 
+            // Le agrego la clase css de "card-destacada" para resaltar la carta vieja
+            cardVisual.classList.add("card-destacada");
+
+            // Elimino la card repetida (la actual)
+            cardActual.remove();
+
+            // Reordeno
+            reordenar();
+
+            // Espero un toque para que el DOM se actualice
+            setTimeout(() => {
+
+                // Le hago un scroll hasta la carta vieja
+                cardVisual.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }, 100);
+
+            // Quito el resaltado despues de un tiempo
+            setTimeout(() => {
+                cardVisual.classList.remove("card-destacada");
+            }, 2500);
+
+            // Muestro el toast
+            mostrarToast("Se combinaron los detalles repetidos");
+
+            // Corto el recorrido
+            return;
+        }
+    });
+}

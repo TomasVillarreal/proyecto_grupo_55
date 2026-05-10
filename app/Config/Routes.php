@@ -14,6 +14,7 @@ $routes->get(
     'MedicamentosController::productosPorMedicamento/$1'
 );
 $routes->get('/listaPedidos', 'PedidoController::listaPedidos');
+$routes->get('/crearPedido', 'PedidoController::crearPedido');
 $routes->get('/pedido/(:num)', 'PedidoController::detallePedido/$1');
 
 //POST
@@ -21,6 +22,7 @@ $routes->post('medicamentos/alta', 'MedicamentosController::altaMedicamento');//
 $routes->post('medicamentos/modificacion','MedicamentosController::modificacionMedicamento');//Ruta con el POST para la modificacion de medicamentos y/o productos farm.
 $routes->post('pedidos/aprobar', 'PedidoController::aprobar');
 $routes->post('pedidos/rechazar', 'PedidoController::rechazar');
+$routes->post('pedidos/crearPedido', 'PedidoController::guardarDatosPedido');
 //Rutas para las eliminaciones
 $routes->post('productos/delete/(:num)', 'ProductoFarmaceuticoController::bajaProducto/$1');
 $routes->post('medicamentos/delete/(:num)', 'MedicamentosController::bajaMedicamento/$1');
