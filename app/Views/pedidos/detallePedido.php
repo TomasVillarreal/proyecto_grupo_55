@@ -89,7 +89,7 @@ $esAprobado  = $estado === 'Aprobado';
 
         <div class="card-body">
 
-            <?php foreach ($detalles as $d): ?>
+            <?php foreach ($detalles_pedido as $d): ?>
                 <div class="border rounded p-3 mb-3">
 
                     <div class="row align-items-center">
