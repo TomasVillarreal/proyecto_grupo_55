@@ -460,8 +460,6 @@ function crearCard() {
 
     // Actualizo el numero de la carta que es visible
     wrapper.querySelector(".detalleNumero").textContent = contadorDetalles;
-    // Guardo el numero de la carta en un valor invisible
-    wrapper.querySelector(".detalleId").value = contadorDetalles;
 
     // Agrego la carta
     document.getElementById("cardsContainer").appendChild(wrapper);
@@ -536,7 +534,6 @@ function reordenar() {
         const n = i + 1;
         // Asigno ese valor al numero visible, y lo agrego como id invisible de la carta
         card.querySelector(".detalleNumero").textContent = n;
-        card.querySelector(".detalleId").value = n;
 
         /* Busca todos los inputs cuyo atributo name empieza con `detalles` y corrijo sus nombres.  
         Ejemplo: si antes era detalles[3][campo], lo reemplaza por detalles[1][campo] segun la nueva posicion.*/

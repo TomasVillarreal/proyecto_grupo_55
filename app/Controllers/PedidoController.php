@@ -129,4 +129,17 @@ class PedidoController extends BaseController
             ])
         ]);
     }
+
+    public function guardarDatosPedido()
+    {
+        // Datos generales
+        $idServicio = $this->request->getPost('id_servicio_medico');
+        $fecha = $this->request->getPost('fecha_solicitud_pedido');
+        $comentario = $this->request->getPost('comentario_pedido');
+
+        // Detalles
+        $detalles = $this->request->getPost('detalles');
+
+        dd($detalles);
+    }
 }

@@ -1,6 +1,6 @@
 <div class="container py-5" style="max-width: 1100px;">
 
-    <form id="crearPedidoForm" method="POST" action="<?= base_url('pedidos/guardar') ?>">
+    <form id="crearPedidoForm" method="POST" action="<?= base_url('pedidos/crearPedido') ?>">
 
         <input type="hidden" name="fecha_solicitud_pedido" value="<?= date('Y-m-d') ?>">
 
@@ -135,8 +135,6 @@
             </div>
 
             <div class="card-body p-3">
-
-                <input type="hidden" name="detalles[INDEX][id]" class="detalleId" value="INDEX">
 
                 <div class="mb-3">
                     <label class="form-label small fw-semibold">Medicamento</label>
