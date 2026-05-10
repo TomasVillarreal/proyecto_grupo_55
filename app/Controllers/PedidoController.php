@@ -34,33 +34,30 @@ class PedidoController extends BaseController
         $this->productoService = new ProductoFarmaceuticoService();
     }
 
-    /*Metodo que carga los datos a la vista de la lista de pedidos, y para el filtrado en caso de que se desee*/
-    public function mostrarListaPedidos(): string
+    // Metodo que obtiene todos los pedidos filtrados
+    private function obtenerPedidosFiltrados() : array
     {
         /* agarro los datos de los filtros que vienen en la query string (si es que viene por ajax)
          en caso contrario les coloco un 0 (el 0 actua como el valor default).
          agarro tambien el orden de la tabla segun la fecha*/
-
-        $idEstado = $this->request->getGet('idEstado') ?? 0;
-        $idServicio = $this->request->getGet('idServicio') ?? 0;
-        $orden = $this->request->getGet('orden') ?? 'ASC';
+        $idEstado = (int) ($this->request->getGet('idEstado') ?? 0);
+        $idServicio = (int) ($this->request->getGet('idServicio') ?? 0);
+        $orden = strtoupper($this->request->getGet('orden') ?? 'ASC');
 
         // validacion para que el orden solo pueda ser ASC o DESC, y no cualquier otra cosa
-        $orden = strtoupper($orden) === 'DESC' ? 'DESC' : 'ASC';
+        $orden = in_array($orden, ['ASC', 'DESC']) ? $orden : 'ASC';
 
-        // cargo los pedidos a mandar
-        $pedidos = $this->pedidoService->obtenerPedidos((int)$idEstado, (int)$idServicio, $orden);
+        // devuelvo los pedidos
+        return $this->pedidoService->obtenerPedidos($idEstado, $idServicio, $orden);
+    }
 
-        // aca me pregunto si la request viene del navegador o del ajax
-        if ($this->request->isAJAX()) {
-            // si la request viene del ajax (lo sabemos por el header), solo mando la tabla actualizada 
-            return view('pedidos/_tabla', ['pedidos' => $pedidos]);
-        }
-
+    //Metodo que carga la vista de la lista de pedidos
+    public function mostrarListaPedidos(): string
+    {
         $estados = $this->estadoService->obtenerEstadosDropdown();
         $servicios = $this->servicioService->obtenerServiciosDropdown();
+        $pedidos = $this->obtenerPedidosFiltrados();
 
-        // si vino por aca, la request viene del navegador y cargo toda la pagina
         return view('layout/main_layout', [
             'title' => 'Lista de Pedidos - Clinicks',
             'content' => view('pedidos/lista', [
@@ -69,6 +66,13 @@ class PedidoController extends BaseController
                 'servicios' => $servicios
             ])
         ]);
+    }
+
+    // Metodo que se llamara para mostrar la lista de pedidos filtrada
+    public function mostrarListaFiltrada(): string
+    {
+        $pedidos = $this->obtenerPedidosFiltrados();
+        return view('pedidos/_tabla', ['pedidos' => $pedidos]);
     }
 
     public function mostrarDetallesPedidos(int $idPedido) : string

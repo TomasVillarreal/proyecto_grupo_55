@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // en el fetch se hace lo siguiente:
         // 1- envia una request get con los filtros y le coloca el header:  "X-Requested-With": "XMLHttpRequest"
-        fetch(`${BASE_URL}/listaPedidos/?idEstado=${estado}&idServicio=${servicio}&orden=${ordenFecha}`, {
+        fetch(`${BASE_URL}/filtrarPedidos/?idEstado=${estado}&idServicio=${servicio}&orden=${ordenFecha}`, {
             headers: {
                 "X-Requested-With": "XMLHttpRequest"
             }
