@@ -114,14 +114,14 @@ class PedidoController extends BaseController
     // Metodo que maneja la aceptacion de un pedido
     public function manejarAceptacion()
     {
-        $id = $this->request->getPost('idPedido');
+        $id = (int) $this->request->getPost('idPedido');
         return $this->ejecutarAccionPedido(fn() => $this->pedidoService->aprobar((int)$id));
     }
 
     // Metodo que maneja el rechazo de un pedido
     public function manejarRechazo()
     {
-        $id = $this->request->getPost('idPedido');
+        $id = (int) $this->request->getPost('idPedido');
         $motivo = trim($this->request->getPost('motivo_rechazo')) ?: '-';
         return $this->ejecutarAccionPedido(fn() => $this->pedidoService->rechazar((int)$id, $motivo));
     }
