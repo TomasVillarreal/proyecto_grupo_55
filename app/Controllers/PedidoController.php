@@ -85,11 +85,11 @@ class PedidoController extends BaseController
         ]);
     }
 
-    public function aprobarPedido()
+    public function manejarAceptacion()
     {
         try {
             $idPedido = $this->request->getPost('idPedido');
-            $this->pedidoService->aprobarPedido((int)$idPedido);
+            $this->pedidoService->aprobar((int)$idPedido);
             return redirect()->back();       
         } catch (\InvalidArgumentException $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -99,12 +99,12 @@ class PedidoController extends BaseController
         }
     }
 
-    public function rechazarPedido()
+    public function manejarRechazo()
     {
         try {
             $idPedido = $this->request->getPost('idPedido');
             $mensaje_rechazo = trim($this->request->getPost('motivo_rechazo')) ?: '-';
-            $this->pedidoService->rechazarPedido((int)$idPedido, $mensaje_rechazo);
+            $this->pedidoService->rechazar((int)$idPedido, $mensaje_rechazo);
             return redirect()->back();       
         } catch (\InvalidArgumentException $e) {
             return redirect()->back()->with('error', $e->getMessage());
