@@ -45,7 +45,7 @@ class MedicamentoService
     Retorna el ID del nuevo medicamento o lanza un exception*/
     public function crearMedicamento(string $nombreMedicamento): int
     {
-        //Primero se valida el formato usando el método anterior
+        //Primero se valida el formato usando el método anterior (osea validar nombrMedicamento)
         $validacion = $this->validarNombreMedicamento($nombreMedicamento);
         if($validacion !== true){
             throw new \InvalidArgumentException($validacion);//Si hay un error muestra los errores formateados del metodo
@@ -54,7 +54,7 @@ class MedicamentoService
         //Buscamos que exista el medicamento (no importa si está activo o no aún)
         $medicamentoNuevo= $this->medicamentoModel->where('nombre_medicamento', $nombreMedicamento)->first();
 
-        //Verificamos si el medicamento está activo, en caso de que si, lanza un error
+        //Verificamos si el medicamento nuevo está activo, en caso de que si, lanza un error
         if ($medicamentoNuevo) {
             if ($medicamentoNuevo->activo_medicamento == 1) {
                 throw new \InvalidArgumentException("Ya existe un medicamento activo con ese nombre.");
@@ -66,14 +66,15 @@ class MedicamentoService
         }
 
         //Si es un medicamento nuevo, se lo crea
-        $id = $this->medicamentoModel->insert(['nombre_medicamento' => $nombreMedicamento]);
+        $idNuevo = $this->medicamentoModel->insert(['nombre_medicamento' => $nombreMedicamento]);
 
         //Manejo de errores
-        if(!$id){
+        if(!$idNuevo){
             throw new \RuntimeException('No se pudo crear el medicamento');
         }
 
-        return (int) $id;
+        //Retorna el id del nuevo medicamento creado
+        return (int) $idNuevo;
     }
 
     /*Se crea un metodo que se utilizara para editar un medicamento (el nombre), siempre y cuando cumpla,
