@@ -108,13 +108,32 @@ class ProductoFarmaceuticoService
     cumple con las validaciones. Retorna el id del nuevo producto*/
     public function crearProducto(array $data): int
     {
-        
+        //Se busca primero si el producto ya existe (activo o inactivo da igual)
+        $productoExistente = $this->productoModel
+            ->where('id_medicamento', (int) $data['id_medicamento'])
+            ->where('id_tipo_producto', (int) $data['id_tipo_producto'])
+            ->where('id_medida_producto', (int) $data['id_medida_producto'])
+            ->where('dosis_producto', $data['dosis_producto'])
+            ->first();
+
+        //Si el producto existe y está activo, lanza un error
+        if ($productoExistente && $productoExistente->activo_producto == 1) {
+            throw new \InvalidArgumentException("Producto farmaceutico ya ingresado!");
+        }
+
+        //Si el producto existe pero está inactivo, se reactiva
+        if ($productoExistente && $productoExistente->activo_producto == 0) {
+            $this->productoModel->update($productoExistente->id_producto,['activo_producto' => 1]);
+            return (int) $productoExistente->id_producto;
+        }
+
+        //Manejo de errores como ya se vió en otros procedimientos
         $errors = $this->validarProductoFarmaceutico($data);
         if (!empty($errors)) {
             throw new \InvalidArgumentException(implode(' ', $errors));//Transforma el array en texto formato JSON
         }
 
-        //Se inserta el nuevo producto farmaceutico
+        //Si no hay error de unicidad, es porque el producto es nuevo, por lo que se inserta el nuevo producto farmaceutico
         $insertData = [
             'id_medicamento' => (int) $data['id_medicamento'],
             'id_tipo_producto' => (int) $data['id_tipo_producto'],
@@ -135,7 +154,7 @@ class ProductoFarmaceuticoService
         //Retorna el nuevo id
         return $id;
     }
-
+    
     //Se crea un metodo que recibe los datos del POST para la creacion de un medicamento, a través de su servicio
     //y luego crea el producto a través de su propio servicio.
     public function crearProductoCompleto(int|string $idMedicamentoPost, ?string $nombreMedicamentoPost, array $productoDataPost)
