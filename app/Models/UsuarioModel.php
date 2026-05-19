@@ -17,7 +17,7 @@ class UsuarioModel extends Model{
     También puede ser utilizada posteriormente para mostrar la información de usuarios
     que hayan realizado pedidos y aún estén registrados en el sistema (activos).
     */
-    public function obtenerInfoUsuario(int $id): array
+    public function obtenerInfoUsuario(string $email): array
     {
         $builder = $this->db->table('Usuario u');//Consulta a la BD.
         $builder->select(
@@ -25,9 +25,8 @@ class UsuarioModel extends Model{
             CONCAT (u.apellido_usuario, + ,u.nombre_usuario) AS nombre_completo,
             u.email_usuario, r.id_rol, r.nombre_rol');
         $builder->join('Rol r', 'r.id_rol = u.id_rol');//Se hace el JOIN con la tabla Rol para obtener el id del tipo de rol.
-        $builder->where('u.id_usuario', $id);//Se filtra por el ID del usuario.
+        $builder->where('u.email_usuario', $email);//Se filtra por el email del usuario.
         $builder->where('u.activo_usuario', 1);//Se filtra por usuarios activos.
-        //No se si vamos a buscar a los usuarios por su nombre completo, dni, email o que. Le dejo ID como default
 
         //Se obtienen los usuarios activos y su información
         return $builder->get()->getResult();
