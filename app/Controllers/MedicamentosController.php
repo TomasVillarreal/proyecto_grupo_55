@@ -26,7 +26,7 @@ class MedicamentosController extends BaseController
     }
 
     /*Metodo que carga los datos a la vista de la creacion de los medicamentos*/
-    public function create(): string
+    public function vista_alta_medicamentos(): string
     {
         $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
         $unidadMedida = $this->unidadesMedidaService->obtenerMedidaDropdown();
@@ -34,7 +34,7 @@ class MedicamentosController extends BaseController
 
         return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/create', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
+            'content' => view('medicamentos/creacion_medicamento', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
         ]);
     }
 
@@ -45,63 +45,35 @@ class MedicamentosController extends BaseController
     en la bd.*/
     public function altaMedicamento()
     {
-            $db = \Config\Database::connect();//Se hace la conexión a la bd.
-            $db->transBegin();//Para iniciar la transacción
+        //Tomamos daots del medicamento (del post)
+        $idMedicamentoPost= $this->request->getPost('id_medicamento');//Asigna a esa variable el id del medicamento del post
+        $nombreMedicamentoPost = $this->request->getPost('nombre_medicamento');//Asigna a esa variable el nombre del medicamento del post
 
-        try {
-            //Tomamos daots del medicamento (del post)
-            $idMedicamentoPost= $this->request->getPost('id_medicamento');//Asigna a esa variable el id del medicamento del post
-            $nombreMedicamentoPost = $this->request->getPost('nombre_medicamento');//Asigna a esa variable el nombre del medicamento del post
+        //Tomamos datos del producto farmaceutico (del post)
+        $productoDataPost = [
+            'id_medicamento' => null,
+            'id_tipo_producto' => (int) $this->request->getPost('id_tipo_producto'),
+            'id_medida_producto' => (int) $this->request->getPost('id_medida_producto'),
+            'dosis_producto' => $this->request->getPost('dosis_producto'),
+            'descripcion_producto' => $this->request->getPost('descripcion_producto') ?: null,
+        ];
 
-            //Tomamos datos del producto farmaceutico (del post)
-            $productoData = [
-                'id_medicamento' => null,
-                'id_tipo_producto' => (int) $this->request->getPost('id_tipo_producto'),
-                'id_medida_producto' => (int) $this->request->getPost('id_medida_producto'),
-                'dosis_producto' => $this->request->getPost('dosis_producto'),
-                'descripcion_producto' => $this->request->getPost('descripcion_producto') ?: null,
-            ];
+        try{
+            //Se llama al servicio encargado de la creacion del nuevo producto
+            $this->productoFarmaceuticoService->crearProductoCompleto($idMedicamentoPost,$nombreMedicamentoPost,$productoDataPost);
 
-            //Se determina mediante un if (a modo de filtro) si el ID del medicamento es nuevo o es para un nuevo producto farmaceutico.
-            if($idMedicamentoPost === 'new'){//Verifica si lo que recibe del post es un nuevo id de medicamento
-                if(empty($nombreMedicamentoPost)){
-                    throw new \Exception("Debe ingresar el nombre del medicamento");
-                }
-                
-                $idMedicamento = $this->medicamentoService->crearMedicamento($nombreMedicamentoPost);//Se crea un nuevo medicamento haciendo uso del service de medicamento.
-
-            } else {//El medicamento no es nuevo si no que fue seleccionado del dropdown
-                $idMedicamento = (int) $idMedicamentoPost;
-
-                //Se verifica que el medicamento esté activo
-                $medicamentoModel = model('App\Models\MedicamentoModel');
-                $medicamentoActivo = $medicamentoModel->find($idMedicamento);
-                if(!$medicamentoActivo || !$medicamentoActivo->activo_medicamento){//Verifica si existe en la bd y/o si esta activo
-                    throw new \InvalidArgumentException('El medicamento seleccionado no es válido o está inactivo.');
-                }
-            }
-
-            //Se crea el producto farmaceutico
-            $productoData['id_medicamento'] = $idMedicamento;
-            $idProducto = $this->productoFarmaceuticoService->crearProducto($productoData);
-
-            $db->transCommit(); //Si todo salió bien, se confirma la transacción
-            
             return redirect()->to('/')->with('success', 'Medicamento y/o producto creados correctamente.');//Si todo es un éxito.
-
-        //Manejo de errores de los posibles rollbacks en caso de fallas.
-        } catch (\InvalidArgumentException $e) {
-            $db->transRollback(); //Revierte todos los cambios si hay error de validación
-            return redirect()->back()->withInput()->with('error', $e->getMessage());
-        } catch (\Exception $e) {
-            $db->transRollback(); //Revierte todos los cambios si hay error inesperado
-            log_message('error', '[altaMedicamento] ' . $e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Ocurrió un error. Producto farmaceutico ya ingresado!');
+            //Manejo de errores de los posibles rollbacks en caso de fallas.
+            } catch (\InvalidArgumentException $e) {
+                return redirect()->back()->withInput()->with('error', $e->getMessage());
+            } catch (\Exception $e) {
+                log_message('error', '[altaMedicamento] ' . $e->getMessage());
+                return redirect()->back()->withInput()->with('error', 'Ocurrió un error. Producto farmaceutico ya ingresado!');
+            }
         }
-    }
 
     /*Metodo que carga los datos a la vista de la modificacion de los medicamentos*/
-    public function update(): string
+    public function vista_modificacion_medicamento(): string
     {
         $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
         $unidadMedida = $this->unidadesMedidaService->obtenerMedidaDropdown();
@@ -109,7 +81,7 @@ class MedicamentosController extends BaseController
 
             return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/update', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
+            'content' => view('medicamentos/modificacion_medicamento', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
         ]);
     }
 
@@ -167,7 +139,7 @@ class MedicamentosController extends BaseController
                 return redirect()->back()->with('info', 'No se realizaron cambios.');
             }
 
-            return redirect()->to('/update')->with('success', 'Modificación realizada correctamente');
+            return redirect()->to('/modificacion_medicamento')->with('success', 'Modificación realizada correctamente');
 
         } catch (\Exception $e) {
             $db->transRollback();
@@ -187,13 +159,13 @@ class MedicamentosController extends BaseController
     }
 
     /*Metodo que carga los datos a la vista de la eliminacion de los medicamentos*/
-    public function delete(): string
+    public function vista_baja_medicamento(): string
     {
         $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
 
             return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/delete', ['medicamentos'=>$medicamentos])
+            'content' => view('medicamentos/eliminacion_medicamento', ['medicamentos'=>$medicamentos])
         ]);
     }
 

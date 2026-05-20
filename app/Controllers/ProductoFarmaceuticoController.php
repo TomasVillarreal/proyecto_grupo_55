@@ -21,9 +21,9 @@ class ProductoFarmaceuticoController extends BaseController
     {
         try {
 
-        $this->productoService->eliminarProducto((int)$idProducto);
+            $this->productoService->eliminarProducto((int)$idProducto);
 
-        return redirect()->back()->with('success', 'Producto eliminado correctamente.');
+            return redirect()->back()->with('success', 'Producto eliminado correctamente.');
 
         } catch (\InvalidArgumentException $e) {
             return redirect()->back()->with('error', $e->getMessage());

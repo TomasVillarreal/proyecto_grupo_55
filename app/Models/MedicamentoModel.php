@@ -40,10 +40,4 @@ class MedicamentoModel extends Model
         /*Booleano que verifica las coincidencias de lo solicitado en esta funcion y lo que hay en la BD
         En caso de devolver true indica que el nombre ya está ocupado, caso contrario con false.*/
     }
-
-        //Se crea un método para la eliminación (baja lógica de los medicamentos)
-    public function eliminarMedicamento(int $id): bool //Se especifica el tipo de dato que se busca que retorne
-    {
-        return $this->update($id, ['activo_medicamento' => 0]); //Se realiza la modificación del campo para el id pasado por param.
-    }
 }
