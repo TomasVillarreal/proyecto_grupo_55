@@ -34,99 +34,105 @@ class PedidoController extends BaseController
         $this->productoService = new ProductoFarmaceuticoService();
     }
 
-    /*Metodo que carga los datos a la vista de la lista de pedidos, y para el filtrado en caso de que se desee*/
-    public function listaPedidos(): string
+    // Metodo que obtiene todos los pedidos filtrados
+    private function obtenerPedidosFiltrados() : array
     {
         /* agarro los datos de los filtros que vienen en la query string (si es que viene por ajax)
          en caso contrario les coloco un 0 (el 0 actua como el valor default).
          agarro tambien el orden de la tabla segun la fecha*/
-
-        $idEstado = $this->request->getGet('idEstado') ?? 0;
-        $idServicio = $this->request->getGet('idServicio') ?? 0;
-        $orden = $this->request->getGet('orden') ?? 'ASC';
+        $idEstado = (int) ($this->request->getGet('idEstado') ?? 0);
+        $idServicio = (int) ($this->request->getGet('idServicio') ?? 0);
+        $orden = strtoupper($this->request->getGet('orden') ?? 'ASC');
 
         // validacion para que el orden solo pueda ser ASC o DESC, y no cualquier otra cosa
-        $orden = strtoupper($orden) === 'DESC' ? 'DESC' : 'ASC';
+        $orden = in_array($orden, ['ASC', 'DESC']) ? $orden : 'ASC';
 
-        // cargo los pedidos a mandar
-        $pedidos = $this->pedidoService->obtenerPedidos((int)$idEstado, (int)$idServicio, $orden);
+        // agarro los pedidos
+        $pedidos = $this->pedidoService->obtenerPedidos($idEstado, $idServicio, $orden);
 
-        // aca me pregunto si la request viene del navegador o del ajax
-        if ($this->request->isAJAX()) {
-            // si la request viene del ajax (lo sabemos por el header), solo mando la tabla actualizada 
-            return view('pedidos/_tabla', ['pedidos' => $pedidos]);
-        }
-
-        $estados = $this->estadoService->obtenerEstadosDropdown();
-        $servicios = $this->servicioService->obtenerServiciosDropdown();
-
-        // si vino por aca, la request viene del navegador y cargo toda la pagina
-        return view('layout/main_layout', [
-            'title' => 'Lista de Pedidos - Clinicks',
-            'content' => view('pedidos/lista', [
-                'pedidos' => $pedidos,
-                'estados' => $estados,
-                'servicios' => $servicios
-            ])
-        ]);
+        // devuelvo los pedidos
+        return ['pedidos' => $pedidos];
     }
 
-    public function detallePedido(int $idPedido) : string
+    // Metodo que obtiene todos los datos auxiliares a utilizar en las funciones.
+    private function obtenerDatosAuxiliares(): array
     {
-        $pedido = $this->pedidoService->obtenerPedidoEspecifico($idPedido);
-        $detalles_pedido = $this->detalleService->obtenerDetallesPedido($idPedido);
+        return [
+            'estados' => $this->estadoService->obtenerEstadosDropdown(),
+            'servicios' => $this->servicioService->obtenerServiciosDropdown(),
+            'proveedores' => $this->proveedorService->obtenerProveedoresDropdown(),
+            'medicamentos' => $this->medicamentoService->obtenerMedicamentosDropdown(),
+        ];
+    }
 
+    //Metodo que carga la vista de la lista de pedidos
+    public function mostrarListaPedidos(): string
+    {
+        $data = array_merge($this->obtenerDatosAuxiliares(), $this->obtenerPedidosFiltrados());
         return view('layout/main_layout', [
             'title' => 'Lista de Pedidos - Clinicks',
-            'content' => view('pedidos/detallePedido', [
-                'pedido' => $pedido,
-                'detalles' => $detalles_pedido,
-            ])
+            'content' => view('pedidos/lista', $data)
         ]);
     }
 
-    public function aprobar()
+    // Metodo que se llamara para mostrar la lista de pedidos filtrada
+    public function mostrarListaFiltrada(): string
+    {
+        $data = $this->obtenerPedidosFiltrados();
+        return view('pedidos/_tabla', $data);
+    }
+
+    // Metodo que carga la vista para ver los detalles de un pedido
+    public function mostrarDetallesPedidos(int $idPedido) : string
+    {
+        $data = $this->obtenerDatosAuxiliares();
+        $data['pedido'] = $this->pedidoService->obtenerPedidoEspecifico($idPedido);
+        $data['detalles_pedido'] = $this->detalleService->obtenerDetallesPedido($idPedido);
+
+        return view('layout/main_layout', [
+            'title' => 'Lista de Pedidos - Clinicks',
+            'content' => view('pedidos/detallePedido', $data)
+        ]);
+    }
+
+    /* Metodo descompuesto que abstrae la logica del try catch que tenian previamente
+    las funciones de aceptar y rechazar pedidos.
+    Usa un parametro Callable que permitira la invocacion de la funcion pasada como argumento*/
+    private function ejecutarAccionPedido(callable $accion)
     {
         try {
-            $idPedido = $this->request->getPost('idPedido');
-            $this->pedidoService->aprobarPedido((int)$idPedido);
-            return redirect()->back();       
+            // Llama a la accion del argumento
+            $accion();
+            return redirect()->back();
         } catch (\InvalidArgumentException $e) {
             return redirect()->back()->with('error', $e->getMessage());
-            
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error inesperado.');
         }
     }
 
-    public function rechazar()
+    // Metodo que maneja la aceptacion de un pedido
+    public function manejarAceptacion()
     {
-        try {
-            $idPedido = $this->request->getPost('idPedido');
-            $mensaje_rechazo = trim($this->request->getPost('motivo_rechazo')) ?: '-';
-            $this->pedidoService->rechazarPedido((int)$idPedido, $mensaje_rechazo);
-            return redirect()->back();       
-        } catch (\InvalidArgumentException $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-            
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error inesperado.');
-        }
+        $id = (int) $this->request->getPost('idPedido');
+        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->aprobar((int)$id));
     }
 
-    public function crearPedido() : string
+    // Metodo que maneja el rechazo de un pedido
+    public function manejarRechazo()
     {
-        $servicios = $this->servicioService->obtenerServiciosDropdown();
-        $proveedores = $this->proveedorService->obtenerProveedoresDropdown();
-        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
+        $id = (int) $this->request->getPost('idPedido');
+        $motivo = trim($this->request->getPost('motivo_rechazo')) ?: '-';
+        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->rechazar((int)$id, $motivo));
+    }
 
+    // Metodo que muestra la vista de creacion de pedidos
+    public function mostrarCreacionPedidos() : string
+    {
+        $data = $this->obtenerDatosAuxiliares();
         return view('layout/main_layout', [
             'title' => 'Crear pedido - Clinicks',
-            'content' => view('pedidos/crearPedido', [
-                'servicios' => $servicios,
-                'proveedores' => $proveedores,
-                'medicamentos'=> $medicamentos
-            ])
+            'content' => view('pedidos/crearPedido', $data)
         ]);
     }
 

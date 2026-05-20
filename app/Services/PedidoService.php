@@ -43,14 +43,14 @@ class PedidoService
     }
 
     // Metodo para el rechazo de un pedido, consiste en cambiar el estado del pedido unicamente.
-    public function rechazarPedido(int $idPedido, string $mensajeRechazo): bool
+    public function rechazar(int $idPedido, string $mensajeRechazo): bool
     {
         $pedido = $this->pedidoModel->find($idPedido);
 
         // el estado == 1 corresponde al estado "Pendiente". si no esta en este estado
         // significa que ya fue aceptado o rechazado
         if (!$pedido || $pedido->id_estado_pedido != 1) {
-            throw new \InvalidArgumentException("El producto ya fue rechazado/aceptado.");
+            throw new \InvalidArgumentException("El pedido se encuentra en un estado invalido para su rechazo.");
         }
 
         return $this->pedidoModel->update($idPedido, [
@@ -60,14 +60,14 @@ class PedidoService
     }
 
     // Metodo para la aprobacion de un pedido, consiste en cambiar el estado del pedido unicamente.
-    public function aprobarPedido(int $idPedido): bool
+    public function aprobar(int $idPedido): bool
     {
         $pedido = $this->pedidoModel->find($idPedido);
 
         // el estado == 1 corresponde al estado "Pendiente". si no esta en este estado
         // significa que ya fue aceptado o rechazado
         if (!$pedido || $pedido->id_estado_pedido != 1) {
-            throw new \InvalidArgumentException("El producto ya fue rechazado/aceptado.");
+            throw new \InvalidArgumentException("El pedido se encuentra en un estado invalido para su aprobación.");
         }
 
         return $this->pedidoModel->update($idPedido, [
