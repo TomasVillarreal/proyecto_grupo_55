@@ -25,16 +25,22 @@ class MedicamentosController extends BaseController
         $this->productoFarmaceuticoService = new ProductoFarmaceuticoService();
     }
 
+    public function obtenerDatosAuxiliares(): array
+    {
+        return [
+            'medicamentos'=> $this->medicamentoService->obtenerMedicamentosDropdown(),
+            'unidadesMedida'=> $this->unidadesMedidaService->obtenerMedidaDropdown(),
+            'tiposProducto'=> $this->tiposProductoService->obtenerTiposDropdown()
+        ];
+    }
+
     /*Metodo que carga los datos a la vista de la creacion de los medicamentos*/
     public function vista_alta_medicamentos(): string
     {
-        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
-        $unidadMedida = $this->unidadesMedidaService->obtenerMedidaDropdown();
-        $tiposProducto = $this->tiposProductoService->obtenerTiposDropdown();
-
+        $data = $this->obtenerDatosAuxiliares();
         return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/creacion_medicamento', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
+            'content' => view('medicamentos/creacion_medicamento', $data)
         ]);
     }
 
@@ -75,13 +81,10 @@ class MedicamentosController extends BaseController
     /*Metodo que carga los datos a la vista de la modificacion de los medicamentos*/
     public function vista_modificacion_medicamento(): string
     {
-        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
-        $unidadMedida = $this->unidadesMedidaService->obtenerMedidaDropdown();
-        $tiposProducto = $this->tiposProductoService->obtenerTiposDropdown();
-
-            return view('layout/main_layout', [
+        $data = $this->obtenerDatosAuxiliares();
+        return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/modificacion_medicamento', ['medicamentos'=>$medicamentos, 'unidadesMedida'=>$unidadMedida, 'tiposProducto'=>$tiposProducto])
+            'content' => view('medicamentos/modificacion_medicamento', $data)
         ]);
     }
 
@@ -154,18 +157,16 @@ class MedicamentosController extends BaseController
     public function productosPorMedicamento(int $idMedicamento)
     {
         $productoFarmaceutico = $this->productoFarmaceuticoService->obtenerProductosPorMedicamento($idMedicamento);
-
         return $this->response->setJSON($productoFarmaceutico);
     }
 
     /*Metodo que carga los datos a la vista de la eliminacion de los medicamentos*/
     public function vista_baja_medicamento(): string
     {
-        $medicamentos = $this->medicamentoService->obtenerMedicamentosDropdown();
-
-            return view('layout/main_layout', [
+        $data = $this->obtenerDatosAuxiliares();
+        return view('layout/main_layout', [
             'title' => 'Medicamentos - Clinicks',
-            'content' => view('medicamentos/eliminacion_medicamento', ['medicamentos'=>$medicamentos])
+            'content' => view('medicamentos/eliminacion_medicamento', ['medicamentos' => $data['medicamentos']])
         ]);
     }
 
