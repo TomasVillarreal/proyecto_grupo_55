@@ -87,7 +87,6 @@ class ProductoFarmaceuticoService
             $errors['descripcion_producto'] = $descripcionCheck;
         }
 
-
         //Se valida que el producto entero no tenga duplicados
         if (empty($errors)) {
             if ($this->productoModel->productoFarmaceuticoUnico(
@@ -100,31 +99,51 @@ class ProductoFarmaceuticoService
                 $errors['unique'] = 'Ya existe un producto con la misma combinación de medicamento, dosis, medida y tipo.';
             }
         }
-
         return $errors;
+    }
+
+    private function insertarProductoFarmaceutico(array $data) : int
+    {
+        $id = $this->productoModel->insert($data);
+        
+        //Se maneja un posible error en la inserción
+        if (!$id) {
+            throw new DatabaseException('No se pudo crear el producto.');
+        }
+
+        //Retorna el nuevo id
+        return $id;
+    }
+
+    private function buscarProductoExistente(array $data){
+        //Se busca primero si el producto ya existe (activo o inactivo da igual)
+        return $this->productoModel
+        ->where('id_medicamento', (int) $data['id_medicamento'])
+        ->where('id_tipo_producto', (int) $data['id_tipo_producto'])
+        ->where('id_medida_producto', (int) $data['id_medida_producto'])
+        ->where('dosis_producto', $data['dosis_producto'])
+        ->first();
+    }
+
+    private function reactivarProducto(object $producto) : void
+    {
+        $this->productoModel->update($producto->id_producto,['activo_producto' => 1]);
     }
 
     /*Se crea un método para crear un nuevo producto farmaceutico, teniendo en cuenta que 
     cumple con las validaciones. Retorna el id del nuevo producto*/
     public function crearProducto(array $data): int
     {
-        //Se busca primero si el producto ya existe (activo o inactivo da igual)
-        $productoExistente = $this->productoModel
-            ->where('id_medicamento', (int) $data['id_medicamento'])
-            ->where('id_tipo_producto', (int) $data['id_tipo_producto'])
-            ->where('id_medida_producto', (int) $data['id_medida_producto'])
-            ->where('dosis_producto', $data['dosis_producto'])
-            ->first();
-
+        $productoExistente = $this->buscarProductoExistente($data);
         //Si el producto existe y está activo, lanza un error
-        if ($productoExistente && $productoExistente->activo_producto == 1) {
-            throw new \InvalidArgumentException("Producto farmaceutico ya ingresado!");
-        }
+        if($productoExistente){
+            if($productoExistente->activo_producto == 1){
+                throw new \InvalidArgumentException("Producto farmaceutico ya ingresado!");
+            }else{
+                $this->reactivarProducto($productoExistente);
+                return (int) $productoExistente->id_producto;
+            }
 
-        //Si el producto existe pero está inactivo, se reactiva
-        if ($productoExistente && $productoExistente->activo_producto == 0) {
-            $this->productoModel->update($productoExistente->id_producto,['activo_producto' => 1]);
-            return (int) $productoExistente->id_producto;
         }
 
         //Manejo de errores como ya se vió en otros procedimientos
@@ -144,58 +163,7 @@ class ProductoFarmaceuticoService
         ];
 
         //Se asigna el nuevo id
-        $id = $this->productoModel->insert($insertData);
-        
-        //Se maneja un posible error en la inserción
-        if (!$id) {
-            throw new DatabaseException('No se pudo crear el producto.');
-        }
-
-        //Retorna el nuevo id
-        return $id;
-    }
-    
-    //Se crea un metodo que recibe los datos del POST para la creacion de un medicamento, a través de su servicio
-    //y luego crea el producto a través de su propio servicio.
-    public function crearProductoCompleto(int|string $idMedicamentoPost, ?string $nombreMedicamentoPost, array $productoDataPost)
-    {
-        $db = \Config\Database::connect();//Se crea la conexión con la BD
-        $db->transBegin();//Comienza la transaccion
-
-        try {
-            //Se determina mediante un if (a modo de filtro) si el ID del medicamento es nuevo o es para un nuevo producto farmaceutico.
-            if ($idMedicamentoPost === 'new') {
-                if (empty($nombreMedicamentoPost)) {
-                    throw new \InvalidArgumentException("Debe ingresar el nombre del medicamento");
-                }
-
-                //Llamamos al servicio ed medicamento para la creacion del mismo
-                $idMedicamentoNuevo = $this->medicamentoService->crearMedicamento($nombreMedicamentoPost);
-
-            } else {
-                $idMedicamentoNuevo = (int) $idMedicamentoPost;//El medicamento no es nuevo si no que fue seleccionado del dropdown
-                $this->validarMedicamentoActivo($idMedicamentoNuevo);//Se realiza una validacion llamando al model de medicamentos
-            }
-
-            //Se crea el nuevo producto con el id del medicamento asignado
-            $productoDataPost['id_medicamento'] = $idMedicamentoNuevo;
-            $this->crearProducto($productoDataPost);//Se hace uso del metodo que antes ya creaba el producto
-
-            $db->transCommit();//Se finaliza la transaccion
-        } catch (\Exception $e) {
-            $db->transRollback();
-            throw $e; //Re-lanzamos para que el controlador la atrape
-        }
-    }
-
-    //Metodo que realiza la validacion de un medicamento para saber si esta aactivo o no.
-    //Hace uso del model de medicamento
-    private function validarMedicamentoActivo(int $id)
-    {
-        $medicamento = $this->medicamentoModel->find($id);
-        if (!$medicamento || !$medicamento->activo_medicamento) {
-            throw new \InvalidArgumentException('El medicamento seleccionado no es válido o está inactivo.');
-        }
+        return $this->insertarProductoFarmaceutico($insertData);
     }
 
     /*Metodo para actualizar/modeificar un producto farmaceutico */

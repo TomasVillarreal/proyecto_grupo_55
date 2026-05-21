@@ -46,6 +46,13 @@ class MedicamentoService
             ->first();
     }
 
+    public function buscarMedicamentoPorID(int $id): ?object
+    {
+        return $this->medicamentoModel
+            ->where('id_medicamento', $id)
+            ->first();
+    }
+
     private function reactivarMedicamento(object $medicamento) : void
     {
         $this->medicamentoModel->update(
@@ -53,6 +60,7 @@ class MedicamentoService
             ['activo_medicamento' => 1]
         );
     }
+
 
     private function insertarMedicamento(string $nombre) : int
     {
