@@ -44,29 +44,28 @@ class MedicamentosController extends BaseController
         ]);
     }
 
-    /*Metodo para la creacion de los medicamentos (form POST)
-    Se hace uso de transacciones para poder manejar posibles 
-    errores en caso de que se inserte un nuevo medicamento
-    pero no un nuevo producto farmaceutico, dejando incosistencias
-    en la bd.*/
-    public function altaMedicamento()
+    public function obtenerDatosCreacion() : array 
     {
-        //Tomamos daots del medicamento (del post)
-        $idMedicamentoPost= $this->request->getPost('id_medicamento');//Asigna a esa variable el id del medicamento del post
-        $nombreMedicamentoPost = $this->request->getPost('nombre_medicamento');//Asigna a esa variable el nombre del medicamento del post
-
-        //Tomamos datos del producto farmaceutico (del post)
-        $productoDataPost = [
+        return [
+            'idMedicamento'=> $this->request->getPost('id_medicamento'),//Asigna a esa variable el id del medicamento del post
+            'nombreMedicamento'=> $this->request->getPost('nombre_medicamento'),//Asigna a esa variable el nombre del medicamento del post
             'id_medicamento' => null,
             'id_tipo_producto' => (int) $this->request->getPost('id_tipo_producto'),
             'id_medida_producto' => (int) $this->request->getPost('id_medida_producto'),
             'dosis_producto' => $this->request->getPost('dosis_producto'),
             'descripcion_producto' => $this->request->getPost('descripcion_producto') ?: null,
         ];
+    }
+
+    /*Metodo para la creacion de los medicamentos (form POST). Se hace uso de transacciones para poder manejar posibles 
+    errores en caso de que se inserte un nuevo medicamento pero no un nuevo producto farmaceutico, dejando incosistencias en la bd.*/
+    public function altaMedicamento()
+    {
+        $data = $this->obtenerDatosCreacion();
 
         try{
             //Se llama al servicio encargado de la creacion del nuevo producto
-            $this->productoFarmaceuticoService->crearProductoCompleto($idMedicamentoPost,$nombreMedicamentoPost,$productoDataPost);
+            $this->productoFarmaceuticoService->crearProductoCompleto($productoDataPost);
 
             return redirect()->to('/')->with('success', 'Medicamento y/o producto creados correctamente.');//Si todo es un éxito.
             //Manejo de errores de los posibles rollbacks en caso de fallas.
@@ -76,7 +75,7 @@ class MedicamentosController extends BaseController
                 log_message('error', '[altaMedicamento] ' . $e->getMessage());
                 return redirect()->back()->withInput()->with('error', 'Ocurrió un error. Producto farmaceutico ya ingresado!');
             }
-        }
+    }
 
     /*Metodo que carga los datos a la vista de la modificacion de los medicamentos*/
     public function vista_modificacion_medicamento(): string
@@ -88,6 +87,15 @@ class MedicamentosController extends BaseController
         ]);
     }
 
+    public function obtenerDatosModificacion() : array
+    {
+        return [
+            'idMedicamento' => (int) $this->request->getPost('id_medicamento'),//id del medicamento modificado (o su producto)
+            'nombreMedicamento' => $this->request->getPost('nombre_medicamento'),//nombre del medicamento modificado (o su producto)
+            'idProducto' => $this->request->getPost('id_producto')//id del producto modificado
+        ];   
+    }
+
     /*Metodo para la modificacion de los medicamentos (form POST)*/
     public function modificacionMedicamento()
     {
@@ -96,9 +104,7 @@ class MedicamentosController extends BaseController
         $db->transBegin();//Se inicia la transacción.
 
         try {//Se obtienen los valores del post
-            $idMedicamento = (int) $this->request->getPost('id_medicamento');//id del medicamento modificado (o su producto)
-            $nombreMedicamento = $this->request->getPost('nombre_medicamento');//nombre del medicamento modificado (o su producto)
-            $idProducto = $this->request->getPost('id_producto');//id del producto modificado
+            $data = $this->obtenerDatosModificacion();
 
             //Primero se valida el id del medicamento
             if (!$idMedicamento) {
