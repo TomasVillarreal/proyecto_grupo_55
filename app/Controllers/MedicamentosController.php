@@ -47,15 +47,15 @@ class MedicamentosController extends BaseController
     public function obtenerDatosMedicamentoPost() : array 
     {
         return [
-            'idMedicamento'=> $this->request->getPost('id_medicamento'),//Asigna a esa variable el id del medicamento del post
-            'nombreMedicamento'=> $this->request->getPost('nombre_medicamento'),//Asigna a esa variable el nombre del medicamento del post
+            'id_medicamento'=> $this->request->getPost('id_medicamento'),//Asigna a esa variable el id del medicamento del post
+            'nombre_medicamento'=> $this->request->getPost('nombre_medicamento'),//Asigna a esa variable el nombre del medicamento del post
         ];
     }
 
     public function obtenerDatosProductoPost() : array{
          return [
-            'idMedicamento'=> $this->request->getPost('id_medicamento'),//Asigna a esa variable el id del medicamento del post,
-            'idProducto' => $this->request->getPost('id_producto'), //id del producto modificado
+            'id_medicamento'=> $this->request->getPost('id_medicamento'),//Asigna a esa variable el id del medicamento del post,
+            'id_producto' => $this->request->getPost('id_producto'), //id del producto modificado
             'id_tipo_producto' => (int) $this->request->getPost('id_tipo_producto'),
             'id_medida_producto' => (int) $this->request->getPost('id_medida_producto'),
             'dosis_producto' => $this->request->getPost('dosis_producto'),
@@ -77,20 +77,17 @@ class MedicamentosController extends BaseController
             //Se llama al servicio encargado de la creacion del nuevo producto
 
             //Se determina mediante un if (a modo de filtro) si el ID del medicamento es nuevo o es para un nuevo producto farmaceutico.
-            if ($dataMed['idMedicamento'] === 'new') {
+            if ($dataMed['id_medicamento'] === 'new') {
                 //Llamamos al servicio de medicamento para la creacion del mismo
-                $idMedicamentoNuevo = $this->medicamentoService->crearMedicamento($dataMed['nombreMedicamento']);
+                $idMedicamentoNuevo = $this->medicamentoService->crearMedicamento($dataMed['nombre_medicamento']);
+                $dataProd['id_medicamento'] = $idMedicamentoNuevo;
             } else {
-                $idMedicamentoNuevo = (int) $dataMed['idMedicamento'];//El medicamento no es nuevo si no que fue seleccionado del dropdown
+                $idMedicamentoNuevo = (int) $dataMed['id_medicamento'];//El medicamento no es nuevo si no que fue seleccionado del dropdown
                 $this->medicamentoService->buscarMedicamentoPorID($idMedicamentoNuevo);//Se realiza una validacion llamando al model de medicamentos
             }
 
-            $idNuevoMedicamento = $this->medicamentoService->crearMedicamento($dataMed['nombreMedicamento']);
-            $dataProd['idMedicamento'] = $idNuevoMedicamento;
             $this->productoFarmaceuticoService->crearProducto($dataProd);
-
             $db->transCommit();
-
             return redirect()->to('/')->with('success', 'Medicamento y/o producto creados correctamente.');
             //Manejo de errores de los posibles rollbacks en caso de fallas.
             } catch (\Exception $e) {

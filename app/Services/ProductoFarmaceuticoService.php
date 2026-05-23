@@ -130,6 +130,7 @@ class ProductoFarmaceuticoService
         $this->productoModel->update($producto->id_producto,['activo_producto' => 1]);
     }
 
+
     /*Se crea un método para crear un nuevo producto farmaceutico, teniendo en cuenta que 
     cumple con las validaciones. Retorna el id del nuevo producto*/
     public function crearProducto(array $data): int
@@ -165,6 +166,8 @@ class ProductoFarmaceuticoService
         //Se asigna el nuevo id
         return $this->insertarProductoFarmaceutico($insertData);
     }
+
+    
 
     /*Metodo para actualizar/modeificar un producto farmaceutico */
     public function modificarProductoFarmaceutico(int $idProductoFarmaceutico, array $data): bool
