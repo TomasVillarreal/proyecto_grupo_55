@@ -167,7 +167,7 @@ class ProductoFarmaceuticoService
         return $this->insertarProductoFarmaceutico($insertData);
     }
 
-    
+
 
     /*Metodo para actualizar/modeificar un producto farmaceutico */
     public function modificarProductoFarmaceutico(int $idProductoFarmaceutico, array $data): bool
@@ -211,6 +211,10 @@ class ProductoFarmaceuticoService
         ];
 
         return $this->productoModel->update($idProductoFarmaceutico, $updateData);
+    }
+
+    public function eliminarProductosDeUnMedicamento(int $idMedicamento) : bool {
+        return $this->productoModel->where('id_medicamento', $idMedicamento)->set(['activo_producto' => 0])->update();
     }
 
     /*Metodo para la eliminación lógica del medicamento haciendo uso del metodo de su modelo */

@@ -9,6 +9,7 @@ use InvalidArgumentException;
 class MedicamentoService
 {
     protected $medicamentoModel;//Variable a utilizar que hace referencia al modelo
+    protected $productoService;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.
     En POO nos enseñaron que el constructor tenia que tener el mismo nombre de la clase
@@ -128,7 +129,7 @@ class MedicamentoService
     }
 
     /*Metodo para eliminar logicamente un medicamento*/
-    public function eliminarMedicamento(int $idMedicamento): void
+    public function eliminarMedicamento(int $idMedicamento): bool
     {
         $medicamento = $this->buscarMedicamentoPorID($idMedicamento);
 
@@ -140,9 +141,7 @@ class MedicamentoService
         $this->medicamentoModel->desactivarMedicamento($idMedicamento);
 
        //Se eliminan los productos farmaceuticos asociados a dicho medicamento
-        $productoModel = model('App\Models\ProductoFarmaceuticoModel');
-
-        $productoModel->where('id_medicamento', $idMedicamento)->set(['activo_producto' => 0])->update();
+        return $this->productoService->eliminarProductosDeUnMedicamento($idMedicamento);
     }
 
     /*Se crea este metodo para facilitar la obtencion de la lista de medicamentos,
