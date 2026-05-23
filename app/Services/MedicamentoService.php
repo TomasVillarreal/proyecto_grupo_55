@@ -100,11 +100,15 @@ class MedicamentoService
         return $this->insertarMedicamento($nombreMedicamento);
     }
 
+    private function modificacionMedicamento(int $id, string $nombre): bool{
+        return $this->medicamentoModel->update($id, ['nombre_medicamento' => $nombre]);
+    }
+
     /*Se crea un metodo que se utilizara para editar un medicamento (el nombre), siempre y cuando cumpla,
     con las validaciones*/
     public function modificarMedicamento(int $idMedicamento, string $nombreMedicamento): bool
     {
-        $medicamento = $this->medicamentoModel->find($idMedicamento);//Primero se busca el id del medicamento
+        $medicamento = $this->buscarMedicamentoPorID($idMedicamento);//Primero se busca el id del medicamento
 
         //Si el nombre es igual a uno ya almacenado, devuelve false al controller
         if ($medicamento->nombre_medicamento === $nombreMedicamento) {
@@ -116,20 +120,24 @@ class MedicamentoService
             throw new \InvalidArgumentException('Ya existe un medicamento con ese nombre');
         }
 
-        return $this->medicamentoModel->update($idMedicamento, ['nombre_medicamento' => $nombreMedicamento]);
+        return $this->modificacionMedicamento($idMedicamento, $nombreMedicamento);
+    }
+
+    private function desactivarMedicamento(int $id) : bool{
+        return $this->medicamentoModel->update($id, ['activo_medicamento' => 0]);
     }
 
     /*Metodo para eliminar logicamente un medicamento*/
     public function eliminarMedicamento(int $idMedicamento): void
     {
-        $medicamento = $this->medicamentoModel->find($idMedicamento);
+        $medicamento = $this->buscarMedicamentoPorID($idMedicamento);
 
         if (!$medicamento || !$medicamento->activo_medicamento) {
             throw new \InvalidArgumentException("El medicamento no existe o ya está inactivo.");
         }
 
         //Se elimina el medicamento
-        $this->medicamentoModel->update($idMedicamento, ['activo_medicamento' => 0]);
+        $this->medicamentoModel->desactivarMedicamento($idMedicamento);
 
        //Se eliminan los productos farmaceuticos asociados a dicho medicamento
         $productoModel = model('App\Models\ProductoFarmaceuticoModel');
