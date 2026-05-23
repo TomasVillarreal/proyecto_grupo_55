@@ -115,7 +115,7 @@ class ProductoFarmaceuticoService
         return $id;
     }
 
-    private function buscarProductoExistente(array $data){
+    private function buscarProductoExistente(array $data) : ?object{
         //Se busca primero si el producto ya existe (activo o inactivo da igual)
         return $this->productoModel
         ->where('id_medicamento', (int) $data['id_medicamento'])
@@ -130,7 +130,7 @@ class ProductoFarmaceuticoService
         $this->productoModel->update($producto->id_producto,['activo_producto' => 1]);
     }
 
-    private function guardarDatos(array $data) : array {
+    private function prepararDatosProducto(array $data) : array {
         return [
             'id_medicamento' => (int) $data['id_medicamento'],
             'id_tipo_producto' => (int) $data['id_tipo_producto'],
@@ -164,14 +164,14 @@ class ProductoFarmaceuticoService
         }
 
         //Si no hay error de unicidad, es porque el producto es nuevo, por lo que se inserta el nuevo producto farmaceutico
-        $insertData = array_merge($this->guardarDatos($data), ['activo_producto'=>1]);
+        $insertData = array_merge($this->prepararDatosProducto($data), ['activo_producto'=>1]);
 
         //Se asigna el nuevo id
         return $this->insertarProductoFarmaceutico($insertData);
     }
 
 
-    private function buscarProductoPorID(int $id){
+    private function buscarProductoPorID(int $id) : ?object{
         return $this->productoModel->find($id);
     }
 
@@ -197,7 +197,7 @@ class ProductoFarmaceuticoService
         }
         
         //Se toman los valores recibidos y se almacenan para su posterior comparacion
-        $updateData = $this->guardarDatos($data);
+        $updateData = $this->prepararDatosProducto($data);
         
         //Se comparan valores recibidos con valores en bd para determinar si hubo cambios
         if ($this->verificarCambiosProducto($producto, $updateData)){
@@ -212,7 +212,7 @@ class ProductoFarmaceuticoService
         return $this->modificarProd($idProductoFarmaceutico, $updateData);
     }
 
-    public function eliminarProductosDeUnMedicamento(int $idMedicamento) : bool {
+    public function eliminarProductosPorMedicamento(int $idMedicamento) : bool {
         return $this->productoModel->where('id_medicamento', $idMedicamento)->set(['activo_producto' => 0])->update();
     }
 
