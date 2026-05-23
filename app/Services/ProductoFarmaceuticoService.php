@@ -130,6 +130,16 @@ class ProductoFarmaceuticoService
         $this->productoModel->update($producto->id_producto,['activo_producto' => 1]);
     }
 
+    private function guardarDatos(array $data) : array {
+        return [
+            'id_medicamento' => (int) $data['id_medicamento'],
+            'id_tipo_producto' => (int) $data['id_tipo_producto'],
+            'id_medida_producto' => (int) $data['id_medida_producto'],
+            'dosis_producto' => (float) $data['dosis_producto'],
+            'descripcion_producto' => empty($data['descripcion_producto']) ? null : trim($data['descripcion_producto']),
+        ];
+    }
+
 
     /*Se crea un método para crear un nuevo producto farmaceutico, teniendo en cuenta que 
     cumple con las validaciones. Retorna el id del nuevo producto*/
@@ -154,45 +164,43 @@ class ProductoFarmaceuticoService
         }
 
         //Si no hay error de unicidad, es porque el producto es nuevo, por lo que se inserta el nuevo producto farmaceutico
-        $insertData = [
-            'id_medicamento' => (int) $data['id_medicamento'],
-            'id_tipo_producto' => (int) $data['id_tipo_producto'],
-            'id_medida_producto' => (int) $data['id_medida_producto'],
-            'dosis_producto' => (float) $data['dosis_producto'],
-            'descripcion_producto' => empty($data['descripcion_producto']) ? null : trim($data['descripcion_producto']),
-            'activo_producto' => 1,
-        ];
+        $insertData = array_merge($this->guardarDatos($data), ['activo_producto'=>1]);
 
         //Se asigna el nuevo id
         return $this->insertarProductoFarmaceutico($insertData);
     }
 
 
+    private function buscarProductoPorID(int $id){
+        return $this->productoModel->find($id);
+    }
+
+    private function modificarProd(int $id, array $data) : bool{
+        return $this->productoModel->update($id, $data); 
+    }
+
+    private function verificarCambiosProducto(object $producto, array $data) : bool{
+        return $producto->id_medicamento == $data['id_medicamento'] &&
+            $producto->id_tipo_producto == $data['id_tipo_producto'] &&
+            $producto->id_medida_producto == $data['id_medida_producto'] &&
+            (float)$producto->dosis_producto == (float)$data['dosis_producto'] &&
+            ($producto->descripcion_producto ?? null) == $data['descripcion_producto'];
+    }
 
     /*Metodo para actualizar/modeificar un producto farmaceutico */
     public function modificarProductoFarmaceutico(int $idProductoFarmaceutico, array $data): bool
     {
         //Se asigna a la variable el producto que se busca en el modelo. En caso de no existir, mensaje de error
-        $producto = $this->productoModel->find($idProductoFarmaceutico);
+        $producto = $this->buscarProductoPorID($idProductoFarmaceutico);
         if (!$producto) {
             throw new \InvalidArgumentException('El producto no existe.');
         }
         
         //Se toman los valores recibidos y se almacenan para su posterior comparacion
-        $updateData = [
-            'id_medicamento' => (int) $data['id_medicamento'],
-            'id_tipo_producto' => (int) $data['id_tipo_producto'],
-            'id_medida_producto' => (int) $data['id_medida_producto'],
-            'dosis_producto' => (float) $data['dosis_producto'],
-            'descripcion_producto' => empty($data['descripcion_producto']) ? null : trim($data['descripcion_producto']),
-        ];
+        $updateData = $this->guardarDatos($data);
         
         //Se comparan valores recibidos con valores en bd para determinar si hubo cambios
-        if ($producto->id_medicamento == $updateData['id_medicamento'] &&
-            $producto->id_tipo_producto == $updateData['id_tipo_producto'] &&
-            $producto->id_medida_producto == $updateData['id_medida_producto'] &&
-            (float)$producto->dosis_producto == (float)$updateData['dosis_producto'] &&
-            ($producto->descripcion_producto ?? null) == $updateData['descripcion_producto']){
+        if ($this->verificarCambiosProducto($producto, $updateData)){
             return false;
         }
 
@@ -201,24 +209,19 @@ class ProductoFarmaceuticoService
             throw new \InvalidArgumentException(implode(' ', $errors));
         }
 
-        //Se guarda la informacion del producto farmaceutico actualizado
-        $updateData = [
-            'id_medicamento' => (int) $data['id_medicamento'],
-            'id_tipo_producto' => (int) $data['id_tipo_producto'],
-            'id_medida_producto' => (int) $data['id_medida_producto'],
-            'dosis_producto' => (float) $data['dosis_producto'],
-            'descripcion_producto' => empty($data['descripcion_producto']) ? null : trim($data['descripcion_producto']),
-        ];
-
-        return $this->productoModel->update($idProductoFarmaceutico, $updateData);
+        return $this->modificarProd($idProductoFarmaceutico, $updateData);
     }
 
     public function eliminarProductosDeUnMedicamento(int $idMedicamento) : bool {
         return $this->productoModel->where('id_medicamento', $idMedicamento)->set(['activo_producto' => 0])->update();
     }
 
+    private function desactivarUnProducto(int $id) : bool {
+        return $this->productoModel->update($id, ['activo_producto' => 0]);
+    }
+
     /*Metodo para la eliminación lógica del medicamento haciendo uso del metodo de su modelo */
-    public function eliminarProducto(int $idProductoFarmaceutico): void
+    public function eliminarProducto(int $idProductoFarmaceutico): bool
     {
         $producto = $this->productoModel->find($idProductoFarmaceutico);
 
@@ -226,7 +229,7 @@ class ProductoFarmaceuticoService
             throw new \InvalidArgumentException("El producto no existe o ya está inactivo.");
         }
 
-        $this->productoModel->update($idProductoFarmaceutico, ['activo_producto' => 0]);
+        return $this->desactivarUnProducto($idProductoFarmaceutico);
     }
 
     /*Metodo que va a ser utilizado para cargar dinamicamente los campos del producto
