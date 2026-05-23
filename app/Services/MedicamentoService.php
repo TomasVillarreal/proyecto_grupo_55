@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\MedicamentoModel;
+use App\Services\ProductoFarmaceuticoService;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use InvalidArgumentException;
 
@@ -17,7 +18,7 @@ class MedicamentoService
     public function __construct()
     {
         $this->medicamentoModel = model(MedicamentoModel::class);//Se reconoce e instancia la clase
-
+        $this->productoService = new ProductoFarmaceuticoService();
     }
 
     /*Se crea un método para validar el nombre de un medicamento según nuestras reglas
@@ -25,7 +26,7 @@ class MedicamentoService
     En caso de que cumpla con las validaciones devuelve true,
     caso contrario devuelve un string con la cadena que especifica el error.*/
 
-    private function validarNombreMedicamento(string $medicamento)
+    private function validarNombreMedicamento(string $medicamento) : void
     {
         $medicamento = trim($medicamento);//Se quitan espacios vacios
 
@@ -111,6 +112,8 @@ class MedicamentoService
     {
         $medicamento = $this->buscarMedicamentoPorID($idMedicamento);//Primero se busca el id del medicamento
 
+        $this->validarNombreMedicamento($nombreMedicamento);
+
         //Si el nombre es igual a uno ya almacenado, devuelve false al controller
         if ($medicamento->nombre_medicamento === $nombreMedicamento) {
             return true;
@@ -138,10 +141,10 @@ class MedicamentoService
         }
 
         //Se elimina el medicamento
-        $this->medicamentoModel->desactivarMedicamento($idMedicamento);
+        $this->desactivarMedicamento($idMedicamento);
 
        //Se eliminan los productos farmaceuticos asociados a dicho medicamento
-        return $this->productoService->eliminarProductosDeUnMedicamento($idMedicamento);
+        return $this->productoService->eliminarProductosPorMedicamento($idMedicamento);
     }
 
     /*Se crea este metodo para facilitar la obtencion de la lista de medicamentos,
