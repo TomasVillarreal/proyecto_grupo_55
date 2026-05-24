@@ -23,8 +23,8 @@ class MedicamentoService
 
     /*Se crea un método para validar el nombre de un medicamento según nuestras reglas
     de negocio
-    En caso de que cumpla con las validaciones devuelve true,
-    caso contrario devuelve un string con la cadena que especifica el error.*/
+    En caso de que cumpla con las validaciones sigue adelante (pq no hay errores),
+    caso contrario tira una excepcion que sera agarrada por el controller y mostrada*/
 
     private function validarNombreMedicamento(string $medicamento) : void
     {
@@ -63,16 +63,20 @@ class MedicamentoService
         );
     }
 
+    // Funcion que normaliza el nombre del medicamento a ingresar
     private function normalizarNombreMedicamento(string $nombre) : string{
+        // ucfirst capitaliza el string, y strtolower convierte todo el string en minusculas
         return ucfirst(strtolower(trim($nombre)));
     }
 
 
+    // Funcion que hace la insercion del medicamento en la bd
     private function insertarMedicamento(string $nombre) : int
     {
+        // hace la insercion del med
         $idNuevo = $this->medicamentoModel->insert(['nombre_medicamento' => $nombre]);
 
-        //Manejo de errores
+        // Verificamos que se haya hecho la insercion
         if(!$idNuevo){
             throw new \RuntimeException('No se pudo crear el medicamento');
         }
@@ -85,9 +89,10 @@ class MedicamentoService
     Retorna el ID del nuevo medicamento o lanza un exception*/
     public function crearMedicamento(string $nombreMedicamento): int
     {
+        // normalizamos el nombre de medicamento a ingresar
         $nombreMedicamento = $this->normalizarNombreMedicamento($nombreMedicamento);
 
-        //Primero se valida el formato usando el método anterior (osea validar nombrMedicamento)
+        // Luego validamos el formato del nombre usando el método anterior (osea validar nombrMedicamento)
         $this->validarNombreMedicamento($nombreMedicamento);
 
         //Buscamos que exista el medicamento (no importa si está activo o no aún)
@@ -122,8 +127,8 @@ class MedicamentoService
             throw new \InvalidArgumentException('El medicamento no existe.');
         }
 
+        // normalizamos y luego validamos que el nombre sea correcto
         $nombreMedicamento = $this->normalizarNombreMedicamento($nombreMedicamento);
-
         $this->validarNombreMedicamento($nombreMedicamento);
 
         //Si el nombre es igual a uno ya almacenado, devuelve false al controller
@@ -147,8 +152,10 @@ class MedicamentoService
     /*Metodo para eliminar logicamente un medicamento*/
     public function eliminarMedicamento(int $idMedicamento): bool
     {
+        // buscamos al medicamento
         $medicamento = $this->buscarMedicamentoPorID($idMedicamento);
 
+        //si no existe o ya fue deshabilitado:
         if ($medicamento === null || !$medicamento->activo_medicamento) {
             throw new \InvalidArgumentException("El medicamento no existe o ya está inactivo.");
         }

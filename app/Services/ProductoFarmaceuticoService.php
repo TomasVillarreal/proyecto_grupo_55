@@ -29,7 +29,7 @@ class ProductoFarmaceuticoService
 
     /*Se crea un metodo que valida las dosis de acuerdo a nuestras
     reglas de negocio. 
-    Devuelve true si cumple con las validaciones y en caso contrario
+    Devuelve null si cumple con las validaciones y en caso contrario
     devuelve un string con el error*/
     public function validarDosis($dosis): ?string
     {
@@ -99,11 +99,13 @@ class ProductoFarmaceuticoService
         return $errors;
     }
 
+    // Metodo que inserta el producto a la base de datos, tal que devuelve el id del nuevo producto
     private function insertarProductoFarmaceutico(array $data) : int
     {
+        // hace la insercion
         $id = $this->productoModel->insert($data);
         
-        //Se maneja un posible error en la inserción
+        // Si hubo un error tiro una excepcion
         if (!$id) {
             throw new DatabaseException('No se pudo crear el producto.');
         }
@@ -127,6 +129,7 @@ class ProductoFarmaceuticoService
         $this->productoModel->update($producto->id_producto,['activo_producto' => 1]);
     }
 
+    // Metodo que prepara los datos a insertar / actualizar
     private function prepararDatosProducto(array $data) : array {
         return [
             'id_medicamento' => (int) $data['id_medicamento'],
@@ -154,14 +157,15 @@ class ProductoFarmaceuticoService
             if($productoExistente->activo_producto === 1){
                 throw new \InvalidArgumentException("Producto farmaceutico ya ingresado!");
             }
+            //si esta desactivado, lo reactiva y devuelve el id de ese producto reactivado
             $this->reactivarProducto($productoExistente);
             return (int) $productoExistente->id_producto;
         }
 
-        //Si no hay error de unicidad, es porque el producto es nuevo, por lo que se inserta el nuevo producto farmaceutico
+        //Si no hay error de unicidad, es porque el producto es nuevo, por lo que se preparo los datos del nuevo prod
         $insertData = array_merge($this->prepararDatosProducto($data), ['activo_producto'=>1]);
 
-        //Se asigna el nuevo id
+        // Inserto el nuevo prod con los datos y devuelvo el id.
         return $this->insertarProductoFarmaceutico($insertData);
     }
 
@@ -174,6 +178,8 @@ class ProductoFarmaceuticoService
         return $this->productoModel->update($id, $data); 
     }
 
+    /* Metodo que verifica que se hayan producido cambios entre el producto
+    pasado como argumento y el array de datos pasado como argumento */
     private function verificarCambiosProducto(object $producto, array $data) : bool{
         return $producto->id_medicamento === $data['id_medicamento'] &&
             $producto->id_tipo_producto === $data['id_tipo_producto'] &&
@@ -200,11 +206,14 @@ class ProductoFarmaceuticoService
             return false;
         }
 
+        // validacion de los datos obtenidos
         $errors = $this->validarProductoFarmaceutico($data, $idProductoFarmaceutico);
+        // si hay errorres, tiro excepcion
         if (!empty($errors)) {
             throw new \InvalidArgumentException(implode(' ', $errors));
         }
 
+        //si no hay errores, modifico el producto
         return $this->modificarProd($idProductoFarmaceutico, $updateData);
     }
 
