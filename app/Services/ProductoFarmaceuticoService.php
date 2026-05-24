@@ -16,7 +16,6 @@ class ProductoFarmaceuticoService
     protected $tipoProductoModel;
     protected $medidaProductoModel;
     protected $medicamentoModel;
-    protected $medicamentoService;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.*/
     public function __construct()
@@ -26,7 +25,6 @@ class ProductoFarmaceuticoService
         $this->tipoProductoModel = model(TipoProductoModel::class);
         $this->medidaProductoModel = model(MedidaProductoModel::class);
         $this->medicamentoModel = model(MedicamentoModel::class);
-        $this->medicamentoService = new MedicamentoService();
 
     }
 
