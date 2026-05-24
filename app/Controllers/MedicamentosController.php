@@ -89,9 +89,13 @@ class MedicamentosController extends BaseController
             $db->transCommit();
             return redirect()->to('/')->with('success', 'Medicamento y/o producto creados correctamente.');
             //Manejo de errores de los posibles rollbacks en caso de fallas.
+            } catch (\InvalidArgumentException $e) {
+                $db->transRollback();
+                return redirect()->back()->withInput()->with('error', $e->getMessage());
             } catch (\Exception $e) {
                 $db->transRollback();
-                throw $e;
+                log_message('error', '[altaMedicamento] ' . $e->getMessage());
+                return redirect()->back()->withInput()->with('error', 'Ocurrió un error. Producto farmaceutico ya ingresado!');
             }
     }
 
