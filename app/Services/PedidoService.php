@@ -33,10 +33,10 @@ class PedidoService
     }
 
     // Metodo que obtiene un pedido especifico, usando el metodo del model
-    public function obtenerPedidoEspecifico(int $id_pedido)
+    public function obtenerPedidoEspecifico(int $id_pedido) : ?object
     {
         $pedido = $this->pedidoModel->obtenerPedidoEspecifico($id_pedido);
-        if (!$pedido) {
+        if ($pedido === null) {
             throw new \Exception("Pedido no encontrado");
         }
         return $pedido;
@@ -45,11 +45,11 @@ class PedidoService
     // Metodo para el rechazo de un pedido, consiste en cambiar el estado del pedido unicamente.
     public function rechazar(int $idPedido, string $mensajeRechazo): bool
     {
-        $pedido = $this->pedidoModel->find($idPedido);
+        $pedido = $this->obtenerPedidoEspecifico($idPedido);
 
         // el estado == 1 corresponde al estado "Pendiente". si no esta en este estado
         // significa que ya fue aceptado o rechazado
-        if (!$pedido || $pedido->id_estado_pedido != 1) {
+        if ($pedido === null || $pedido->id_estado_pedido !== 1) {
             throw new \InvalidArgumentException("El pedido se encuentra en un estado invalido para su rechazo.");
         }
 
@@ -62,11 +62,11 @@ class PedidoService
     // Metodo para la aprobacion de un pedido, consiste en cambiar el estado del pedido unicamente.
     public function aprobar(int $idPedido): bool
     {
-        $pedido = $this->pedidoModel->find($idPedido);
+        $pedido = $this->obtenerPedidoEspecifico($idPedido);
 
         // el estado == 1 corresponde al estado "Pendiente". si no esta en este estado
         // significa que ya fue aceptado o rechazado
-        if (!$pedido || $pedido->id_estado_pedido != 1) {
+        if ($pedido === null || $pedido->id_estado_pedido !== 1) {
             throw new \InvalidArgumentException("El pedido se encuentra en un estado invalido para su aprobación.");
         }
 

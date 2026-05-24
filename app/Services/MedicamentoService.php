@@ -94,7 +94,7 @@ class MedicamentoService
         $medicamento = $this->buscarMedicamentoPorNombre($nombreMedicamento);
         if ($medicamento !== null) 
         {
-            if ($medicamento->activo_medicamento == 1) 
+            if ($medicamento->activo_medicamento === 1) 
             {
                 throw new \InvalidArgumentException(
                     "Ya existe un medicamento activo con ese nombre."

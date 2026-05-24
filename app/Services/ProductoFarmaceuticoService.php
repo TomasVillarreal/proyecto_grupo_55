@@ -151,13 +151,11 @@ class ProductoFarmaceuticoService
         $productoExistente = $this->buscarProductoExistente($data);
         //Si el producto existe y está activo, lanza un error
         if($productoExistente !== null){
-            if($productoExistente->activo_producto == 1){
+            if($productoExistente->activo_producto === 1){
                 throw new \InvalidArgumentException("Producto farmaceutico ya ingresado!");
-            }else{
-                $this->reactivarProducto($productoExistente);
-                return (int) $productoExistente->id_producto;
             }
-
+            $this->reactivarProducto($productoExistente);
+            return (int) $productoExistente->id_producto;
         }
 
         //Si no hay error de unicidad, es porque el producto es nuevo, por lo que se inserta el nuevo producto farmaceutico
@@ -177,11 +175,11 @@ class ProductoFarmaceuticoService
     }
 
     private function verificarCambiosProducto(object $producto, array $data) : bool{
-        return $producto->id_medicamento == $data['id_medicamento'] &&
-            $producto->id_tipo_producto == $data['id_tipo_producto'] &&
-            $producto->id_medida_producto == $data['id_medida_producto'] &&
-            (float)$producto->dosis_producto == (float)$data['dosis_producto'] &&
-            ($producto->descripcion_producto ?? null) == $data['descripcion_producto'];
+        return $producto->id_medicamento === $data['id_medicamento'] &&
+            $producto->id_tipo_producto === $data['id_tipo_producto'] &&
+            $producto->id_medida_producto === $data['id_medida_producto'] &&
+            (float)$producto->dosis_producto === (float)$data['dosis_producto'] &&
+            ($producto->descripcion_producto ?? null) === $data['descripcion_producto'];
     }
 
     /*Metodo para actualizar/modeificar un producto farmaceutico */
@@ -249,5 +247,5 @@ class ProductoFarmaceuticoService
             ];
         }
         return $listadoProductos;
-    }
+    }   
 }
