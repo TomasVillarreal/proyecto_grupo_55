@@ -83,7 +83,6 @@ class MedicamentosController extends BaseController
                 $dataProd['id_medicamento'] = $idMedicamentoNuevo;
             } else {
                 $idMedicamentoNuevo = (int) $dataMed['id_medicamento'];//El medicamento no es nuevo si no que fue seleccionado del dropdown
-                $this->medicamentoService->buscarMedicamentoPorID($idMedicamentoNuevo);//Se realiza una validacion llamando al model de medicamentos
             }
 
             $this->productoFarmaceuticoService->crearProducto($dataProd);
@@ -107,7 +106,7 @@ class MedicamentosController extends BaseController
     }
 
 
-    /*Metodo para la modificacion de los medicamentos (form POST)
+    /*Metodo para la modificacion de los medicamentos (form POST)*/
     public function modificacionMedicamento()
     {
         $huboCambios = false;//Variable para detectar si hubo cambios y proporcionar el msj correcto
@@ -115,16 +114,17 @@ class MedicamentosController extends BaseController
         $db->transBegin();//Se inicia la transacción.
 
         try {//Se obtienen los valores del post
-            $data = $this->obtenerDatosModificacion();
+            $dataMed = $this->obtenerDatosMedicamentoPost();
+            $dataProd = $this->obtenerDatosProductoPost();
 
             //Primero se valida el id del medicamento
-            if (!$idMedicamento) {
+            if (!$dataMed['id_medicamento']) {
                 throw new \Exception("Medicamento inválido");
             }
 
             //Luego de la validación, se hace uso del servicio de medicamento para la modificacion del nombre del mismo (caso que corresponda)
-            if (!empty($nombreMedicamento)) {
-                $nuevoMed = $this->medicamentoService->modificarMedicamento($idMedicamento, $nombreMedicamento);
+            if (!empty($dataMed['nombre_medicamento'])) {
+                $nuevoMed = $this->medicamentoService->modificarMedicamento($dataMed['id_medicamento'], $dataMed['nombre_medicamento']);
 
                 //Comprobacion si hubo cambios o no
                 if($nuevoMed){
@@ -133,17 +133,8 @@ class MedicamentosController extends BaseController
             }
 
             //En caso de que se haya actualizado algun dato del producto farmaceutico, entra acá
-            if ($idProducto && $idProducto != "-1") {//Si se selecciono un producto para modificar
-
-                $productoData = [
-                    'id_producto' => (int) $idProducto,
-                    'id_tipo_producto' => (int) $this->request->getPost('id_tipo_producto'),
-                    'id_medida_producto' => (int) $this->request->getPost('id_medida_producto'),
-                    'id_medicamento' => (int) $idMedicamento,
-                    'dosis_producto' => $this->request->getPost('dosis_producto'),
-                    'descripcion_producto' => $this->request->getPost('descripcion_producto')
-                ];
-                $nuevoProd = $this->productoFarmaceuticoService->modificarProductoFarmaceutico($idProducto, $productoData);
+            if ($dataProd['id_producto'] && $dataProd['id_producto'] != "-1") {//Si se selecciono un producto para modificar
+                $nuevoProd = $this->productoFarmaceuticoService->modificarProductoFarmaceutico($dataProd['id_producto'] , $dataProd);
                 
                 //Comprobacion si hubo cambios o no
                 if($nuevoProd){
