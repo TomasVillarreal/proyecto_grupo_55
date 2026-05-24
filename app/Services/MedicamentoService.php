@@ -124,7 +124,8 @@ class MedicamentoService
 
         //Si el nombre es igual a uno ya almacenado, devuelve false al controller
         if ($medicamento->nombre_medicamento === $nombreMedicamento) {
-            return true;
+            // Si entra aca no hubo cambios
+            return false;
         }
 
         /*Se verifica que sea unico el medicamento, osea el nombre*/

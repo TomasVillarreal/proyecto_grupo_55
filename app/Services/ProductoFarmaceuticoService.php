@@ -198,6 +198,7 @@ class ProductoFarmaceuticoService
         
         //Se comparan valores recibidos con valores en bd para determinar si hubo cambios
         if ($this->verificarCambiosProducto($producto, $updateData)){
+            // Si entra aca no hubo cambios
             return false;
         }
 
