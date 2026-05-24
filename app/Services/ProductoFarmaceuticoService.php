@@ -143,6 +143,12 @@ class ProductoFarmaceuticoService
     cumple con las validaciones. Retorna el id del nuevo producto*/
     public function crearProducto(array $data): int
     {
+        //Manejo de errores como ya se vió en otros procedimientos
+        $errors = $this->validarProductoFarmaceutico($data);
+        if (!empty($errors)) {
+            throw new \InvalidArgumentException(implode(' ', $errors));//Transforma el array en texto formato JSON
+        }
+        
         $productoExistente = $this->buscarProductoExistente($data);
         //Si el producto existe y está activo, lanza un error
         if($productoExistente){
@@ -153,12 +159,6 @@ class ProductoFarmaceuticoService
                 return (int) $productoExistente->id_producto;
             }
 
-        }
-
-        //Manejo de errores como ya se vió en otros procedimientos
-        $errors = $this->validarProductoFarmaceutico($data);
-        if (!empty($errors)) {
-            throw new \InvalidArgumentException(implode(' ', $errors));//Transforma el array en texto formato JSON
         }
 
         //Si no hay error de unicidad, es porque el producto es nuevo, por lo que se inserta el nuevo producto farmaceutico
