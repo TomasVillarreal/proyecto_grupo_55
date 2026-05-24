@@ -150,7 +150,7 @@ class MedicamentosController extends BaseController
                 return redirect()->back()->with('info', 'No se realizaron cambios.');
             }
 
-            return redirect()->to('/modificacion_medicamento')->with('success', 'Modificación realizada correctamente');
+            return redirect()->back()->with('success', 'Modificación realizada correctamente');
 
         } catch (\Exception $e) {
             $db->transRollback();

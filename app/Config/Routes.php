@@ -9,8 +9,8 @@ use CodeIgniter\Router\RouteCollection;
 
 // -- GET -- 
 $routes->get('/', 'MedicamentosController::mostrarAltaMedicamentos');
-$routes->get('/update', 'MedicamentosController::mostrarModificacionMedicamentos');
-$routes->get('/delete', 'MedicamentosController::mostrarBajaMedicamentos');
+$routes->get('/modificarMed', 'MedicamentosController::mostrarModificacionMedicamentos');
+$routes->get('/eliminarMed', 'MedicamentosController::mostrarBajaMedicamentos');
 $routes->get(
     'medicamentos/productos/(:num)',
     'MedicamentosController::obtenerProductosPorMedicamento/$1'
@@ -19,8 +19,8 @@ $routes->get(
 // -- POST --
 $routes->post('medicamentos/alta', 'MedicamentosController::crearMedicamento');//Ruta con el POST para la cracion de medicamentos y/o productos farm.
 $routes->post('medicamentos/modificacion','MedicamentosController::modificarMedicamento');//Ruta con el POST para la modificacion de medicamentos y/o productos farm.
-$routes->post('productos/delete/(:num)', 'ProductoFarmaceuticoController::eliminarProducto/$1');
-$routes->post('medicamentos/delete/(:num)', 'MedicamentosController::eliminarMedicamento/$1');
+$routes->post('productos/eliminar/(:num)', 'ProductoFarmaceuticoController::eliminarProducto/$1');
+$routes->post('medicamentos/eliminar/(:num)', 'MedicamentosController::eliminarMedicamento/$1');
 
 
 // PEDIDOS
