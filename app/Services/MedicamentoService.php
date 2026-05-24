@@ -63,6 +63,10 @@ class MedicamentoService
         );
     }
 
+    private function normalizarNombreMedicamento(string $nombre) : string{
+        return ucfirst(strtolower(trim($nombre)));
+    }
+
 
     private function insertarMedicamento(string $nombre) : int
     {
@@ -81,6 +85,8 @@ class MedicamentoService
     Retorna el ID del nuevo medicamento o lanza un exception*/
     public function crearMedicamento(string $nombreMedicamento): int
     {
+        $nombreMedicamento = $this->normalizarNombreMedicamento($nombreMedicamento);
+
         //Primero se valida el formato usando el método anterior (osea validar nombrMedicamento)
         $this->validarNombreMedicamento($nombreMedicamento);
 
@@ -111,6 +117,8 @@ class MedicamentoService
     public function modificarMedicamento(int $idMedicamento, string $nombreMedicamento): bool
     {
         $medicamento = $this->buscarMedicamentoPorID($idMedicamento);//Primero se busca el id del medicamento
+
+        $nombreMedicamento = $this->normalizarNombreMedicamento($nombreMedicamento);
 
         $this->validarNombreMedicamento($nombreMedicamento);
 
