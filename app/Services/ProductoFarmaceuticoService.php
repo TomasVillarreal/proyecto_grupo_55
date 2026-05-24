@@ -6,7 +6,6 @@ use App\Models\ProductoFarmaceuticoModel;
 use App\Models\TipoProductoModel;
 use App\Models\MedidaProductoModel;
 use App\Models\MedicamentoModel;
-use App\Services\MedicamentoService;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class ProductoFarmaceuticoService
@@ -32,7 +31,7 @@ class ProductoFarmaceuticoService
     reglas de negocio. 
     Devuelve true si cumple con las validaciones y en caso contrario
     devuelve un string con el error*/
-    public function validarDosis($dosis): string|true
+    public function validarDosis($dosis): ?string
     {
         if (!is_numeric($dosis)) {
             return "La dosis debe ser un número";
@@ -44,16 +43,16 @@ class ProductoFarmaceuticoService
             return "La dosis debe estar entre 0.01 y 3000";
         }
         
-        return true;
+        return null;
     }
 
     /*Se crea un metodo que valida las posibles descripciones de los productos
     de acuerdo a nuestras reglas de negocio.  */
-    public function validarDescripcion(?string $descripcion): string|true
+    public function validarDescripcion(?string $descripcion): ?string
     {
         //Valida si el campo está vacío
         if (empty($descripcion)) {
-            return true; // Es opcional
+            return null; // Es opcional
         }
         
         //preg_match controla que no se ingresen al final cosas como #, ^, palabra y muchos espacios y un nro,etc
@@ -61,7 +60,7 @@ class ProductoFarmaceuticoService
             return "La descripción contiene caracteres no permitidos (#, ^,etc)";
         }
         
-        return true;
+        return null;
     }
 
     /*Se crea un metodo que valida que el producto farmaceutico en su totalidad
@@ -75,13 +74,13 @@ class ProductoFarmaceuticoService
 
         //Se validan las dosis haciendo uso del metodo anterior
         $dosisCheck = $this->validarDosis($data['dosis_producto'] ?? '');
-        if ($dosisCheck !== true) {
+        if ($dosisCheck !== null) {
             $errors['dosis_producto'] = $dosisCheck;
         }
 
         //También se valida la despcriones haciendo uso del metodo anterior
         $descripcionCheck = $this->validarDescripcion($data['descripcion_producto'] ?? null);
-        if ($descripcionCheck !== true) {
+        if ($descripcionCheck !== null) {
             $errors['descripcion_producto'] = $descripcionCheck;
         }
 
@@ -151,7 +150,7 @@ class ProductoFarmaceuticoService
         
         $productoExistente = $this->buscarProductoExistente($data);
         //Si el producto existe y está activo, lanza un error
-        if($productoExistente){
+        if($productoExistente !== null){
             if($productoExistente->activo_producto == 1){
                 throw new \InvalidArgumentException("Producto farmaceutico ya ingresado!");
             }else{
@@ -190,7 +189,7 @@ class ProductoFarmaceuticoService
     {
         //Se asigna a la variable el producto que se busca en el modelo. En caso de no existir, mensaje de error
         $producto = $this->buscarProductoPorID($idProductoFarmaceutico);
-        if (!$producto) {
+        if ($producto === null) {
             throw new \InvalidArgumentException('El producto no existe.');
         }
         
@@ -221,9 +220,9 @@ class ProductoFarmaceuticoService
     /*Metodo para la eliminación lógica del medicamento haciendo uso del metodo de su modelo */
     public function eliminarProducto(int $idProductoFarmaceutico): bool
     {
-        $producto = $this->productoModel->find($idProductoFarmaceutico);
+        $producto = $this->buscarProductoPorID($idProductoFarmaceutico);
 
-        if (!$producto || !$producto->activo_producto) {
+        if ($producto === null || !$producto->activo_producto) {
             throw new \InvalidArgumentException("El producto no existe o ya está inactivo.");
         }
 
@@ -250,6 +249,4 @@ class ProductoFarmaceuticoService
         }
         return $listadoProductos;
     }
-
-
 }

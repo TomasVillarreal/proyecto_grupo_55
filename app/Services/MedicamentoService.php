@@ -92,7 +92,7 @@ class MedicamentoService
 
         //Buscamos que exista el medicamento (no importa si está activo o no aún)
         $medicamento = $this->buscarMedicamentoPorNombre($nombreMedicamento);
-        if ($medicamento) 
+        if ($medicamento !== null) 
         {
             if ($medicamento->activo_medicamento == 1) 
             {
@@ -144,7 +144,7 @@ class MedicamentoService
     {
         $medicamento = $this->buscarMedicamentoPorID($idMedicamento);
 
-        if (!$medicamento || !$medicamento->activo_medicamento) {
+        if ($medicamento === null || !$medicamento->activo_medicamento) {
             throw new \InvalidArgumentException("El medicamento no existe o ya está inactivo.");
         }
 
