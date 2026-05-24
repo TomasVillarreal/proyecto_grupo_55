@@ -35,7 +35,7 @@ class MedicamentosController extends BaseController
     }
 
     /*Metodo que carga los datos a la vista de la creacion de los medicamentos*/
-    public function vista_alta_medicamentos(): string
+    public function mostrarAltaMedicamentos(): string
     {
         $data = $this->obtenerDatosAuxiliares();
         return view('layout/main_layout', [
@@ -65,7 +65,7 @@ class MedicamentosController extends BaseController
 
     /*Metodo para la creacion de los medicamentos (form POST). Se hace uso de transacciones para poder manejar posibles 
     errores en caso de que se inserte un nuevo medicamento pero no un nuevo producto farmaceutico, dejando incosistencias en la bd.*/
-    public function altaMedicamento()
+    public function crearMedicamento()
     {
         $db = \Config\Database::connect();//Se crea la conexión con la BD
         $db->transBegin();//Comienza la transaccion
@@ -96,7 +96,7 @@ class MedicamentosController extends BaseController
     }
 
     /*Metodo que carga los datos a la vista de la modificacion de los medicamentos*/
-    public function vista_modificacion_medicamento(): string
+    public function mostrarModificacionMedicamentos(): string
     {
         $data = $this->obtenerDatosAuxiliares();
         return view('layout/main_layout', [
@@ -107,7 +107,7 @@ class MedicamentosController extends BaseController
 
 
     /*Metodo para la modificacion de los medicamentos (form POST)*/
-    public function modificacionMedicamento()
+    public function modificarMedicamento()
     {
         $huboCambios = false;//Variable para detectar si hubo cambios y proporcionar el msj correcto
         $db = \Config\Database::connect();//Se hace la conexión a la bd.
@@ -162,14 +162,14 @@ class MedicamentosController extends BaseController
      * Retorna JSON.
      * Es usada en el UPDATE.
      */
-    public function productosPorMedicamento(int $idMedicamento)
+    public function obtenerProductosPorMedicamento(int $idMedicamento)
     {
         $productoFarmaceutico = $this->productoFarmaceuticoService->obtenerProductosPorMedicamento($idMedicamento);
         return $this->response->setJSON($productoFarmaceutico);
     }
 
     /*Metodo que carga los datos a la vista de la eliminacion de los medicamentos*/
-    public function vista_baja_medicamento(): string
+    public function mostrarBajaMedicamentos(): string
     {
         $data = $this->obtenerDatosAuxiliares();
         return view('layout/main_layout', [
@@ -179,7 +179,7 @@ class MedicamentosController extends BaseController
     }
 
     /*Metodo para la eliminacion de los medicamentos y productos farmaceuticos*/
-    public function bajaMedicamento($idMedicamento)
+    public function eliminarMedicamento($idMedicamento)
     {
         $db = \Config\Database::connect();//Conexion a la bd
         $db->transBegin(); //Se inicia la transaccion

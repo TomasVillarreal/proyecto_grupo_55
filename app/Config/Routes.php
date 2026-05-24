@@ -8,19 +8,19 @@ use CodeIgniter\Router\RouteCollection;
 //MEDICAMENTOS
 
 // -- GET -- 
-$routes->get('/', 'MedicamentosController::vista_alta_medicamentos');
-$routes->get('/update', 'MedicamentosController::vista_modificacion_medicamento');
-$routes->get('/delete', 'MedicamentosController::vista_baja_medicamento');
+$routes->get('/', 'MedicamentosController::mostrarAltaMedicamentos');
+$routes->get('/update', 'MedicamentosController::mostrarModificacionMedicamentos');
+$routes->get('/delete', 'MedicamentosController::mostrarBajaMedicamentos');
 $routes->get(
     'medicamentos/productos/(:num)',
-    'MedicamentosController::productosPorMedicamento/$1'
+    'MedicamentosController::obtenerProductosPorMedicamento/$1'
 );
 
 // -- POST --
-$routes->post('medicamentos/alta', 'MedicamentosController::altaMedicamento');//Ruta con el POST para la cracion de medicamentos y/o productos farm.
-$routes->post('medicamentos/modificacion','MedicamentosController::modificacionMedicamento');//Ruta con el POST para la modificacion de medicamentos y/o productos farm.
-$routes->post('productos/delete/(:num)', 'ProductoFarmaceuticoController::bajaProducto/$1');
-$routes->post('medicamentos/delete/(:num)', 'MedicamentosController::bajaMedicamento/$1');
+$routes->post('medicamentos/alta', 'MedicamentosController::crearMedicamento');//Ruta con el POST para la cracion de medicamentos y/o productos farm.
+$routes->post('medicamentos/modificacion','MedicamentosController::modificarMedicamento');//Ruta con el POST para la modificacion de medicamentos y/o productos farm.
+$routes->post('productos/delete/(:num)', 'ProductoFarmaceuticoController::eliminarProducto/$1');
+$routes->post('medicamentos/delete/(:num)', 'MedicamentosController::eliminarMedicamento/$1');
 
 
 // PEDIDOS

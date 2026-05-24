@@ -17,7 +17,7 @@ class ProductoFarmaceuticoController extends BaseController
     }
 
     //Metodo que realiza la eliminacion de un producto farmaceutico
-    public function bajaProducto($idProducto)
+    public function eliminarProducto($idProducto)
     {
         try {
 
