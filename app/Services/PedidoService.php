@@ -33,7 +33,7 @@ class PedidoService
     }
 
     // Metodo que obtiene un pedido especifico, usando el metodo del model
-    public function obtenerPedidoEspecifico(int $id_pedido) : ?object
+    public function obtenerPedidoEspecifico(int $id_pedido) : object
     {
         $pedido = $this->pedidoModel->obtenerPedidoEspecifico($id_pedido);
         if ($pedido === null) {
@@ -49,7 +49,7 @@ class PedidoService
 
         // el estado == 1 corresponde al estado "Pendiente". si no esta en este estado
         // significa que ya fue aceptado o rechazado
-        if ($pedido === null || $pedido->id_estado_pedido !== 1) {
+        if ($pedido->id_estado_pedido !== 1) {
             throw new \InvalidArgumentException("El pedido se encuentra en un estado invalido para su rechazo.");
         }
 
@@ -66,7 +66,7 @@ class PedidoService
 
         // el estado == 1 corresponde al estado "Pendiente". si no esta en este estado
         // significa que ya fue aceptado o rechazado
-        if ($pedido === null || $pedido->id_estado_pedido !== 1) {
+        if ($pedido->id_estado_pedido !== 1) {
             throw new \InvalidArgumentException("El pedido se encuentra en un estado invalido para su aprobación.");
         }
 
