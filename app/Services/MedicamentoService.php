@@ -118,6 +118,10 @@ class MedicamentoService
     {
         $medicamento = $this->buscarMedicamentoPorID($idMedicamento);//Primero se busca el id del medicamento
 
+        if ($medicamento === null) {
+            throw new \InvalidArgumentException('El medicamento no existe.');
+        }
+
         $nombreMedicamento = $this->normalizarNombreMedicamento($nombreMedicamento);
 
         $this->validarNombreMedicamento($nombreMedicamento);
