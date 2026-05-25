@@ -35,8 +35,14 @@ class MedicamentoService
             throw new \InvalidArgumentException("El nombre del medicamento es muy corto. Debe contener al menos 3 letras o caracteres");
         }
 
+        // esto deshabilita la posibilidad de que el nombre del medicamento posea unicamente numeros
+        if(preg_match('/^\d+$/', $medicamento)){
+            throw new \InvalidArgumentException(
+                "El nombre del medicamento no puede contener únicamente números"
+            );
+        }
         //preg_match controla que no se ingresen al final cosas como #, ^, palabra y muchos espacios y un nro,etc
-        if(!preg_match('/^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+( [A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+)*$/u', $medicamento)){
+        if(!preg_match('/^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+( [A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/u', $medicamento)){
             throw new \InvalidArgumentException("El nombre del medicamento no debe contener #, ^, espacios al inicio o al final, ni doble espacio");
         }
     }
