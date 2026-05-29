@@ -43,7 +43,7 @@ class PedidoService
     }
 
     // Metodo para el rechazo de un pedido, consiste en cambiar el estado del pedido unicamente.
-    public function rechazar(int $idPedido, string $mensajeRechazo): bool
+    public function rechazarPedido(int $idPedido, string $mensajeRechazo): bool
     {
         $pedido = $this->obtenerPedidoEspecifico($idPedido);
 
@@ -60,7 +60,7 @@ class PedidoService
     }
 
     // Metodo para la aprobacion de un pedido, consiste en cambiar el estado del pedido unicamente.
-    public function aprobar(int $idPedido): bool
+    public function aprobarPedido(int $idPedido): bool
     {
         $pedido = $this->obtenerPedidoEspecifico($idPedido);
 
