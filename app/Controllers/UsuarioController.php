@@ -28,8 +28,8 @@ class UsuarioController extends BaseController{
         $roles = $this->rolesService->obtenerRolesParaDropdown();
 
         return view('layout/main_layout', [
-            'title' => 'Usuarios - Clinicks',
-            'content' => view('usuarios/creacion_usuarios',[
+            'title' => 'Registrar Usuario - Clinicks',
+            'content' => view('access/registrarUsuario',[
                 'roles' => $roles
             ])
         ]);
@@ -54,7 +54,7 @@ class UsuarioController extends BaseController{
             $dataUsuario['id_rol']); 
         
         //Se redirije al login para comprobar su correcta creacion
-        return redirect()->to('/login');
+        return redirect()->to('/access/login')->with('success', 'Usuario creado correctamente.');
     }
 
     /*
@@ -66,5 +66,4 @@ class UsuarioController extends BaseController{
     {
         return $this->usuarioService->obtenerInfoParaPerfil($email);
     }
-
 }
