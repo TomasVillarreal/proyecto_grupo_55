@@ -4,12 +4,10 @@ namespace App\Services;
 
 use App\Models\MedicamentoModel;
 use App\Services\ProductoFarmaceuticoService;
-use CodeIgniter\Database\Exceptions\DatabaseException;
-use InvalidArgumentException;
 
 class MedicamentoService
 {
-    protected $medicamentoModel;//Variable a utilizar que hace referencia al modelo
+    protected MedicamentoModel $medicamentoModel;//Variable a utilizar que hace referencia al modelo
     protected $productoService;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.
@@ -17,7 +15,7 @@ class MedicamentoService
     pero PHP exije que sea asi.*/
     public function __construct()
     {
-        $this->medicamentoModel = model(MedicamentoModel::class);//Se reconoce e instancia la clase
+        $this->medicamentoModel = new MedicamentoModel();//Se reconoce e instancia la clase
         $this->productoService = new ProductoFarmaceuticoService();
     }
 
@@ -47,48 +45,10 @@ class MedicamentoService
         }
     }
 
-    private function buscarMedicamentoPorNombre(string $nombre): ?object
-    {
-        return $this->medicamentoModel
-            ->where('nombre_medicamento', $nombre)
-            ->first();
-    }
-
-    public function buscarMedicamentoPorID(int $id): ?object
-    {
-        return $this->medicamentoModel
-            ->where('id_medicamento', $id)
-            ->first();
-    }
-
-    private function reactivarMedicamento(object $medicamento) : void
-    {
-        $this->medicamentoModel->update(
-            $medicamento->id_medicamento,
-            ['activo_medicamento' => 1]
-        );
-    }
-
     // Funcion que normaliza el nombre del medicamento a ingresar
     private function normalizarNombreMedicamento(string $nombre) : string{
         // ucfirst capitaliza el string, y strtolower convierte todo el string en minusculas
         return ucfirst(strtolower(trim($nombre)));
-    }
-
-
-    // Funcion que hace la insercion del medicamento en la bd
-    private function insertarMedicamento(string $nombre) : int
-    {
-        // hace la insercion del med
-        $idNuevo = $this->medicamentoModel->insert(['nombre_medicamento' => $nombre]);
-
-        // Verificamos que se haya hecho la insercion
-        if(!$idNuevo){
-            throw new \RuntimeException('No se pudo crear el medicamento');
-        }
-
-        //Retorna el id del nuevo medicamento creado
-        return (int) $idNuevo;
     }
 
     /*Se crea un metodo que creará un nuevo medicamento teniendo en cuenta que cumple con las validaciones.
@@ -102,32 +62,32 @@ class MedicamentoService
         $this->validarNombreMedicamento($nombreMedicamento);
 
         //Buscamos que exista el medicamento (no importa si está activo o no aún)
-        $medicamento = $this->buscarMedicamentoPorNombre($nombreMedicamento);
+        $medicamento = $this->medicamentoModel->obtenerPorNombre($nombreMedicamento);
         if ($medicamento !== null) 
         {
-            if ($medicamento->activo_medicamento === 1) 
+            if ($medicamento->obtenerActivo()) 
             {
                 throw new \InvalidArgumentException(
                     "Ya existe un medicamento activo con ese nombre."
                 );
             }
 
-            $this->reactivarMedicamento($medicamento);
-            return (int) $medicamento->id_medicamento;
+            $this->medicamentoModel->reactivar($medicamento);
+            return (int) $medicamento->obtenerID();
         }
 
-        return $this->insertarMedicamento($nombreMedicamento);
-    }
-
-    private function modificacionMedicamento(int $id, string $nombre): bool{
-        return $this->medicamentoModel->update($id, ['nombre_medicamento' => $nombre]);
+        $resultado = $this->medicamentoModel->agregar($nombreMedicamento);
+        if($resultado === null){
+            throw new \RuntimeException('No se pudo crear el medicamento');
+        }
+        return (int) $resultado;
     }
 
     /*Se crea un metodo que se utilizara para editar un medicamento (el nombre), siempre y cuando cumpla,
     con las validaciones*/
     public function modificarMedicamento(int $idMedicamento, string $nombreMedicamento): bool
     {
-        $medicamento = $this->buscarMedicamentoPorID($idMedicamento);//Primero se busca el id del medicamento
+        $medicamento = $this->medicamentoModel->obtenerPorID($idMedicamento);//Primero se busca el id del medicamento
 
         if ($medicamento === null) {
             throw new \InvalidArgumentException('El medicamento no existe.');
@@ -138,7 +98,7 @@ class MedicamentoService
         $this->validarNombreMedicamento($nombreMedicamento);
 
         //Si el nombre es igual a uno ya almacenado, devuelve false al controller
-        if ($medicamento->nombre_medicamento === $nombreMedicamento) {
+        if ($medicamento->obtenerNombre() === $nombreMedicamento) {
             // Si entra aca no hubo cambios
             return false;
         }
@@ -148,26 +108,22 @@ class MedicamentoService
             throw new \InvalidArgumentException('Ya existe un medicamento con ese nombre');
         }
 
-        return $this->modificacionMedicamento($idMedicamento, $nombreMedicamento);
-    }
-
-    private function desactivarMedicamento(int $id) : bool{
-        return $this->medicamentoModel->update($id, ['activo_medicamento' => 0]);
+        return $this->medicamentoModel->modificar($idMedicamento, $nombreMedicamento);
     }
 
     /*Metodo para eliminar logicamente un medicamento*/
     public function eliminarMedicamento(int $idMedicamento): bool
     {
         // buscamos al medicamento
-        $medicamento = $this->buscarMedicamentoPorID($idMedicamento);
+        $medicamento = $this->medicamentoModel->obtenerPorID($idMedicamento);
 
         //si no existe o ya fue deshabilitado:
-        if ($medicamento === null || !$medicamento->activo_medicamento) {
+        if ($medicamento === null || !$medicamento->obtenerActivo()) {
             throw new \InvalidArgumentException("El medicamento no existe o ya está inactivo.");
         }
 
         //Se elimina el medicamento
-        $this->desactivarMedicamento($idMedicamento);
+        $this->medicamentoModel->desactivar($medicamento);
 
        //Se eliminan los productos farmaceuticos asociados a dicho medicamento
         return $this->productoService->eliminarProductosPorMedicamento($idMedicamento);
@@ -178,12 +134,13 @@ class MedicamentoService
     correctamente escritos*/
     public function obtenerMedicamentosDropdown(): array
     {
-        $medicamentos = $this->medicamentoModel->obtenerMedicamentosActivos();
-        $listado = [];
+        $opciones = [];
 
-        foreach($medicamentos as $medicamento){
-            $listado[$medicamento->id_medicamento] = $medicamento->nombre_medicamento;
+        foreach ($this->medicamentoModel->obtenerTodos() as $medicamento) {
+            $opciones[$medicamento->obtenerID()] =
+                $medicamento->obtenerNombre();
         }
-        return $listado;
+
+        return $opciones;
     }
 }
