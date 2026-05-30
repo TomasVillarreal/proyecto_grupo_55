@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Entities\Medicamento;
 
 class MedicamentoModel extends Model
 {
@@ -10,14 +11,38 @@ class MedicamentoModel extends Model
     protected $primaryKey = 'id_medicamento'; //Identificador de la tabla
     protected $allowedFields = ['nombre_medicamento','activo_medicamento']; //Las columnas de la tabla
     protected $useTimestamps = false; //Para no rellenar columnas de tiempo automaticamente.
-    protected $returnType = 'object'; //Se especifica el formato de dato a devolver
+    
+    private ?array $cacheMedicamentos = [];
+    private bool $todosCargados = false;
 
     //Se crea un método para obtener todos los medicamentos activos en el sistema
-    public function obtenerMedicamentosActivos()
+    public function obtenerTodos(): array
     {
-        return $this->where('activo_medicamento',1) //Se realiza el filtro por el campo activo y su valor 1 (por defecto activo)
+        if ($this->todosCargados) {
+            return array_values($this->cacheMedicamentos);
+        }
+
+        $registros = $this->where('activo_medicamento',1) //Se realiza el filtro por el campo activo y su valor 1 (por defecto activo)
                     ->orderby ('nombre_medicamento', 'ASC') //Forma en la que se van a presentar los medicamentos
-                    ->findAll(); //Trae todos los registros de la BD que cumplan con los filtros previos.
+                    ->findAll();
+
+        foreach ($registros as $registro) {
+            if (isset($this->cacheMedicamentos[$registro['id_medicamento']])) {
+                continue;
+            }
+
+            $medicamento = new Medicamento (
+                $registro['id_medicamento'],
+                $registro['nombre_medicamento'], 
+                (bool) $registro['activo_medicamento']
+            );
+
+            $this->cacheMedicamentos[$medicamento->obtenerID()] = $medicamento;
+        }
+
+        $todosCargados = true;
+
+        return array_values($this->cacheMedicamentos);
     }
 
     /*Se crea un método que verifica que el medicamento que se desea ingresar sea único, por su nombre
