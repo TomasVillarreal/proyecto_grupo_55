@@ -12,28 +12,19 @@ class EstadoPedidoModel extends Model
     protected $allowedFields = ['tipo_estado_pedido'];
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
-    private ?array $cacheEstados = null;
+    private function crearObjeto(array $registro): EstadoPedido
+    {
+        return new EstadoPedido(
+            (int) $registro['id_estado_pedido'],
+            $registro['tipo_estado_pedido'],
+        );
+    }
 
     public function obtenerTodos(): array
     {
-        if ($this->cacheMedidas !== null) {
-            return $this->cacheMedidas;
-        }
-
         $registros = $this->orderBy('tipo_estado_pedido', 'ASC')->findAll();
 
-        $tipos = [];
-
-        foreach ($registros as $registro) {
-            $tipos[] = new EstadoPedido (
-                $registro['id_estado_pedido'],
-                $registro['tipo_estado_pedido']
-            );
-        }
-
-        $this->cacheEstados = $tipos;
-
-        return $this->cacheEstados;
+        return array_map(fn($r) => $this->crearObjeto($r), $registros);
     }
 
 

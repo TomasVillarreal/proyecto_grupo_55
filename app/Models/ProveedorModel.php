@@ -12,28 +12,20 @@ class ProveedorModel extends Model
     protected $allowedFields = ['nombre_proveedor'];
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
-    private ?array $cacheProveedores = null;
+    private function crearObjeto(array $registro): Proveedor
+    {
+        return new Proveedor(
+            (int) $registro['id_proveedor'],
+            $registro['nombre_proveedor'],
+        );
+    }
+
 
     public function obtenerTodos(): array
     {
-        if ($this->cacheProveedores !== null) {
-            return $this->cacheProveedores;
-        }
-
         $registros = $this->orderBy('nombre_proveedor', 'ASC')->findAll();
 
-        $tipos = [];
-
-        foreach ($registros as $registro) {
-            $tipos[] = new Proveedor(
-                $registro['id_proveedor'],
-                $registro['nombre_proveedor']
-            );
-        }
-
-        $this->cacheProveedores = $tipos;
-
-        return $this->cacheProveedores;
+        return array_map(fn($r) => $this->crearObjeto($r), $registros);
     }
 
 }

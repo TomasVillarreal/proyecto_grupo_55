@@ -12,28 +12,19 @@ class MedidaProductoModel extends Model
     protected $allowedFields = ['nombre_medida']; //Columna de la tabla
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
-    private ?array $cacheMedidas = null;
+    private function crearObjeto(array $registro): MedidaProducto
+    {
+        return new MedidaProducto(
+            (int) $registro['id_medida_producto'],
+            $registro['nombre_medida'],
+        );
+    }
 
     public function obtenerTodos(): array
     {
-        if ($this->cacheMedidas !== null) {
-            return $this->cacheMedidas;
-        }
-
         $registros = $this->orderBy('nombre_medida', 'ASC')->findAll();
 
-        $tipos = [];
-
-        foreach ($registros as $registro) {
-            $tipos[] = new MedidaProducto (
-                $registro['id_medida_producto'],
-                $registro['nombre_medida']
-            );
-        }
-
-        $this->cacheMedidas = $tipos;
-
-        return $this->cacheMedidas;
+        return array_map(fn($r) => $this->crearObjeto($r), $registros);
     }
 
     /*Se crea un método para obtener todos las medidas de las dosis de los productos ordenados alfabeticamente,

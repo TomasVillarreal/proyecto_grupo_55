@@ -12,9 +12,6 @@ class MedicamentoModel extends Model
     protected $allowedFields = ['nombre_medicamento','activo_medicamento'];
     protected $useTimestamps = false;
 
-    private array $cacheMedicamentos = [];
-    private bool $cacheCompleta = false;
-
     private function crearObjeto(array $registro): Medicamento
     {
         return new Medicamento(
@@ -26,43 +23,22 @@ class MedicamentoModel extends Model
 
     public function obtenerTodos(): array
     {
-        if ($this->cacheCompleta) {
-            return array_values($this->cacheMedicamentos);
-        }
-
         $registros = $this->where('activo_medicamento', 1)
             ->orderBy('nombre_medicamento', 'ASC')
             ->findAll();
 
-        $this->cacheMedicamentos = [];
-
-        foreach ($registros as $registro) {
-            $med = $this->crearObjeto($registro);
-            $this->cacheMedicamentos[$med->obtenerID()] = $med;
-        }
-
-        $this->cacheCompleta = true;
-
-        return array_values($this->cacheMedicamentos);
+        return array_map(fn($r) => $this->crearObjeto($r), $registros);
     }
 
     public function obtenerPorID(int $id): ?Medicamento
     {
-        if (isset($this->cacheMedicamentos[$id])) {
-            return $this->cacheMedicamentos[$id];
-        }
-
         $registro = $this->find($id);
 
         if (!$registro) {
             return null;
         }
 
-        $med = $this->crearObjeto($registro);
-
-        $this->cacheMedicamentos[$id] = $med;
-
-        return $med;
+        return $this->crearObjeto($registro);
     }
 
     public function obtenerPorNombre(string $nombre): ?Medicamento
@@ -81,9 +57,6 @@ class MedicamentoModel extends Model
     {
         $med->cambiarActivo(true);
 
-        $this->cacheMedicamentos[$med->obtenerID()] = $med;
-        $this->cacheCompleta = false;
-
         return $this->update($med->obtenerID(), [
             'activo_medicamento' => 1
         ]);
@@ -93,9 +66,6 @@ class MedicamentoModel extends Model
     {
         $med->cambiarActivo(false);
 
-        $this->cacheMedicamentos[$med->obtenerID()] = $med;
-        $this->cacheCompleta = false;
-
         return $this->update($med->obtenerID(), [
             'activo_medicamento' => 0
         ]);
@@ -103,17 +73,9 @@ class MedicamentoModel extends Model
 
     public function modificar(int $id, string $nombre): bool
     {
-        $ok = $this->update($id, [
+        return $this->update($id, [
             'nombre_medicamento' => $nombre
         ]);
-
-        if ($ok && isset($this->cacheMedicamentos[$id])) {
-            $this->cacheMedicamentos[$id]->cambiarNombre($nombre);
-        }
-
-        $this->cacheCompleta = false;
-
-        return $ok;
     }
 
     public function agregar(string $nombre): int
@@ -123,12 +85,7 @@ class MedicamentoModel extends Model
             'activo_medicamento' => 1
         ]);
 
-        $id = (int) $this->getInsertID();
-
-        $this->cacheMedicamentos[$id] = new Medicamento($id, $nombre, true);
-        $this->cacheCompleta = false;
-
-        return $id;
+        return (int) $this->getInsertID();
     }
 
     public function medicamentoUnico(string $nombre, ?int $excludeId = null): bool
@@ -142,11 +99,5 @@ class MedicamentoModel extends Model
         }
 
         return $builder->countAllResults() > 0;
-    }
-
-    public function invalidarCache(): void
-    {
-        $this->cacheMedicamentos = [];
-        $this->cacheCompleta = false;
     }
 }

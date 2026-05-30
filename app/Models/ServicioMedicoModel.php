@@ -12,28 +12,19 @@ class ServicioMedicoModel extends Model
     protected $allowedFields = ['nombre_servicio_medico'];
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
-    private ?array $cacheServiciosMedicos = null;
+    private function crearObjeto(array $registro): ServicioMedico
+    {
+        return new ServicioMedico(
+            (int) $registro['id_servicio_medico'],
+            $registro['nombre_servicio_medico'],
+        );
+    }
 
     public function obtenerTodos(): array
     {
-        if ($this->cacheServiciosMedicos !== null) {
-            return $this->cacheServiciosMedicos;
-        }
-
         $registros = $this->orderBy('nombre_servicio_medico', 'ASC')->findAll();
 
-        $tipos = [];
-
-        foreach ($registros as $registro) {
-            $tipos[] = new ServicioMedico(
-                $registro['id_servicio_medico'],
-                $registro['nombre_servicio_medico']
-            );
-        }
-
-        $this->cacheServiciosMedicos = $tipos;
-
-        return $this->cacheServiciosMedicos;
+        return array_map(fn($r) => $this->crearObjeto($r), $registros);
     }
 
     /*Se crea un método para obtener todos los servicios medicos que pueden realizar pedidos ordenados alfabeticamente,
