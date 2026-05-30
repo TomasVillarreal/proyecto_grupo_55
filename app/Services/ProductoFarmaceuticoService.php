@@ -87,10 +87,10 @@ class ProductoFarmaceuticoService
         //Se valida que el producto entero no tenga duplicados
         if (empty($errors)) {
             if ($this->productoModel->productoFarmaceuticoUnico(
-                (int) $data['id_medicamento'],
                 (float) $data['dosis_producto'],
-                (int) $data['id_medida_producto'],
+                (int) $data['id_medicamento'],
                 (int) $data['id_tipo_producto'],
+                (int) $data['id_medida_producto'],
                 $excludeId
             )) {
                 $errors['unique'] = 'Ya existe un producto con la misma combinación de medicamento, dosis, medida y tipo.';
@@ -175,7 +175,7 @@ class ProductoFarmaceuticoService
     }
 
     private function modificarProd(int $id, array $data) : bool{
-        return $this->productoModel->update($id, $data); 
+        return $this->productoModel->update($id, $data);
     }
 
     /* Metodo que verifica que se hayan producido cambios entre el producto
@@ -199,6 +199,7 @@ class ProductoFarmaceuticoService
         
         //Se toman los valores recibidos y se almacenan para su posterior comparacion
         $updateData = $this->prepararDatosProducto($data);
+
         
         //Se comparan valores recibidos con valores en bd para determinar si hubo cambios
         if ($this->verificarCambiosProducto($producto, $updateData)){
@@ -207,7 +208,7 @@ class ProductoFarmaceuticoService
         }
 
         // validacion de los datos obtenidos
-        $errors = $this->validarProductoFarmaceutico($data, $idProductoFarmaceutico);
+        $errors = $this->validarProductoFarmaceutico($updateData, $idProductoFarmaceutico);
         // si hay errorres, tiro excepcion
         if (!empty($errors)) {
             throw new \InvalidArgumentException(implode(' ', $errors));

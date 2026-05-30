@@ -126,7 +126,7 @@ class MedicamentosController extends BaseController
             $dataProd = $this->obtenerDatosProductoPost();
 
             //Primero se valida el id del medicamento
-            if (!$dataMed['id_medicamento']) {
+            if ($dataMed['id_medicamento'] === null) {
                 throw new \Exception("Medicamento inválido");
             }
 
@@ -142,8 +142,7 @@ class MedicamentosController extends BaseController
 
             //En caso de que se haya actualizado algun dato del producto farmaceutico, entra acá
             if ($dataProd['id_producto'] && $dataProd['id_producto'] != "-1") {//Si se selecciono un producto para modificar
-                $nuevoProd = $this->productoFarmaceuticoService->modificarProductoFarmaceutico($dataProd['id_producto'] , $dataProd);
-                
+                $nuevoProd = $this->productoFarmaceuticoService->modificarProductoFarmaceutico($dataProd['id_producto'] , $dataProd);            
                 //Comprobacion si hubo cambios o no
                 if($nuevoProd){
                     $huboCambios = true;
