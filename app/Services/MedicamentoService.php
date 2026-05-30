@@ -77,7 +77,7 @@ class MedicamentoService
         }
 
         $resultado = $this->medicamentoModel->agregar($nombreMedicamento);
-        if($resultado === null){
+        if($resultado === 0){
             throw new \RuntimeException('No se pudo crear el medicamento');
         }
         return (int) $resultado;

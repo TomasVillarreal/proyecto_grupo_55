@@ -5,19 +5,19 @@ namespace App\Entities;
 class ProductoFarmaceutico 
 {
     private int $id;
-    private string $nombre;
     private ?string $descripcion;
+    private float $dosis;
     private Medicamento $medicamento;
     private TipoProducto $tipo;
     private MedidaProducto $unidad_medida;
     private bool $activo;
 
-    public function __construct(int $id, ?string $nombre, string $descripcion,
+    public function __construct(int $id, ?string $descripcion, float $dosis,
                                 Medicamento $medicamento, TipoProducto $tipo, 
                                 MedidaProducto $medida, bool $activo){
         $this->asignarID($id);
-        $this->cambiarNombre($nombre);
         $this->cambiarDescripcion($descripcion);
+        $this->cambiarDosis($dosis);
         $this->asignarMedicamento($medicamento);
         $this->cambiarTipo($tipo);
         $this->cambiarUnidadMedida($medida);
@@ -29,14 +29,14 @@ class ProductoFarmaceutico
         $this->id = $id;
     }
 
-    public function cambiarNombre(string $nombre) : void
-    {
-        $this->nombre = $nombre;
-    }
-
     public function cambiarDescripcion(?string $desc) : void 
     {
         $this->descripcion = $desc;
+    }
+
+    public function cambiarDosis(float $dosis) : void
+    {
+        $this->dosis = $dosis;
     }
 
     private function asignarMedicamento(Medicamento $medicamento) : void
@@ -64,14 +64,14 @@ class ProductoFarmaceutico
         return $this->id;
     }
 
-    public function obtenerNombre() : string
-    {
-        return $this->nombre;
-    }
-
     public function obtenerDescripcion() : ?string 
     {
         return $this->descripcion;
+    }
+
+    public function obtenerDosis() : float
+    {
+        return $this->dosis;
     }
 
     public function obtenerMedicamento() : Medicamento

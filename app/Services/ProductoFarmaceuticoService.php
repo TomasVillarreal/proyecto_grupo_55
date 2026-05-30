@@ -11,19 +11,19 @@ use CodeIgniter\Database\Exceptions\DatabaseException;
 class ProductoFarmaceuticoService
 {
     //Variables a utilizar que hacen referencia a cada modelo usado
-    protected $productoModel;
-    protected $tipoProductoModel;
-    protected $medidaProductoModel;
-    protected $medicamentoModel;
+    protected ProductoFarmaceuticoModel $productoModel;
+    protected TipoProductoModel $tipoProductoModel;
+    protected MedidaProductoModel $medidaProductoModel;
+    protected MedicamentoModel $medicamentoModel;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.*/
     public function __construct()
     {
         //Se reconocen e instancian las clases de los modelos a utilizar
-        $this->productoModel = model(ProductoFarmaceuticoModel::class);
-        $this->tipoProductoModel = model(TipoProductoModel::class);
-        $this->medidaProductoModel = model(MedidaProductoModel::class);
-        $this->medicamentoModel = model(MedicamentoModel::class);
+        $this->productoModel = new ProductoFarmaceuticoModel();
+        $this->tipoProductoModel = new TipoProductoModel();
+        $this->medidaProductoModel = new MedidaProductoModel();
+        $this->medicamentoModel = new MedicamentoModel();
 
     }
 
@@ -31,7 +31,7 @@ class ProductoFarmaceuticoService
     reglas de negocio. 
     Devuelve null si cumple con las validaciones y en caso contrario
     devuelve un string con el error*/
-    public function validarDosis($dosis): ?string
+    public function validarDosis(float $dosis): ?string
     {
         if (!is_numeric($dosis)) {
             return "La dosis debe ser un número";
@@ -99,35 +99,6 @@ class ProductoFarmaceuticoService
         return $errors;
     }
 
-    // Metodo que inserta el producto a la base de datos, tal que devuelve el id del nuevo producto
-    private function insertarProductoFarmaceutico(array $data) : int
-    {
-        // hace la insercion
-        $id = $this->productoModel->insert($data);
-        
-        // Si hubo un error tiro una excepcion
-        if (!$id) {
-            throw new DatabaseException('No se pudo crear el producto.');
-        }
-
-        //Retorna el nuevo id
-        return $id;
-    }
-
-    private function buscarProductoExistente(array $data) : ?object{
-        //Se busca primero si el producto ya existe (activo o inactivo da igual)
-        return $this->productoModel
-        ->where('id_medicamento', (int) $data['id_medicamento'])
-        ->where('id_tipo_producto', (int) $data['id_tipo_producto'])
-        ->where('id_medida_producto', (int) $data['id_medida_producto'])
-        ->where('dosis_producto', $data['dosis_producto'])
-        ->first();
-    }
-
-    private function reactivarProducto(object $producto) : void
-    {
-        $this->productoModel->update($producto->id_producto,['activo_producto' => 1]);
-    }
 
     // Metodo que prepara los datos a insertar / actualizar
     private function prepararDatosProducto(array $data) : array {
@@ -151,31 +122,26 @@ class ProductoFarmaceuticoService
             throw new \InvalidArgumentException(implode(' ', $errors));//Transforma el array en texto formato JSON
         }
         
-        $productoExistente = $this->buscarProductoExistente($data);
+        $productoExistente = $this->productoModel->buscarProductoExistente($data);
         //Si el producto existe y está activo, lanza un error
         if($productoExistente !== null){
-            if($productoExistente->activo_producto === 1){
+            if($productoExistente->obtenerActivo() === true){
                 throw new \InvalidArgumentException("Producto farmaceutico ya ingresado!");
             }
             //si esta desactivado, lo reactiva y devuelve el id de ese producto reactivado
-            $this->reactivarProducto($productoExistente);
-            return (int) $productoExistente->id_producto;
+            $this->productoModel->reactivar($productoExistente);
+            return (int) $productoExistente->obtenerID();
         }
 
         //Si no hay error de unicidad, es porque el producto es nuevo, por lo que se preparo los datos del nuevo prod
         $insertData = array_merge($this->prepararDatosProducto($data), ['activo_producto'=>1]);
 
         // Inserto el nuevo prod con los datos y devuelvo el id.
-        return $this->insertarProductoFarmaceutico($insertData);
-    }
-
-
-    private function buscarProductoPorID(int $id) : ?object{
-        return $this->productoModel->find($id);
-    }
-
-    private function modificarProd(int $id, array $data) : bool{
-        return $this->productoModel->update($id, $data);
+        $resultado = $this->productoModel->agregar($insertData);
+        if($resultado === 0){
+            throw new \RuntimeException('No se pudo crear el medicamento');
+        }
+        return (int) $resultado;
     }
 
     /* Metodo que verifica que se hayan producido cambios entre el producto
@@ -192,7 +158,7 @@ class ProductoFarmaceuticoService
     public function modificarProductoFarmaceutico(int $idProductoFarmaceutico, array $data): bool
     {
         //Se asigna a la variable el producto que se busca en el modelo. En caso de no existir, mensaje de error
-        $producto = $this->buscarProductoPorID($idProductoFarmaceutico);
+        $producto = $this->productoModel->buscarProductoPorID($idProductoFarmaceutico);
         if ($producto === null) {
             throw new \InvalidArgumentException('El producto no existe.');
         }
@@ -215,27 +181,19 @@ class ProductoFarmaceuticoService
         }
 
         //si no hay errores, modifico el producto
-        return $this->modificarProd($idProductoFarmaceutico, $updateData);
-    }
-
-    public function eliminarProductosPorMedicamento(int $idMedicamento) : bool {
-        return $this->productoModel->where('id_medicamento', $idMedicamento)->set(['activo_producto' => 0])->update();
-    }
-
-    private function desactivarUnProducto(int $id) : bool {
-        return $this->productoModel->update($id, ['activo_producto' => 0]);
+        return $this->productoModel->modificar($idProductoFarmaceutico, $updateData);
     }
 
     /*Metodo para la eliminación lógica del medicamento haciendo uso del metodo de su modelo */
     public function eliminarProducto(int $idProductoFarmaceutico): bool
     {
-        $producto = $this->buscarProductoPorID($idProductoFarmaceutico);
+        $producto = $this->productoModel->buscarProductoPorID($idProductoFarmaceutico);
 
-        if ($producto === null || !$producto->activo_producto) {
+        if ($producto === null || !$producto->obtenerActivo()) {
             throw new \InvalidArgumentException("El producto no existe o ya está inactivo.");
         }
 
-        return $this->desactivarUnProducto($idProductoFarmaceutico);
+        return $this->productoModel->desactivar($producto);
     }
 
     /*Metodo que va a ser utilizado para cargar dinamicamente los campos del producto
