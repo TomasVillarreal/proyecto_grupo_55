@@ -7,22 +7,24 @@ use App\Models\TipoProductoModel;
 class TipoProductoService
 {
     //Variable a utilizar que hace referncia al modelo
-    protected $tipoProductoModel;
+    protected TipoProductoModel $tipoProductoModel;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion*/
     public function __construct()
     {
-        $this->tipoProductoModel = model(TipoProductoModel::class);//Se reconoce e instancia la clase
+        $this->tipoProductoModel = new TipoProductoModel();//Se reconoce e instancia la clase
     }
 
     /*Metodo para obtener los tipos de productos y ser utilizados en el dropdown*/
     public function obtenerTiposDropdown(): array
     {
-        $tipos = $this->tipoProductoModel->orderBy('nombre_tipo_producto', 'ASC')->findAll();
-        $listado = [];
-        foreach ($tipos as $tipo) {
-            $listado[$tipo->id_tipo_producto] = $tipo->nombre_tipo_producto;
+        $opciones = [];
+
+        foreach ($this->tipoProductoModel->obtenerTodos() as $tipo_producto) {
+            $opciones[$tipo_producto->obtenerID()] =
+                $tipo_producto->obtenerNombre();
         }
-        return $listado;
+
+        return $opciones;
     }
 }
