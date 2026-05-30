@@ -10,6 +10,7 @@
 
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="icon" type="image/x-icon" href="<?= base_url('favicon.ico') ?>"> 
 
 <style>
 /* VARIABLES DEL SIDEBAR */
@@ -85,23 +86,36 @@ body{
 
   <i class="bi bi-hospital nav_logo-icon login-icon"></i>
 
-  <form>
+  <form method="post" action="<?= base_url('access/iniciar_sesion') ?>">
 
     <div class="mb-3">
       <label class="form-label">Email</label>
-      <input type="email" class="form-control" placeholder="Ingrese su email">
+      <input type="email" name="email_usuario" class="form-control" placeholder="Ingrese su email">
     </div>
 
     <div class="mb-3">
       <label class="form-label">Contraseña</label>
-      <input type="password" class="form-control" placeholder="Ingrese su contraseña">
+      <input type="password" name="password_usuario" class="form-control" placeholder="Ingrese su contraseña">
     </div>
 
     <div class="text-center mt-4">
-      <button type="submit" class="btn btn-primary px-4">Crear</button>
+      <button type="submit" class="btn btn-primary px-4">Iniciar Sesion</button>
     </div>
 
   </form>
+      <?php if (session()->getFlashdata('error')): ?>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= session()->getFlashdata('error') ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <?php endif; ?>
+
+<?php if(session()->getFlashdata('success')): ?>
+    <div class="alert alert-success alert-dismissible fade show">
+        <?= session()->getFlashdata('success') ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
 </div>
 
 </body>
