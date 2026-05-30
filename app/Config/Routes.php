@@ -8,9 +8,9 @@ use CodeIgniter\Router\RouteCollection;
 //MEDICAMENTOS
 
 // -- GET -- 
-$routes->get('/', 'MedicamentosController::create');
-$routes->get('/update', 'MedicamentosController::update');
-$routes->get('/delete', 'MedicamentosController::delete');
+$routes->get('/', 'MedicamentosController::vista_alta_medicamentos');
+$routes->get('/update', 'MedicamentosController::vista_modificacion_medicamento');
+$routes->get('/delete', 'MedicamentosController::vista_baja_medicamento');
 $routes->get(
     'medicamentos/productos/(:num)',
     'MedicamentosController::productosPorMedicamento/$1'
@@ -35,3 +35,20 @@ $routes->get('/pedido/(:num)', 'PedidoController::mostrarDetallesPedidos/$1');
 $routes->post('pedidos/aprobar', 'PedidoController::manejarAceptacion');
 $routes->post('pedidos/rechazar', 'PedidoController::manejarRechazo');
 $routes->post('pedidos/crearPedido', 'PedidoController::guardarDatosPedido');
+
+// LOGIN/INICIO DE SESION
+
+// -- GET --
+$routes->get('/access/login', 'LoginController::vista_login');  
+
+// -- POST -- 
+$routes->post('/access/iniciar_sesion', 'LoginController::login');
+
+
+// USUARIO
+
+// -- GET --
+$routes->get('/access/registrar', 'UsuarioController::vista_crear_usuario');
+
+// -- POST --
+$routes->post('access/crear', 'UsuarioController::crear_usuario');
