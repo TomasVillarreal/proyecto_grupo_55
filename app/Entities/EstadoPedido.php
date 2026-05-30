@@ -9,7 +9,7 @@ class EstadoPedido
 
     public function __construct(int $id, string $nombre){
         $this->asignarID($id);
-        $this->cambiarNombre($nombre);
+        $this->asignarNombre($nombre);
     }
 
     private function asignarID(int $id) : void
@@ -17,7 +17,7 @@ class EstadoPedido
         $this->id = $id;
     }
 
-    public function cambiarNombre(string $nombre) : void
+    private function asignarNombre(string $nombre) : void
     {
         $this->nombre = $nombre;
     }
