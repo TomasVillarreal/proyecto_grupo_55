@@ -6,13 +6,13 @@ class ProductoFarmaceutico
 {
     private int $id;
     private string $nombre;
-    private string $descripcion;
+    private ?string $descripcion;
     private Medicamento $medicamento;
     private TipoProducto $tipo;
     private MedidaProducto $unidad_medida;
     private bool $activo;
 
-    public function __construct(int $id, string $nombre, string $descripcion,
+    public function __construct(int $id, ?string $nombre, string $descripcion,
                                 Medicamento $medicamento, TipoProducto $tipo, 
                                 MedidaProducto $medida, bool $activo){
         $this->asignarID($id);
@@ -34,7 +34,7 @@ class ProductoFarmaceutico
         $this->nombre = $nombre;
     }
 
-    public function cambiarDescripcion(string $desc) : void 
+    public function cambiarDescripcion(?string $desc) : void 
     {
         $this->descripcion = $desc;
     }
@@ -69,7 +69,7 @@ class ProductoFarmaceutico
         return $this->nombre;
     }
 
-    public function obtenerDescripcion() : string 
+    public function obtenerDescripcion() : ?string 
     {
         return $this->descripcion;
     }
