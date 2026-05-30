@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-class Medicamento 
+class ProductoFarmaceutico 
 {
     private int $id;
     private string $nombre;
@@ -12,9 +12,15 @@ class Medicamento
     private MedidaProducto $unidad_medida;
     private bool $activo;
 
-    public function __construct(int $id, string $nombre, bool $activo){
+    public function __construct(int $id, string $nombre, string $descripcion,
+                                Medicamento $medicamento, TipoProducto $tipo, 
+                                MedidaProducto $medida, bool $activo){
         $this->asignarID($id);
         $this->cambiarNombre($nombre);
+        $this->cambiarDescripcion($descripcion);
+        $this->asignarMedicamento($medicamento);
+        $this->cambiarTipo($tipo);
+        $this->cambiarUnidadMedida($medida);
         $this->cambiarActivo($activo);
     }
 
@@ -26,11 +32,6 @@ class Medicamento
     public function cambiarNombre(string $nombre) : void
     {
         $this->nombre = $nombre;
-    }
-
-    public function cambiarActivo(bool $activo) : void
-    {
-        $this->activo = $activo;
     }
 
     public function cambiarDescripcion(string $desc) : void 
@@ -53,6 +54,11 @@ class Medicamento
         $this->unidad_medida = $medida;
     }
 
+    public function cambiarActivo(bool $activo) : void
+    {
+        $this->activo = $activo;
+    }
+
     public function obtenerID() : int
     {
         return $this->id;
@@ -63,17 +69,12 @@ class Medicamento
         return $this->nombre;
     }
 
-    public function obtenerActivo() : bool
-    {
-        return $this->activo;
-    }
-
     public function obtenerDescripcion() : string 
     {
         return $this->descripcion;
     }
 
-    private function obtenerMedicamento() : Medicamento
+    public function obtenerMedicamento() : Medicamento
     {
         return $this->medicamento;
     }
@@ -87,4 +88,10 @@ class Medicamento
     {
         return $this->unidad_medida;
     }
+
+    public function obtenerActivo() : bool
+    {
+        return $this->activo;
+    }
+
 }
