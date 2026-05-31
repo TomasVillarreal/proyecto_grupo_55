@@ -93,7 +93,7 @@ class MedicamentoService
         $nombreMedicamento = $this->normalizarNombreMedicamento($nombreMedicamento);
         $this->validarNombreMedicamento($nombreMedicamento);
 
-        //Si el nombre es igual a uno ya almacenado, devuelve false al controller
+        //Verifica si hubo cambios
         if ($medicamento->obtenerNombre() === $nombreMedicamento) {
             // Si entra aca no hubo cambios
             return false;
