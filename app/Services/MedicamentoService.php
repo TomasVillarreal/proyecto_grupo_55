@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\MedicamentoModel;
-use App\Services\ProductoFarmaceuticoService;
 
 class MedicamentoService
 {

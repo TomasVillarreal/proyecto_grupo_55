@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\DetallePedidoModel;
-use App\Entities\Pedido;
 
 class DetallePedidoService
 {
@@ -18,14 +17,23 @@ class DetallePedidoService
 
     /*Metodo para obtener los detalles de un pedido particular, 
     haciendo uso del metodo del modelo, y devolviendolo*/
-    public function obtenerDetallesPedido(Pedido $pedido): array
+   public function obtenerDetallesPedido(int $idPedido): array
     {
-        $detalles = $this->detalleModel->obtenerDetallesPorPedido($pedido);
+        $detalles = $this->detalleModel->obtenerDetallesPorPedido($idPedido);
 
-        if (!$detalles) {
-            throw new \Exception("Pedido no encontrado");
+        $listadoDetalles = [];
+        foreach ($detalles as $detalle) {
+            $listadoDetalles[] = [
+                'id_detalle'    => $detalle->obtenerID(),
+                'cantidad'      => $detalle->obtenerCantidad(),
+                'proveedor'     => $detalle->obtenerProveedor()->obtenerNombre(),
+                'medicamento'   => $detalle->obtenerProducto()->obtenerMedicamento()->obtenerNombre(),
+                'tipo'          => $detalle->obtenerProducto()->obtenerTipo()->obtenerNombre(),
+                'medida'        => $detalle->obtenerProducto()->obtenerUnidadMedida()->obtenerNombre(),
+                'dosis'         => $detalle->obtenerProducto()->obtenerDosis(),
+                'descripcion'   => $detalle->obtenerProducto()->obtenerDescripcion(),
+            ];
         }
-
-        return $detalles;
+        return $listadoDetalles;
     }
 }

@@ -85,9 +85,8 @@ class PedidoController extends BaseController
     // Metodo que carga la vista para ver los detalles de un pedido
     public function mostrarDetallesPedidos(int $idPedido) : string
     {
-        $data = $this->obtenerDatosAuxiliares();
         $data['pedido'] = $this->pedidoService->obtenerPedidoEspecifico($idPedido);
-        $data['detalles_pedido'] = $this->detalleService->obtenerDetallesPedido($data['pedido']);
+        $data['detalles_pedido'] = $this->detalleService->obtenerDetallesPedido($data['pedido']['id_pedido']);
 
         return view('layout/main_layout', [
             'title' => 'Lista de Pedidos - Clinicks',
