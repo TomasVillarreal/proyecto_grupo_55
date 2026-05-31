@@ -192,7 +192,7 @@ class MedicamentosController extends BaseController
         $db->transBegin(); //Se inicia la transaccion
         
         try {            
-            $this->medicamentoService->eliminarMedicamento((int)$idMedicamento);//Llamada al service para su eliminacion
+            $this->productoFarmaceuticoService->eliminarConMedicamento((int)$idMedicamento);//Llamada al service para su eliminacion
 
             $db->transCommit();//Se finaliza la eliminacion del medicamento
 

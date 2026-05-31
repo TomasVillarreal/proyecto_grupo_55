@@ -8,7 +8,6 @@ use App\Services\ProductoFarmaceuticoService;
 class MedicamentoService
 {
     protected MedicamentoModel $medicamentoModel;//Variable a utilizar que hace referencia al modelo
-    protected $productoService;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.
     En POO nos enseñaron que el constructor tenia que tener el mismo nombre de la clase
@@ -16,7 +15,6 @@ class MedicamentoService
     public function __construct()
     {
         $this->medicamentoModel = new MedicamentoModel();//Se reconoce e instancia la clase
-        $this->productoService = new ProductoFarmaceuticoService();
     }
 
     /*Se crea un método para validar el nombre de un medicamento según nuestras reglas
@@ -123,10 +121,7 @@ class MedicamentoService
         }
 
         //Se elimina el medicamento
-        $this->medicamentoModel->desactivar($medicamento);
-
-       //Se eliminan los productos farmaceuticos asociados a dicho medicamento
-        return $this->productoService->eliminarProductosPorMedicamento($idMedicamento);
+        return $this->medicamentoModel->desactivar($medicamento);
     }
 
     /*Se crea este metodo para facilitar la obtencion de la lista de medicamentos,

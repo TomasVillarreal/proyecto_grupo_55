@@ -15,6 +15,7 @@ class ProductoFarmaceuticoService
     protected TipoProductoModel $tipoProductoModel;
     protected MedidaProductoModel $medidaProductoModel;
     protected MedicamentoModel $medicamentoModel;
+    protected MedicamentoService $medicamentoService;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.*/
     public function __construct()
@@ -24,7 +25,7 @@ class ProductoFarmaceuticoService
         $this->tipoProductoModel = new TipoProductoModel();
         $this->medidaProductoModel = new MedidaProductoModel();
         $this->medicamentoModel = new MedicamentoModel();
-
+        $this->medicamentoService = new MedicamentoService();
     }
 
     /*Se crea un metodo que valida las dosis de acuerdo a nuestras
@@ -196,22 +197,31 @@ class ProductoFarmaceuticoService
         return $this->productoModel->desactivar($producto);
     }
 
+    public function eliminarConMedicamento(int $idMedicamento) : bool {
+        $eliminarMed = $this->medicamentoService->eliminarMedicamento($idMedicamento);
+        $eliminarProds = $this->productoModel->desactivarPorMedicamento($idMedicamento);
+        if($eliminarMed && $eliminarProds){
+            return true;
+        }
+        return false;
+    }
+
     /*Metodo que va a ser utilizado para cargar dinamicamente los campos del producto
     farmaceutico una vez se seleccione un medicamento en la vista de UPDATE*/
     public function obtenerProductosPorMedicamento(int $idMedicamento): array
     {
-        $productos = $this->productoModel->obtenerProductosPorMedicamento($idMedicamento);
+        $productos = $this->productoModel->obtenerPorMedicamento($idMedicamento);
         $listadoProductos = [];//array que contendrá todos los productos de un medicamento
 
         foreach ($productos as $producto) {
             $listadoProductos[] = [
-                'id_producto' => $producto->id_producto,
-                'dosis_producto' => $producto->dosis_producto,
-                'descripcion_producto' => $producto->descripcion_producto,
-                'id_tipo_producto' => $producto->id_tipo_producto,
-                'id_medida_producto' => $producto->id_medida_producto,
-                'nombre_tipo_producto' => $producto->nombre_tipo_producto,
-                'nombre_medida' => $producto->nombre_medida,
+                'id_producto' => $producto->obtenerID(),
+                'dosis_producto' => $producto->obtenerDosis(),
+                'descripcion_producto' => $producto->obtenerDescripcion(),
+                'id_tipo_producto' => $producto->obtenerTipo()->obtenerID(),
+                'id_medida_producto' => $producto->obtenerUnidadMedida()->obtenerID(),
+                'nombre_tipo_producto' => $producto->obtenerTipo()->obtenerNombre(),
+                'nombre_medida' => $producto->obtenerUnidadMedida()->obtenerNombre(),
             ];
         }
         return $listadoProductos;

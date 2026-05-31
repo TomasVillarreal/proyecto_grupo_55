@@ -132,13 +132,13 @@ class ProductoFarmaceuticoModel extends Model
 
     public function buscarProductoPorID(int $id): ?ProductoFarmaceutico
     {
-        $registro = $this->productoModel->find($id);
+        $registro = $this->find($id);
 
         if (!$registro) {
             return null;
         }
 
-        return $this->productoModel->crearObjeto($registro);
+        return $this->crearObjeto($registro);
     }
 
     public function reactivar(ProductoFarmaceutico $prod) : bool
@@ -158,7 +158,7 @@ class ProductoFarmaceuticoModel extends Model
     }
 
     public function desactivarPorMedicamento(int $idMedicamento) : bool {
-        return $this->productoModel->where('id_medicamento', $idMedicamento)->set(['activo_producto' => 0])->update();
+        return $this->where('id_medicamento', $idMedicamento)->set(['activo_producto' => 0])->update();
     }
 
     public function modificar(int $id, array $data): bool
