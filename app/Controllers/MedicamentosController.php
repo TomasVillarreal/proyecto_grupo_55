@@ -2,20 +2,18 @@
 
 namespace App\Controllers;
 
-use App\Services\MedicamentoService;
 use App\Services\ProductoFarmaceuticoService;
 
 class MedicamentosController extends BaseController
 {
     //Se crea la variable a utilizar del servicio de los medicamentos
-    protected MedicamentoService $medicamentoService;
     protected ProductoFarmaceuticoService $productoService;
 
     /*Creacion del constructor para evitar llamar al servicio en cada funcion*/
     public function __construct()
     {
         //Se instancian los servicios
-        $this->medicamentoService = new MedicamentoService();
+        $this->productoService = new ProductoFarmaceuticoService();
     }
 
     /*Metodo para la eliminacion de los medicamentos y productos farmaceuticos*/

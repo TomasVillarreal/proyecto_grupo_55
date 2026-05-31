@@ -6,7 +6,6 @@ use App\Models\ProductoFarmaceuticoModel;
 use App\Models\TipoProductoModel;
 use App\Models\MedidaProductoModel;
 use App\Models\MedicamentoModel;
-use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class ProductoFarmaceuticoService
 {
@@ -100,7 +99,6 @@ class ProductoFarmaceuticoService
         return $errors;
     }
 
-
     // Metodo que prepara los datos a insertar / actualizar
     private function prepararDatosProducto(array $data) : array {
         return [
@@ -111,7 +109,6 @@ class ProductoFarmaceuticoService
             'descripcion_producto' => empty($data['descripcion_producto']) ? null : trim($data['descripcion_producto']),
         ];
     }
-
 
     /*Se crea un método para crear un nuevo producto farmaceutico, teniendo en cuenta que 
     cumple con las validaciones. Retorna el id del nuevo producto*/
@@ -130,7 +127,7 @@ class ProductoFarmaceuticoService
                 throw new \InvalidArgumentException("Producto farmaceutico ya ingresado!");
             }
             //si esta desactivado, lo reactiva y devuelve el id de ese producto reactivado
-            $this->productoModel->reactivar($productoExistente);
+            $this->productoModel->reactivar($productoExistente->obtenerID());
             return (int) $productoExistente->obtenerID();
         }
 
@@ -194,16 +191,14 @@ class ProductoFarmaceuticoService
             throw new \InvalidArgumentException("El producto no existe o ya está inactivo.");
         }
 
-        return $this->productoModel->desactivar($producto);
+        return $this->productoModel->desactivar($producto->obtenerID());
     }
 
-    public function eliminarConMedicamento(int $idMedicamento) : bool {
+    /* Funcion que elimina a un medicamento cuyo id coicida con el pasado por parametro
+    y que elimine tmb todos los productos asociados a ese medicamento*/
+    public function eliminarConMedicamento(int $idMedicamento) : void {
         $eliminarMed = $this->medicamentoService->eliminarMedicamento($idMedicamento);
         $eliminarProds = $this->productoModel->desactivarPorMedicamento($idMedicamento);
-        if($eliminarMed && $eliminarProds){
-            return true;
-        }
-        return false;
     }
 
     /*Metodo que va a ser utilizado para cargar dinamicamente los campos del producto

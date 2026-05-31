@@ -22,6 +22,7 @@ class ProductoFarmaceuticoModel extends Model
     ]; //Las columnas de la tabla
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
+    // Funcion que crea un objeto de la entidad ProductoFarmaceutico.
     private function crearObjeto(array $r): ProductoFarmaceutico
     {
         $medicamento = new Medicamento(
@@ -51,10 +52,9 @@ class ProductoFarmaceuticoModel extends Model
         );
     }
 
-    /*Se crea un método para obtener todos los productos farmacéuticos cargados en el sistema
+    /* Funcion que obtiene todos los productos farmacéuticos cargados en el sistema
     También se obtienen con los JOINs necesarios para ver el resto de caracteristicas de otras
-    tablas*/
-
+    tablas y realizar la creacion de todos los objetos farmaceuticos*/
     public function obtenerTodos(bool $producto_activo = false): array
     {
         $builder = $this->db->table('producto_farmaceutico pf');
@@ -87,7 +87,8 @@ class ProductoFarmaceuticoModel extends Model
         return array_map(fn($r) => $this->crearObjeto($r), $result);
     }
 
-    //Se crea un método que obtiene los productos farmacéuticos de un medicamento en específico, usado en el main.js para el update
+    /* Funcion que obtiene los productos farmacéuticos de un medicamento en específico, usado en el main.js.
+    Obtiene tambien  todos los ids y datos necesarios para poder crear todos los objetos.*/
     public function obtenerPorMedicamento(int $idMedicamento): array
     {
         $builder = $this->db->table('producto_farmaceutico pf');
@@ -115,6 +116,8 @@ class ProductoFarmaceuticoModel extends Model
         return array_map(fn($r) => $this->crearObjeto($r), $result);
     }
 
+    /*Se crea un método que obtiene los productos farmacéuticos de un medicamento en específico, usado en el main.js.
+    Obtiene tambien  todos los ids y datos necesarios para poder crear todos los objetos.*/
     public function buscarProductoExistente(array $data): ?ProductoFarmaceutico
     {
         $registro = $this->where('id_medicamento', (int) $data['id_medicamento'])
@@ -130,6 +133,8 @@ class ProductoFarmaceuticoModel extends Model
         return $this->crearObjeto($registro);
     }
 
+    /* Funcion que devuelve un unico producto farmaceutico, tal que el medicamento devuelto sera aquel
+    cuyo id sea igual al id pasado como argumento*/
     public function buscarProductoPorID(int $id): ?ProductoFarmaceutico
     {
         $registro = $this->find($id);
@@ -141,42 +146,47 @@ class ProductoFarmaceuticoModel extends Model
         return $this->crearObjeto($registro);
     }
 
-    public function reactivar(ProductoFarmaceutico $prod) : bool
+    /* Funcion que cambia el activo_producto del objeto cuyo id sea igual al 
+    pasado como parametro a 1 (es decir, activo)*/
+    public function reactivar(int $id) : bool
     {
-        $prod->cambiarActivo(true);
-        return $this->update($prod->obtenerID(), [
+        return $this->update($id, [
             'activo_producto' => 1
         ]);
     }
 
-    public function desactivar(ProductoFarmaceutico $prod) : bool
+    /* Funcion que cambia el activo_producto del objeto cuyo id sea igual al 
+    pasado como parametro a 0 (es decir, activo)*/
+    public function desactivar(int $id) : bool
     {
-        $prod->cambiarActivo(true);
-        return $this->update($prod->obtenerID(), [
+        return $this->update($id, [
             'activo_producto' => 0
         ]);
     }
 
+    /* Funcion que desactiva a todos los productos farmaceuticos que estan asociados al
+    medicamento cuyo id sea igual al pasado como parametro*/
     public function desactivarPorMedicamento(int $idMedicamento) : bool {
         return $this->where('id_medicamento', $idMedicamento)->set(['activo_producto' => 0])->update();
     }
 
+    /* Funcion que modifica al producto cuyo id coincida con el argumento, con los datos
+    pasados en el array*/
     public function modificar(int $id, array $data): bool
     {
         return $this->update($id, $data);
     }
 
+    /* Funcion que agrega un nuevo producto con los datos pasados como parametros, y retorna
+    el id del nuevo producto creado */
     public function agregar(array $data): int
     {
         $this->insert($data);
-
         return (int) $this->getInsertID();
     }
 
-    /*Se crea una función para verificar si el producto farmacéutico es único.
-    Su utilidad se va a dar en caso de que se quiera crear un nuevo producto farmacéutico,
-    para evitar duplicados.*/
-
+    /* Funcion que verifica la existencia de algun medicamento con el nombre pasado como parametro
+    Si encuentra algun medicamento, devuelve false, y sino devuelve true.*/
     public function productoFarmaceuticoUnico(float $dosis, int $idMedicamento, int $idTipo, int $idMedida, ?int $excludeId = null): bool
     {
         $builder = $this->builder();
@@ -193,7 +203,5 @@ class ProductoFarmaceuticoModel extends Model
         }
 
         return $builder->countAllResults() > 0;
-        /*Booleano que verifica las coincidencias de lo solicitado en esta funcion y lo que hay en la BD
-        En caso de devolver true indica que el producto farmaceutico ya existe, caso contrario con false.*/
     }
 }

@@ -21,7 +21,6 @@ class MedicamentoService
     de negocio
     En caso de que cumpla con las validaciones sigue adelante (pq no hay errores),
     caso contrario tira una excepcion que sera agarrada por el controller y mostrada*/
-
     private function validarNombreMedicamento(string $medicamento) : void
     {
         $medicamento = trim($medicamento);//Se quitan espacios vacios
@@ -70,7 +69,7 @@ class MedicamentoService
                 );
             }
 
-            $this->medicamentoModel->reactivar($medicamento);
+            $this->medicamentoModel->reactivar($medicamento->obtenerID());
             return (int) $medicamento->obtenerID();
         }
 
@@ -121,7 +120,7 @@ class MedicamentoService
         }
 
         //Se elimina el medicamento
-        return $this->medicamentoModel->desactivar($medicamento);
+        return $this->medicamentoModel->desactivar($medicamento->obtenerID());
     }
 
     /*Se crea este metodo para facilitar la obtencion de la lista de medicamentos,
