@@ -24,6 +24,8 @@ class DetallePedidoModel extends Model
     ];
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
+    /* Funcion que crea un objeto de la entidad DetallePedido, haciendo uso del objeto Pedido pasado como parametro 
+    para la creacion de un pedido, que necesita la creacion de multiples objetos distintos */
     private function crearObjeto(array $r, Pedido $pedido): DetallePedido
     {
         $proveedor = new Proveedor(
@@ -68,8 +70,7 @@ class DetallePedidoModel extends Model
 
     /*Se crea un método para obtener los detalles para el pedido pasado como parametro donde se 
     obtienen con los JOINs necesarios para ver el resto de caracteristicas de otras
-    tablas*/
-
+    tablas y los ids necesarios para realizar la creacion de los objetos DetallePedido*/
     public function obtenerDetallesPorPedido(Pedido $pedido): array
     {
         $builder = $this->db->table('detalle_pedido dp');//Crea la consulta sobre la tabla especificada

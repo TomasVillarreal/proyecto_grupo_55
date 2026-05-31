@@ -116,8 +116,8 @@ class ProductoFarmaceuticoModel extends Model
         return array_map(fn($r) => $this->crearObjeto($r), $result);
     }
 
-    /*Se crea un método que obtiene los productos farmacéuticos de un medicamento en específico, usado en el main.js.
-    Obtiene tambien  todos los ids y datos necesarios para poder crear todos los objetos.*/
+    /* Funcion que devuelve un unico producto farmaceutico (o ninguno), tal que el producto devuelto sera aquel
+    cuyos datos sean iguales a los pasados como parametro*/
     public function buscarProductoExistente(array $data): ?ProductoFarmaceutico
     {
         $registro = $this->where('id_medicamento', (int) $data['id_medicamento'])
@@ -133,7 +133,7 @@ class ProductoFarmaceuticoModel extends Model
         return $this->crearObjeto($registro);
     }
 
-    /* Funcion que devuelve un unico producto farmaceutico, tal que el medicamento devuelto sera aquel
+    /* Funcion que devuelve un unico producto farmaceutico (o ninguno), tal que el producto devuelto sera aquel
     cuyo id sea igual al id pasado como argumento*/
     public function buscarProductoPorID(int $id): ?ProductoFarmaceutico
     {
