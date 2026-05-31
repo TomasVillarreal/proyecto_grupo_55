@@ -18,13 +18,13 @@ class MedidaProductoService
     /*Metodo para obtener las medidas de los productos y luego utilizarlos en el dropdown*/
     public function obtenerMedidaDropdown(): array
     {
-        $opciones = [];
+        $medidas = [];
 
         foreach ($this->medidaProductoModel->obtenerTodos() as $medida) {
-            $opciones[$medida->obtenerID()] =
+            $medidas[$medida->obtenerID()] =
                 $medida->obtenerNombre();
         }
 
-        return $opciones;
+        return $medidas;
     }
 }

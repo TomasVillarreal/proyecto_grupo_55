@@ -18,13 +18,13 @@ class TipoProductoService
     /*Metodo para obtener los tipos de productos y ser utilizados en el dropdown*/
     public function obtenerTiposDropdown(): array
     {
-        $opciones = [];
+        $tipos = [];
 
         foreach ($this->tipoProductoModel->obtenerTodos() as $tipo_producto) {
-            $opciones[$tipo_producto->obtenerID()] =
+            $tipos[$tipo_producto->obtenerID()] =
                 $tipo_producto->obtenerNombre();
         }
 
-        return $opciones;
+        return $tipos;
     }
 }

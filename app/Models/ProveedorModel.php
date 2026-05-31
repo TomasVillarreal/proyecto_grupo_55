@@ -12,6 +12,7 @@ class ProveedorModel extends Model
     protected $allowedFields = ['nombre_proveedor'];
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
+    // Funcion que crea un objeto de la entidad Proveedor.
     private function crearObjeto(array $registro): Proveedor
     {
         return new Proveedor(
@@ -20,7 +21,8 @@ class ProveedorModel extends Model
         );
     }
 
-
+    /* Funcion que obtiene todos los registros de la BD que son de la clase proveedor
+    y para cada uno de estos registros va creando un objeto de la entidad Proveedor*/
     public function obtenerTodos(): array
     {
         $registros = $this->orderBy('nombre_proveedor', 'ASC')->findAll();

@@ -12,6 +12,7 @@ class EstadoPedidoModel extends Model
     protected $allowedFields = ['tipo_estado_pedido'];
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
+    // Funcion que crea un objeto de la entidad EstadoPedido.
     private function crearObjeto(array $registro): EstadoPedido
     {
         return new EstadoPedido(
@@ -20,6 +21,8 @@ class EstadoPedidoModel extends Model
         );
     }
 
+    /* Funcion que obtiene todos los registros de la BD que son de la clase estado_pedido
+    y para cada uno de estos registros va creando un objeto de la entidad EstadoPedido*/
     public function obtenerTodos(): array
     {
         $registros = $this->orderBy('tipo_estado_pedido', 'ASC')->findAll();

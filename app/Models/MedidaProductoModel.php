@@ -12,6 +12,7 @@ class MedidaProductoModel extends Model
     protected $allowedFields = ['nombre_medida']; //Columna de la tabla
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
+    // Funcion que crea un objeto de la entidad MedidaProducto.
     private function crearObjeto(array $registro): MedidaProducto
     {
         return new MedidaProducto(
@@ -20,6 +21,8 @@ class MedidaProductoModel extends Model
         );
     }
 
+    /* Funcion que obtiene todos los registros de la BD que son de la clase medida_producto
+    y para cada uno de estos registros va creando un objeto de la entidad MedidaProducto*/
     public function obtenerTodos(): array
     {
         $registros = $this->orderBy('nombre_medida', 'ASC')->findAll();

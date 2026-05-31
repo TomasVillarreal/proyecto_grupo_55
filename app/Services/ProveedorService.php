@@ -18,13 +18,13 @@ class ProveedorService
     /*Metodo para obtener los proveedores de los productos y luego utilizarlos en el dropdown*/
     public function obtenerProveedoresDropdown(): array
     {
-        $opciones = [];
+        $proveedores = [];
 
         foreach ($this->proveedorModel->obtenerTodos() as $proveedor) {
-            $opciones[$proveedor->obtenerID()] =
+            $proveedores[$proveedor->obtenerID()] =
                 $proveedor->obtenerNombre();
         }
 
-        return $opciones;
+        return $proveedores;
     }
 }

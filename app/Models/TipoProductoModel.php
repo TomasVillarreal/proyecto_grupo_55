@@ -12,6 +12,7 @@ class TipoProductoModel extends Model
     protected $allowedFields = ['nombre_tipo_producto']; //La columna de la tabla
     protected $useTimestamps = false; //Para evitar asignaciones y guardados de fecha automaticamente.
 
+    // Funcion que crea un objeto de la entidad TipoProducto.
     private function crearObjeto(array $registro): TipoProducto
     {
         return new TipoProducto(
@@ -20,6 +21,8 @@ class TipoProductoModel extends Model
         );
     }
 
+    /* Funcion que obtiene todos los registros de la BD que son de la clase tipo_producto
+    y para cada uno de estos registros va creando un objeto de la entidad TipoProducto*/
     public function obtenerTodos(): array
     {
         $registros = $this->orderBy('nombre_tipo_producto', 'ASC')->findAll();

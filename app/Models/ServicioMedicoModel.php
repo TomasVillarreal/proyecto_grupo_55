@@ -12,6 +12,7 @@ class ServicioMedicoModel extends Model
     protected $allowedFields = ['nombre_servicio_medico'];
     protected $useTimestamps = false; //Para evitar guardar y asignar fechas automaticamente
     
+    // Funcion que crea un objeto de la entidad ServicioMedico.
     private function crearObjeto(array $registro): ServicioMedico
     {
         return new ServicioMedico(
@@ -20,6 +21,8 @@ class ServicioMedicoModel extends Model
         );
     }
 
+    /* Funcion que obtiene todos los registros de la BD que son de la clase servicio_medico
+    y para cada uno de estos registros va creando un objeto de la entidad ServicioMedico*/
     public function obtenerTodos(): array
     {
         $registros = $this->orderBy('nombre_servicio_medico', 'ASC')->findAll();

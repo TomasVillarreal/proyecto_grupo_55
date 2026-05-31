@@ -15,16 +15,16 @@ class EstadoPedidoService
         $this->estadoPedidoModel = new EstadoPedidoModel();//Se reconoce e instancia la clase
     }
 
-    /*Metodo para obtener las medidas de los productos y luego utilizarlos en el dropdown*/
+    /*Metodo para obtener los estados de los productos y luego utilizarlos en el dropdown*/
     public function obtenerEstadosDropdown(): array
     {
-        $opciones = [];
+        $estados = [];
 
         foreach ($this->estadoPedidoModel->obtenerTodos() as $estado) {
-            $opciones[$estado->obtenerID()] =
+            $estados[$estado->obtenerID()] =
                 $estado->obtenerNombre();
         }
 
-        return $opciones;
+        return $estados;
     }
 }

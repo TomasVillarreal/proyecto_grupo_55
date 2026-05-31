@@ -15,16 +15,16 @@ class ServicioMedicoService
         $this->servicioModel = new ServicioMedicoModel();//Se reconoce e instancia la clase
     }
 
-    /*Metodo para obtener las medidas de los productos y luego utilizarlos en el dropdown*/
+    /*Metodo para obtener los servicios medicos  y luego utilizarlos en el dropdown*/
     public function obtenerServiciosDropdown(): array
     {
-        $opciones = [];
+        $servicios = [];
 
         foreach ($this->servicioModel->obtenerTodos() as $servicio) {
-            $opciones[$servicio->obtenerID()] =
+            $servicios[$servicio->obtenerID()] =
                 $servicio->obtenerNombre();
         }
 
-        return $opciones;
+        return $servicios;
     }
 }
