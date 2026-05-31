@@ -7,17 +7,24 @@ use App\Models\ServicioMedicoModel;
 class ServicioMedicoService
 {
     //Variable a utilizar que hace referncia al modelo
-    protected $servicioModel;
+    protected ServicioMedicoModel $servicioModel;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion*/
     public function __construct()
     {
-        $this->servicioModel = model(ServicioMedicoModel::class);//Se reconoce e instancia la clase
+        $this->servicioModel = new ServicioMedicoModel();//Se reconoce e instancia la clase
     }
 
-    /*Metodo para obtener las medidas de los productos y luego utilizarlos en el dropdown*/
+    /*Metodo para obtener los servicios medicos  y luego utilizarlos en el dropdown*/
     public function obtenerServiciosDropdown(): array
     {
-        return $this->servicioModel->obtenerParaDropdown();
+        $servicios = [];
+
+        foreach ($this->servicioModel->obtenerTodos() as $servicio) {
+            $servicios[$servicio->obtenerID()] =
+                $servicio->obtenerNombre();
+        }
+
+        return $servicios;
     }
 }

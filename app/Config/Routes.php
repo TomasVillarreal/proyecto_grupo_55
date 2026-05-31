@@ -8,17 +8,17 @@ use CodeIgniter\Router\RouteCollection;
 //MEDICAMENTOS
 
 // -- GET -- 
-$routes->get('/', 'MedicamentosController::mostrarAltaMedicamentos');
-$routes->get('/modificarMed', 'MedicamentosController::mostrarModificacionMedicamentos');
-$routes->get('/eliminarMed', 'MedicamentosController::mostrarBajaMedicamentos');
+$routes->get('/', 'ProductoFarmaceuticoController::mostrarAltaProductos');
+$routes->get('/modificarMed', 'ProductoFarmaceuticoController::mostrarModificacionProductos');
+$routes->get('/eliminarMed', 'ProductoFarmaceuticoController::mostrarBajaProductos');
 $routes->get(
     'medicamentos/productos/(:num)',
-    'MedicamentosController::obtenerProductosPorMedicamento/$1'
+    'ProductoFarmaceuticoController::obtenerProductosPorMedicamento/$1'
 );
 
 // -- POST --
-$routes->post('medicamentos/alta', 'MedicamentosController::crearMedicamento');//Ruta con el POST para la cracion de medicamentos y/o productos farm.
-$routes->post('medicamentos/modificacion','MedicamentosController::modificarMedicamento');//Ruta con el POST para la modificacion de medicamentos y/o productos farm.
+$routes->post('medicamentos/alta', 'ProductoFarmaceuticoController::crearProducto');//Ruta con el POST para la cracion de medicamentos y/o productos farm.
+$routes->post('medicamentos/modificacion','ProductoFarmaceuticoController::modificarProducto');//Ruta con el POST para la modificacion de medicamentos y/o productos farm.
 $routes->post('productos/eliminar/(:num)', 'ProductoFarmaceuticoController::eliminarProducto/$1');
 $routes->post('medicamentos/eliminar/(:num)', 'MedicamentosController::eliminarMedicamento/$1');
 
