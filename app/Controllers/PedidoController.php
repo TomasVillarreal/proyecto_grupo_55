@@ -13,13 +13,13 @@ use App\Services\MedicamentoService;
 class PedidoController extends BaseController
 {
     //Se crea la variable a utilizar del servicio de los pedidos
-    protected $pedidoService;
-    protected $estadoService;
-    protected $servicioService;
-    protected $detalleService;
-    protected $proveedorService;
-    protected $medicamentoService;
-    protected $productoService;
+    protected PedidoService $pedidoService;
+    protected EstadoPedidoService $estadoService;
+    protected ServicioMedicoService $servicioService;
+    protected DetallePedidoService $detalleService;
+    protected ProveedorService $proveedorService;
+    protected MedicamentoService $medicamentoService;
+    protected ProductoFarmaceuticoService $productoService;
 
     /*Creacion del constructor para evitar llamar al servicio en cada funcion*/
     public function __construct()
@@ -87,7 +87,7 @@ class PedidoController extends BaseController
     {
         $data = $this->obtenerDatosAuxiliares();
         $data['pedido'] = $this->pedidoService->obtenerPedidoEspecifico($idPedido);
-        $data['detalles_pedido'] = $this->detalleService->obtenerDetallesPedido($idPedido);
+        $data['detalles_pedido'] = $this->detalleService->obtenerDetallesPedido($data['pedido']);
 
         return view('layout/main_layout', [
             'title' => 'Lista de Pedidos - Clinicks',
@@ -115,7 +115,7 @@ class PedidoController extends BaseController
     public function manejarAceptacion()
     {
         $id = (int) $this->request->getPost('idPedido');
-        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->aprobar((int)$id));
+        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->aprobarPedido((int)$id));
     }
 
     // Metodo que maneja el rechazo de un pedido
@@ -123,7 +123,7 @@ class PedidoController extends BaseController
     {
         $id = (int) $this->request->getPost('idPedido');
         $motivo = trim($this->request->getPost('motivo_rechazo')) ?: '-';
-        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->rechazar((int)$id, $motivo));
+        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->rechazarPedido((int)$id, $motivo));
     }
 
     // Metodo que muestra la vista de creacion de pedidos
