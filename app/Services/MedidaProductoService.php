@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\MedidaProductoModel;
+use Override;
 
-class MedidaProductoService
+class MedidaProductoService extends CatalogoService
 {
     //Variable a utilizar que hace referncia al modelo
     protected MedidaProductoModel $medidaProductoModel;
@@ -15,16 +16,9 @@ class MedidaProductoService
         $this->medidaProductoModel = new MedidaProductoModel();//Se reconoce e instancia la clase
     }
 
-    /*Metodo para obtener las medidas de los productos y luego utilizarlos en el dropdown*/
-    public function obtenerMedidaDropdown(): array
+    #[Override]
+    protected function obtenerOpciones(): array
     {
-        $medidas = [];
-
-        foreach ($this->medidaProductoModel->obtenerTodos() as $medida) {
-            $medidas[$medida->obtenerID()] =
-                $medida->obtenerNombre();
-        }
-
-        return $medidas;
+        return $this->medidaProductoModel->obtenerTodos();
     }
 }

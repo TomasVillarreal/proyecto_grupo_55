@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\TipoProductoModel;
+use Override;
 
-class TipoProductoService
+class TipoProductoService extends CatalogoService
 {
     //Variable a utilizar que hace referncia al modelo
     protected TipoProductoModel $tipoProductoModel;
@@ -16,15 +17,9 @@ class TipoProductoService
     }
 
     /*Metodo para obtener los tipos de productos y ser utilizados en el dropdown*/
-    public function obtenerTiposDropdown(): array
+    #[Override]
+    protected function obtenerOpciones(): array
     {
-        $tipos = [];
-
-        foreach ($this->tipoProductoModel->obtenerTodos() as $tipo_producto) {
-            $tipos[$tipo_producto->obtenerID()] =
-                $tipo_producto->obtenerNombre();
-        }
-
-        return $tipos;
+        return $this->tipoProductoModel->obtenerTodos();
     }
 }

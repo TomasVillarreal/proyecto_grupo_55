@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\ServicioMedicoModel;
 
-class ServicioMedicoService
+class ServicioMedicoService extends CatalogoService
 {
     //Variable a utilizar que hace referncia al modelo
     protected ServicioMedicoModel $servicioModel;
@@ -15,16 +15,8 @@ class ServicioMedicoService
         $this->servicioModel = new ServicioMedicoModel();//Se reconoce e instancia la clase
     }
 
-    /*Metodo para obtener los servicios medicos  y luego utilizarlos en el dropdown*/
-    public function obtenerServiciosDropdown(): array
+    protected function obtenerOpciones() : array
     {
-        $servicios = [];
-
-        foreach ($this->servicioModel->obtenerTodos() as $servicio) {
-            $servicios[$servicio->obtenerID()] =
-                $servicio->obtenerNombre();
-        }
-
-        return $servicios;
-    }
+        return $this->servicioModel->obtenerTodos();
+    }   
 }
