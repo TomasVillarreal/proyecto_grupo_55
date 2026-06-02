@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="icon" type="image/x-icon" href="<?= base_url('favicon.ico') ?>"> 
 
+
 <style>
 /* VARIABLES DEL SIDEBAR */
 :root {
@@ -81,7 +82,10 @@ body{
 </head>
 
 <body>
-
+<?php
+//Para el manejo de errores
+$errores = session()->getFlashdata('errores') ?? [];
+?>
 <div class="caja-cb">
 
   <i class="bi bi-hospital nav_logo-icon login-icon"></i>
@@ -89,13 +93,34 @@ body{
   <form method="post" action="<?= base_url('access/iniciar_sesion') ?>">
 
     <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input type="email" name="email_usuario" class="form-control" placeholder="Ingrese su email">
+          <label for="emailUserCreate" class="form-label">Email</label>
+          <input id="emailUserCreate" name="email_usuario" type="text" placeholder="Ingrese su email"
+                class="form-control <?= isset($errores['email_usuario']) ? 'is-invalid' : '' ?>"
+                value="<?= old('email_usuario') ?>">
+          <?php if(isset($errores['email_usuario'])): ?>
+            <div class="invalid-feedback">
+              <?= $errores['email_usuario'] ?>
+            </div>
+          <?php endif; ?>
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Contraseña</label>
-      <input type="password" name="password_usuario" class="form-control" placeholder="Ingrese su contraseña">
+          <label for="passwordUserCreate" class="form-label">Contraseña</label>
+
+            <div class="input-group">
+                <input id="passwordUserCreate" name="password_usuario" type="password" placeholder="Ingrese su contraseña"
+                      class="form-control <?= isset($errores['password_usuario']) ? 'is-invalid' : '' ?>">
+
+                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                    <i class="bi bi-eye"></i>
+                </button>
+
+                <?php if(isset($errores['password_usuario'])): ?>
+                    <div class="invalid-feedback">
+                        <?= $errores['password_usuario'] ?>
+                    </div>
+                <?php endif; ?>
+            </div>
     </div>
 
     <div class="text-center mt-4">
@@ -120,3 +145,5 @@ body{
 
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url('assets/js/usuarioLogin.js?v=' . time()) ?>"></script>
