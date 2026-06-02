@@ -345,3 +345,51 @@ footer p {
     color: #10b981;
     transition: color 0.3s;
 }
+
+/*PARA EL OJO EN REGISTRAR USUARIO*/
+/* Contenedor relativo para que sirva de base al botón */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* El input necesita un espacio extra a la derecha para que el texto no se tape con el ojo */
+.password-wrapper .form-control {
+    padding-right: 45px; 
+}
+
+/* Transformamos el botón del ojito */
+#togglePassword {
+    position: absolute;
+    right: 12px;         /* Ajusta este número para separarlo más o menos del borde derecho */
+    top: 50%;
+    transform: translateY(-50%); /* Centrado vertical matemático perfecto */
+    background: none;
+    
+    /* CORRECCIÓN DE RECUADROS Y BORDES */
+    border: none !important;      /* Quita el borde nativo y fuerza la prioridad */
+    outline: none !important;     /* Quita la línea de contorno externa al hacer clic */
+    box-shadow: none !important;  /* Quita cualquier sombra heredada de Bootstrap */
+    
+    padding: 0;
+    width: 24px;         /* Ajustamos el tamaño a lo que desees */
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;      /* Color gris sutil para el icono */
+    cursor: pointer;
+    z-index: 5;          /* Para que siempre flote por encima del input */
+}
+
+/* Evitamos que el recuadro aparezca al hacer clic o mantener presionado */
+#togglePassword:focus, 
+#togglePassword:active {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#togglePassword:hover {
+    color: #495057;      /* Un color un poco más oscuro al pasar el mouse */
+}

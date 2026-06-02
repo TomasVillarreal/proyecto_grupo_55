@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+sdocument.addEventListener("DOMContentLoaded", function () {
 
   const showNavbar = (toggleId, navId, bodyId, headerId) => {
     const toggle = document.getElementById(toggleId);
