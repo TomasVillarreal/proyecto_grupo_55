@@ -1,3 +1,6 @@
+<?php //Se toma el rol del usuario en sesion para determinar si se le muestran los botones correspondientes
+$esResponsable = session()->get('nombre_rol') === 'Responsable';
+?>
 <div class="sidebar-layout" id="body-pd">
     <header class="header" id="header">
         <div class="header_toggle">
@@ -26,7 +29,18 @@
                         <a href="<?= site_url('/delete') ?>" class="nav_link">
                             <i class='bi bi-file-x nav_icon'></i>
                             <span class="nav_name">Eliminar medicamento</span>
-                        </a> 
+                        </a>
+                        <?php //Se verifica el rol del usuario para mostrar el boton de crear usuario
+                            if($esResponsable): ?>
+                            <a href="<?= site_url('/access/registrar') ?>" class="nav_link">
+                                <i class="bi bi-person-plus nav_icon"></i>
+                                <span class="nav_name">Crear usuario</span>
+                            </a>
+                        <?php endif; ?>
+                        <a href="<?= site_url('/access/logout') ?>" class="nav_link" style="margin-top: auto; margin-bottom: 2rem;">
+                            <i class='bi bi-box-arrow-left nav_icon'></i>
+                            <span class="nav_name">Cerrar sesión</span>
+                        </a>
                     </div>
                 </div> 
             </nav>
