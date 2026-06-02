@@ -67,7 +67,7 @@ class ProductoFarmaceuticoController extends BaseController
 
     /*Metodo para la creacion de los medicamentos (form POST). Se hace uso de transacciones para poder manejar posibles 
     errores en caso de que se inserte un nuevo medicamento pero no un nuevo producto farmaceutico, dejando incosistencias en la bd.*/
-    public function crearProducto()
+    public function manejarCreacionProducto()
     {
         $db = \Config\Database::connect();//Se crea la conexión con la BD
         $db->transBegin();//Comienza la transaccion
@@ -114,7 +114,7 @@ class ProductoFarmaceuticoController extends BaseController
 
 
     /*Metodo para la modificacion de los medicamentos (form POST)*/
-    public function modificarProducto()
+    public function manejarModificacionProducto()
     {
         $huboCambios = false;//Variable para detectar si hubo cambios y proporcionar el msj correcto
         $db = \Config\Database::connect();//Se hace la conexión a la bd.
@@ -186,7 +186,7 @@ class ProductoFarmaceuticoController extends BaseController
 
 
     //Metodo que realiza la eliminacion de un producto farmaceutico
-    public function eliminarProducto(int $idProducto)
+    public function manejarEliminacionProducto(int $idProducto)
     {
         try {
 

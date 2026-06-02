@@ -17,7 +17,7 @@ class MedicamentosController extends BaseController
     }
 
     /*Metodo para la eliminacion de los medicamentos y productos farmaceuticos*/
-    public function eliminarMedicamento(int $idMedicamento)
+    public function manejarEliminacionMedicamento(int $idMedicamento)
     {
         $db = \Config\Database::connect();//Conexion a la bd
         $db->transBegin(); //Se inicia la transaccion
