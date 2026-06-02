@@ -25,6 +25,31 @@ class LoginController extends BaseController{
     }
 
     /*
+    Método para manejar y mostrar los posibles errores en el inicio de sesion
+    */
+    public function erroresCreacionUsuario(string $email, string $password)
+    {
+        $errores = [];
+
+        try {
+
+            //Valida el ingreso del usuario al sistema verificando las credenciales
+            $this->usuarioService->validarIngreso($email, $password);
+
+        } catch (\Exception $e) {
+
+            $errores['email_usuario'] = $e->getMessage();
+            $errores['password_usuario'] = $e->getMessage();
+        }
+
+        //En caso de que hayan campos vacios
+        if (!empty($errores)) {
+
+            return redirect()->back()->withInput()->with('errores', $errores);
+        }
+    }
+
+    /*
     Método que realiza la autenticación del email y del password del usuario.
     Hace uso de uno de los metodos del Usuario service para verificar que
     dicho email y contraseñas correspondan a un usuario en el sistema.
@@ -32,26 +57,39 @@ class LoginController extends BaseController{
     public function login()
     {
         //Primero se toman los datos POST del form
-        $email = trim($this->request->getPost('email_usuario')); //Se le quitan los posibles espacios vacios
+        $email = trim($this->request->getPost('email_usuario'));
         $password = $this->request->getPost('password_usuario');
 
-        //Se hace uso de un try-catch para controlar posibles errores
-        try{
-            //Usando el metodo del service se valida el ingreso
-            $usuario = $this->usuarioService->validarIngreso($email,$password);
+        $resultado = $this->erroresCreacionUsuario($email, $password);
 
-            //En caso de que se validen correctamente se procede a crear la sesion del usuario, con sus datos
-            session()->set([
-                'id_usuario' => $usuario->id_usuario,
-                'email_usuario' => $usuario->email_usuario,
-                'nombre_rol' => $usuario->nombre_rol,
-                'logged_in' => true
-            ]);
-
-            return redirect()->to('/');
-
-        }catch(\Exception $e){
-            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        if ($resultado) {
+            return $resultado;
         }
+
+        //Usando el metodo del service se valida el ingreso
+        $usuario = $this->usuarioService->validarIngreso($email,$password);
+
+        //En caso de que se validen correctamente se procede a crear la sesion del usuario, con sus datos
+        session()->set([
+            'id_usuario' => $usuario->id_usuario,
+            'email_usuario' => $usuario->email_usuario,
+            'nombre_rol' => $usuario->nombre_rol,
+            'logged_in' => true
+        ]);
+
+        return redirect()->to('/');
+    }
+
+    /*
+    Se crea un método que permite que un usuario se pueda desloggear para asi
+    cerrar su sesion y permitir que otro ingrese
+    */
+    public function logout()
+    {
+        //Primero se cierra la sesion en curso
+        session()->destroy();
+
+        //Luego se redirige al usuario al login
+        return redirect()->to('/access/login')->with('success', 'Sesión cerrada correctamente.');
     }
 }
