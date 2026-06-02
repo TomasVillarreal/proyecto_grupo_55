@@ -29,8 +29,8 @@ class ProductoFarmaceuticoController extends BaseController
     {
         return [
             'medicamentos'=> $this->medicamentoService->obtenerMedicamentosDropdown(),
-            'unidadesMedida'=> $this->medidaService->obtenerMedidaDropdown(),
-            'tiposProducto'=> $this->tipoService->obtenerTiposDropdown()
+            'unidadesMedida'=> $this->medidaService->obtenerOpcionesDropdown(),
+            'tiposProducto'=> $this->tipoService->obtenerOpcionesDropdown()
         ];
     }
 
