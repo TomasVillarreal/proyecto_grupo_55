@@ -14,5 +14,5 @@ abstract class CatalogoService{
         return $opciones;
     }
 
-    abstract function obtenerOpciones();
+    protected abstract function obtenerOpciones() : array;
 }

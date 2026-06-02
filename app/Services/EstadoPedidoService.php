@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\EstadoPedidoModel;
+use Override;
 
-class EstadoPedidoService
+class EstadoPedidoService extends CatalogoService
 {
     //Variable a utilizar que hace referncia al modelo
     protected EstadoPedidoModel $estadoPedidoModel;
@@ -16,15 +17,9 @@ class EstadoPedidoService
     }
 
     /*Metodo para obtener los estados de los productos y luego utilizarlos en el dropdown*/
-    public function obtenerEstadosDropdown(): array
+    #[Override]
+    protected function obtenerOpciones(): array
     {
-        $estados = [];
-
-        foreach ($this->estadoPedidoModel->obtenerTodos() as $estado) {
-            $estados[$estado->obtenerID()] =
-                $estado->obtenerNombre();
-        }
-
-        return $estados;
+        return $this->estadoPedidoModel->obtenerTodos();
     }
 }

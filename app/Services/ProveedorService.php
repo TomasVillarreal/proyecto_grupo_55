@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\ProveedorModel;
+use Override;
 
-class ProveedorService
+class ProveedorService extends CatalogoService
 {
     //Variable a utilizar que hace referncia al modelo
     protected ProveedorModel $proveedorModel;
@@ -16,15 +17,9 @@ class ProveedorService
     }
 
     /*Metodo para obtener los proveedores de los productos y luego utilizarlos en el dropdown*/
-    public function obtenerProveedoresDropdown(): array
+    #[Override]
+    protected function obtenerOpciones(): array
     {
-        $proveedores = [];
-
-        foreach ($this->proveedorModel->obtenerTodos() as $proveedor) {
-            $proveedores[$proveedor->obtenerID()] =
-                $proveedor->obtenerNombre();
-        }
-
-        return $proveedores;
+        return $this->proveedorModel->obtenerTodos();
     }
 }

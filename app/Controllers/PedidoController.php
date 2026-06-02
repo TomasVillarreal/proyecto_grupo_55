@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Services\CatalogoService;
 use App\Services\DetallePedidoService;
 use App\Services\PedidoService;
 use App\Services\EstadoPedidoService;
@@ -15,7 +16,7 @@ class PedidoController extends BaseController
     //Se crea la variable a utilizar del servicio de los pedidos
     protected PedidoService $pedidoService;
     protected EstadoPedidoService $estadoService;
-    protected ServicioMedicoService $servicioService;
+    protected CatalogoService $servicioService;
     protected DetallePedidoService $detalleService;
     protected ProveedorService $proveedorService;
     protected MedicamentoService $medicamentoService;
@@ -58,9 +59,9 @@ class PedidoController extends BaseController
     private function obtenerDatosAuxiliares(): array
     {
         return [
-            'estados' => $this->estadoService->obtenerEstadosDropdown(),
-            'servicios' => $this->servicioService->obtenerServiciosDropdown(),
-            'proveedores' => $this->proveedorService->obtenerProveedoresDropdown(),
+            'estados' => $this->estadoService->obtenerOpcionesDropdown(),
+            'servicios' => $this->servicioService->obtenerOpcionesDropdown(),
+            'proveedores' => $this->proveedorService->obtenerOpcionesDropdown(),
             'medicamentos' => $this->medicamentoService->obtenerMedicamentosDropdown(),
         ];
     }
