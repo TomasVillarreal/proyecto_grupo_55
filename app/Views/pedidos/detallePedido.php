@@ -1,6 +1,6 @@
 <?php
 // Establezco los distintos estados en los que puede estar el pedido
-$estado = $pedido->tipo_estado_pedido;
+$estado = $pedido['estado'];
 
 $esPendiente = $estado === 'Pendiente';
 $esRechazado = $estado === 'Rechazado';
@@ -40,7 +40,7 @@ $esAprobado  = $estado === 'Aprobado';
     <div class="card mb-4 shadow-sm border-0">
         <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
             <h5 class="mb-0">
-                Pedido #<?= $pedido->id_pedido ?>
+                Pedido #<?= $pedido['id_pedido'] ?>
             </h5>
 
             <!-- Badge para los colores de los estados -->
@@ -60,18 +60,18 @@ $esAprobado  = $estado === 'Aprobado';
 
                 <div class="col-md-4">
                     <small class="text-muted">Fecha</small>
-                    <div class="fw-semibold"><?= $pedido->fecha_solicitud_pedido ?></div>
+                    <div class="fw-semibold"><?= $pedido['fecha']?></div>
                 </div>
 
                 <div class="col-md-4">
                     <small class="text-muted">Servicio Médico</small>
-                    <div class="fw-semibold"><?= $pedido->nombre_servicio_medico ?></div>
+                    <div class="fw-semibold"><?= $pedido['servicio'] ?></div>
                 </div>
 
                 <div class="col-md-12">
                     <small class="text-muted">Comentario</small>
                     <div class="fw-semibold">
-                        <?= $pedido->comentario_pedido ?: 'Sin comentarios' ?>
+                        <?= $pedido['comentario'] ?: 'Sin comentarios' ?>
                     </div>
                 </div>
 
@@ -98,14 +98,14 @@ $esAprobado  = $estado === 'Aprobado';
                         <div class="col-md-3">
                             <small class="text-muted">Medicamento</small>
                             <div class="fw-semibold">
-                                <?= esc($d->nombre_medicamento) ?>
+                                <?= esc($d['medicamento']) ?>
                             </div>
                         </div>
 
                         <!-- Tipo -->
                         <div class="col-md-3">
                             <small class="text-muted">Tipo</small>
-                            <div class="fw-semibold"><?= esc($d->nombre_tipo_producto) ?></div>
+                            <div class="fw-semibold"><?= esc($d['tipo']) ?></div>
                         </div>
 
                         <!-- Dosis -->
@@ -113,7 +113,7 @@ $esAprobado  = $estado === 'Aprobado';
                             <small class="text-muted">Dosis</small>
                             <div>
                                 <span class="badge bg-light text-dark border">
-                                    <?= esc($d->dosis_producto . ' ' . $d->nombre_medida) ?>
+                                    <?= esc($d['dosis'] . ' ' . $d['medida']) ?>
                                 </span>
                             </div>
                         </div>
@@ -121,7 +121,7 @@ $esAprobado  = $estado === 'Aprobado';
                         <!-- Proveedor -->
                         <div class="col-md-3">
                             <small class="text-muted">Proveedor</small>
-                            <div class="fw-semibold"><?= esc($d->nombre_proveedor) ?></div>
+                            <div class="fw-semibold"><?= esc($d['proveedor']) ?></div>
                         </div>
 
                     </div>
@@ -140,7 +140,7 @@ $esAprobado  = $estado === 'Aprobado';
         <div id="acciones" class="d-flex gap-2">
 
             <form method="post" action="<?= base_url('pedidos/aprobar') ?>">
-                <input type="hidden" name="idPedido" value="<?= $pedido->id_pedido ?>">
+                <input type="hidden" name="idPedido" value="<?= $pedido['id_pedido'] ?>">
                 <button class="btn btn-outline-primary">
                     Aprobar
                 </button>
@@ -166,13 +166,13 @@ $esAprobado  = $estado === 'Aprobado';
 
             <div class="card-body">
                 <form method="post" action="<?= base_url('pedidos/rechazar') ?>">
-                    <input type="hidden" name="idPedido" value="<?= $pedido->id_pedido ?>">
+                    <input type="hidden" name="idPedido" value="<?= $pedido['id_pedido'] ?>">
                     <!-- El textarea es unicamente escribible si el pedido esta en pendiente, sino no se puede escribir-->
                     <textarea name="motivo_rechazo"
                               class="form-control mb-3"
                               rows="3"
                               placeholder="Opcional..."
-                              <?= !$esPendiente ? 'readonly' : '' ?>><?= $esRechazado ? esc($pedido->motivo_cancelacion_pedido) : '' ?></textarea>
+                              <?= !$esPendiente ? 'readonly' : '' ?>><?= $esRechazado ? esc($pedido['motivo_rechazo']) : '' ?></textarea>
                     <?php if ($esPendiente): ?>
                         <button class="btn btn-danger">
                             Confirmar Rechazo

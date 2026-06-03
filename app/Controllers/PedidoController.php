@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Services\CatalogoService;
 use App\Services\DetallePedidoService;
 use App\Services\PedidoService;
 use App\Services\EstadoPedidoService;
@@ -13,13 +14,13 @@ use App\Services\MedicamentoService;
 class PedidoController extends BaseController
 {
     //Se crea la variable a utilizar del servicio de los pedidos
-    protected $pedidoService;
-    protected $estadoService;
-    protected $servicioService;
-    protected $detalleService;
-    protected $proveedorService;
-    protected $medicamentoService;
-    protected $productoService;
+    protected PedidoService $pedidoService;
+    protected EstadoPedidoService $estadoService;
+    protected CatalogoService $servicioService;
+    protected DetallePedidoService $detalleService;
+    protected ProveedorService $proveedorService;
+    protected MedicamentoService $medicamentoService;
+    protected ProductoFarmaceuticoService $productoService;
 
     /*Creacion del constructor para evitar llamar al servicio en cada funcion*/
     public function __construct()
@@ -48,7 +49,7 @@ class PedidoController extends BaseController
         $orden = in_array($orden, ['ASC', 'DESC']) ? $orden : 'ASC';
 
         // agarro los pedidos
-        $pedidos = $this->pedidoService->obtenerPedidos($idEstado, $idServicio, $orden);
+        $pedidos = $this->pedidoService->obtenerListadoPedidos($idEstado, $idServicio, $orden);
 
         // devuelvo los pedidos
         return ['pedidos' => $pedidos];
@@ -58,9 +59,9 @@ class PedidoController extends BaseController
     private function obtenerDatosAuxiliares(): array
     {
         return [
-            'estados' => $this->estadoService->obtenerEstadosDropdown(),
-            'servicios' => $this->servicioService->obtenerServiciosDropdown(),
-            'proveedores' => $this->proveedorService->obtenerProveedoresDropdown(),
+            'estados' => $this->estadoService->obtenerOpcionesDropdown(),
+            'servicios' => $this->servicioService->obtenerOpcionesDropdown(),
+            'proveedores' => $this->proveedorService->obtenerOpcionesDropdown(),
             'medicamentos' => $this->medicamentoService->obtenerMedicamentosDropdown(),
         ];
     }
@@ -85,9 +86,8 @@ class PedidoController extends BaseController
     // Metodo que carga la vista para ver los detalles de un pedido
     public function mostrarDetallesPedidos(int $idPedido) : string
     {
-        $data = $this->obtenerDatosAuxiliares();
         $data['pedido'] = $this->pedidoService->obtenerPedidoEspecifico($idPedido);
-        $data['detalles_pedido'] = $this->detalleService->obtenerDetallesPedido($idPedido);
+        $data['detalles_pedido'] = $this->detalleService->obtenerDetallesPedido($data['pedido']['id_pedido']);
 
         return view('layout/main_layout', [
             'title' => 'Lista de Pedidos - Clinicks',
@@ -115,7 +115,7 @@ class PedidoController extends BaseController
     public function manejarAceptacion()
     {
         $id = (int) $this->request->getPost('idPedido');
-        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->aprobar((int)$id));
+        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->aprobarPedido((int)$id));
     }
 
     // Metodo que maneja el rechazo de un pedido
@@ -123,7 +123,7 @@ class PedidoController extends BaseController
     {
         $id = (int) $this->request->getPost('idPedido');
         $motivo = trim($this->request->getPost('motivo_rechazo')) ?: '-';
-        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->rechazar((int)$id, $motivo));
+        return $this->ejecutarAccionPedido(fn() => $this->pedidoService->rechazarPedido((int)$id, $motivo));
     }
 
     // Metodo que muestra la vista de creacion de pedidos
