@@ -28,7 +28,7 @@ class ProductoFarmaceuticoModel extends Model
         $medicamento = new Medicamento(
             (int) $r['id_medicamento'],
             $r['nombre_medicamento'],
-            (bool) $r['activo_medicamento'] ?? true
+            (bool) ($r['activo_medicamento'] ?? true)
         );
 
         $tipo = new TipoProducto(
@@ -52,27 +52,31 @@ class ProductoFarmaceuticoModel extends Model
         );
     }
 
+    // Funcion que devuelve la consulta sql completa con todos los datos
+    private function obtenerConsultaBuilder()
+    {
+        return $this->db->table('producto_farmaceutico pf')
+            ->select('
+                pf.*,
+                m.id_medicamento,
+                m.nombre_medicamento,
+                m.activo_medicamento,
+                tp.id_tipo_producto,
+                tp.nombre_tipo_producto,
+                mp.id_medida_producto,
+                mp.nombre_medida
+            ')
+            ->join('medicamento m', 'm.id_medicamento = pf.id_medicamento')
+            ->join('tipo_producto tp', 'tp.id_tipo_producto = pf.id_tipo_producto')
+            ->join('medida_producto mp', 'mp.id_medida_producto = pf.id_medida_producto');
+    }
+
     /* Funcion que obtiene todos los productos farmacéuticos cargados en el sistema
     También se obtienen con los JOINs necesarios para ver el resto de caracteristicas de otras
     tablas y realizar la creacion de todos los objetos farmaceuticos*/
     public function obtenerTodos(bool $producto_activo = false): array
     {
-        $builder = $this->db->table('producto_farmaceutico pf');
-
-        $builder->select('
-            pf.*,
-            m.id_medicamento,
-            m.nombre_medicamento,
-            m.activo_medicamento,
-            tp.id_tipo_producto,
-            tp.nombre_tipo_producto,
-            mp.id_medida_producto,
-            mp.nombre_medida
-        ');
-
-        $builder->join('medicamento m', 'm.id_medicamento = pf.id_medicamento');
-        $builder->join('tipo_producto tp', 'tp.id_tipo_producto = pf.id_tipo_producto');
-        $builder->join('medida_producto mp', 'mp.id_medida_producto = pf.id_medida_producto');
+        $builder = $this->obtenerConsultaBuilder();
 
         if (!$producto_activo) {
             $builder->where('pf.activo_producto', 1);
@@ -91,22 +95,7 @@ class ProductoFarmaceuticoModel extends Model
     Obtiene tambien  todos los ids y datos necesarios para poder crear todos los objetos.*/
     public function obtenerPorMedicamento(int $idMedicamento): array
     {
-        $builder = $this->db->table('producto_farmaceutico pf');
-
-        $builder->select('
-            pf.*,
-            m.id_medicamento,
-            m.nombre_medicamento,
-            m.activo_medicamento,
-            tp.id_tipo_producto,
-            tp.nombre_tipo_producto,
-            mp.id_medida_producto,
-            mp.nombre_medida
-        ');
-
-        $builder->join('medicamento m', 'm.id_medicamento = pf.id_medicamento');
-        $builder->join('tipo_producto tp', 'tp.id_tipo_producto = pf.id_tipo_producto');
-        $builder->join('medida_producto mp', 'mp.id_medida_producto = pf.id_medida_producto');
+        $builder = $this->obtenerConsultaBuilder();
 
         $builder->where('pf.id_medicamento', $idMedicamento);
         $builder->where('pf.activo_producto', 1);
@@ -120,11 +109,13 @@ class ProductoFarmaceuticoModel extends Model
     cuyos datos sean iguales a los pasados como parametro*/
     public function buscarProductoExistente(array $data): ?ProductoFarmaceutico
     {
-        $registro = $this->where('id_medicamento', (int) $data['id_medicamento'])
-            ->where('id_tipo_producto', (int) $data['id_tipo_producto'])
-            ->where('id_medida_producto', (int) $data['id_medida_producto'])
-            ->where('dosis_producto', $data['dosis_producto'])
-            ->first();
+        $registro = $this->obtenerConsultaBuilder()->where('pf.id_medicamento', (int) $data['id_medicamento'])
+            ->where('pf.id_medicamento', (int) $data['id_medicamento'])
+            ->where('pf.id_tipo_producto', (int) $data['id_tipo_producto'])
+            ->where('pf.id_medida_producto', (int) $data['id_medida_producto'])
+            ->where('pf.dosis_producto', $data['dosis_producto'])
+            ->get()
+            ->getRowArray();
 
         if (!$registro) {
             return null;
@@ -137,7 +128,10 @@ class ProductoFarmaceuticoModel extends Model
     cuyo id sea igual al id pasado como argumento*/
     public function buscarProductoPorID(int $id): ?ProductoFarmaceutico
     {
-        $registro = $this->find($id);
+        $registro = $this->obtenerConsultaBuilder()
+            ->where('pf.id_producto', $id)
+            ->get()
+            ->getRowArray();
 
         if (!$registro) {
             return null;
