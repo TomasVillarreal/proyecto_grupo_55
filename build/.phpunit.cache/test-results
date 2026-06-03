@@ -1,0 +1,1 @@
+{"version":2,"defects":{"Tests\\Unit\\MedicamentoServiceTest::test_CrearMedicamento_NombreMuyCorto":8},"times":{"Tests\\Unit\\MedicamentoServiceTest::test_CrearMedicamento_NombreMuyCorto":0.011}}
