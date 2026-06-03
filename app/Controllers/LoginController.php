@@ -76,7 +76,7 @@ class LoginController extends BaseController{
             'nombre_completo' => $usuario->nombre_completo,
             'logged_in' => true
         ]);
-
+        
         return redirect()->to('/');
     }
 
