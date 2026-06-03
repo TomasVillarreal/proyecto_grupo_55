@@ -38,7 +38,6 @@ class LoginController extends BaseController{
 
         } catch (\Exception $e) {
 
-            $errores['email_usuario'] = $e->getMessage();
             $errores['password_usuario'] = $e->getMessage();
         }
 
@@ -74,7 +73,7 @@ class LoginController extends BaseController{
             'id_usuario' => $usuario->id_usuario,
             'email_usuario' => $usuario->email_usuario,
             'nombre_rol' => $usuario->nombre_rol,
-            'nombre_completo' => $usuario->apellido_usuario . ' ' . $usuario->nombre_usuario,
+            'nombre_completo' => $usuario->nombre_completo,
             'logged_in' => true
         ]);
 
