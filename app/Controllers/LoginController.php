@@ -74,6 +74,7 @@ class LoginController extends BaseController{
             'id_usuario' => $usuario->id_usuario,
             'email_usuario' => $usuario->email_usuario,
             'nombre_rol' => $usuario->nombre_rol,
+            'nombre_completo' => $usuario->apellido_usuario . ' ' . $usuario->nombre_usuario,
             'logged_in' => true
         ]);
 
