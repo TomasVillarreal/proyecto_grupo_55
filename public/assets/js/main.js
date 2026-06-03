@@ -1,4 +1,4 @@
-sdocument.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
 
   const showNavbar = (toggleId, navId, bodyId, headerId) => {
     const toggle = document.getElementById(toggleId);
@@ -31,8 +31,6 @@ sdocument.addEventListener("DOMContentLoaded", function () {
   });
 
 });
-
-
 
 
 document.addEventListener("DOMContentLoaded", function () {
