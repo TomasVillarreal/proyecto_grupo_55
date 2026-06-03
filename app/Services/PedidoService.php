@@ -53,7 +53,12 @@ class PedidoService
     // Metodo para el rechazo de un pedido, consiste en cambiar el estado del pedido unicamente.
     public function rechazarPedido(int $idPedido, string $mensajeRechazo): bool
     {
-        $pedido = $this->pedidoModel->obtenerPedidoEspecifico($idPedido);
+        $pedido = $this->pedidoModel->obtenerPorID($idPedido);
+
+        // Verificacion que se hace si no existe el objeto
+        if ($pedido === null) {
+            throw new \InvalidArgumentException('Pedido no encontrado.');
+        }
 
         // el estado == 1 corresponde al estado "Pendiente". si no esta en este estado
         // significa que ya fue aceptado o rechazado
@@ -67,7 +72,12 @@ class PedidoService
     // Metodo para la aprobacion de un pedido, consiste en cambiar el estado del pedido unicamente.
     public function aprobarPedido(int $idPedido): bool
     {
-        $pedido = $this->pedidoModel->obtenerPedidoEspecifico($idPedido);
+        $pedido = $this->pedidoModel->obtenerPorID($idPedido);
+
+        // Verificacion que se hace si no existe el objeto
+        if ($pedido === null) {
+            throw new \InvalidArgumentException('Pedido no encontrado.');
+        }
 
         // el estado == 1 corresponde al estado "Pendiente". si no esta en este estado
         // significa que ya fue aceptado o rechazado

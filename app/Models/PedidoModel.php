@@ -45,26 +45,36 @@ class PedidoModel extends Model
         );
     }
 
+    // Funcion que devuelve la consulta sql completa con todos los datos
+    private function obtenerConsultaBuilder()
+    {
+        return $this->db->table('pedido p')
+            ->select(
+                'p.id_pedido,
+                DATE(p.fecha_solicitud_pedido) as fecha_solicitud_pedido,
+                p.comentario_pedido,
+                p.motivo_cancelacion_pedido,
+                ep.id_estado_pedido,
+                ep.tipo_estado_pedido,
+                sm.id_servicio_medico,
+                sm.nombre_servicio_medico'
+            )
+            ->join(
+                'estado_pedido ep',
+                'ep.id_estado_pedido = p.id_estado_pedido'
+            )
+            ->join(
+                'servicio_medico sm',
+                'sm.id_servicio_medico = p.id_servicio_medico'
+            );
+    }
+
     /* Funcion que obtiene todos los registros de la BD que son de la clase pedido.
     También se obtienen con los JOINs necesarios para ver el resto de caracteristicas de otras
     tablas y realizar la creacion de todos los objetos pedidos.*/
     public function obtenerPedidos(int $id_estado, int $id_servicio, string $orden) : array
     {
-        $builder = $this->db->table('Pedido p');//Crea la consulta sobre la tabla especificada
-        $builder->select(
-            'p.id_pedido,
-            DATE(p.fecha_solicitud_pedido) as fecha_solicitud_pedido,
-            p.comentario_pedido,
-            p.motivo_cancelacion_pedido,
-            ep.id_estado_pedido,
-            ep.tipo_estado_pedido,
-            sm.id_servicio_medico,
-            sm.nombre_servicio_medico'
-        );
-        $builder->join('Estado_pedido ep', 'ep.id_estado_pedido = p.id_estado_pedido');//Se hace el JOIN con la tabla Estado_pedido
-        $builder->join('Servicio_medico sm', 'sm.id_servicio_medico = p.id_servicio_medico');//Se hace el JOIN con la tabla Servicio_medico
-        /* $builder->join('Usuario u', 'u.id_usuario = p.id_usuario');//Se hace el JOIN con la tabla Usuario*/
-
+        $builder = $this->obtenerConsultaBuilder();
         if ($id_estado != 0) {
             $builder->where('p.id_estado_pedido', $id_estado);
         }
@@ -85,20 +95,7 @@ class PedidoModel extends Model
     necesarios para su uso en la vista, asi como todos los ids necesarios para la creacion del pedido*/
     public function obtenerPorID(int $id_pedido) : ?Pedido
     {
-        $builder = $this->db->table('Pedido p');//Crea la consulta sobre la tabla especificada
-        $builder->select(
-            'p.id_pedido,
-            DATE(p.fecha_solicitud_pedido) as fecha_solicitud_pedido,
-            p.comentario_pedido,
-            p.motivo_cancelacion_pedido,
-            ep.id_estado_pedido,
-            ep.tipo_estado_pedido,
-            sm.id_servicio_medico,
-            sm.nombre_servicio_medico'
-        );
-        $builder->join('Estado_pedido ep', 'ep.id_estado_pedido = p.id_estado_pedido');//Se hace el JOIN con la tabla Estado_pedido
-        $builder->join('Servicio_medico sm', 'sm.id_servicio_medico = p.id_servicio_medico');//Se hace el JOIN con la tabla Servicio_medico
-        /* $builder->join('Usuario u', 'u.id_usuario = p.id_usuario');//Se hace el JOIN con la tabla Usuario*/
+        $builder = $this->obtenerConsultaBuilder();
 
         $builder->where('p.id_pedido', $id_pedido);
 
