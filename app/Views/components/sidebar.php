@@ -1,5 +1,8 @@
-<?php //Se toma el rol del usuario en sesion para determinar si se le muestran los botones correspondientes
+<?php /*Se toma el rol del usuario en sesion para determinar si se le muestran los botones correspondientes
+Ademas de la informaciond el usuario que se muestra en el sidebar*/
 $esResponsable = session()->get('nombre_rol') === 'Responsable';
+$nombreCompleto = session()->get('nombre_completo');
+$dniUsuario = session()->get('dni_usuario');
 ?>
 <div class="sidebar-layout" id="body-pd">
     <header class="header" id="header">
@@ -41,6 +44,14 @@ $esResponsable = session()->get('nombre_rol') === 'Responsable';
                             <i class='bi bi-box-arrow-left nav_icon'></i>
                             <span class="nav_name">Cerrar sesión</span>
                         </a>
+                        <div class="sidebar-user">
+                            <i class="bi bi-person-circle"></i>
+
+                            <div class="sidebar-user-info">
+                                <span><?= session()->get('nombre_completo') ?></span>
+                                <small><?= session()->get('nombre_rol') ?></small>
+                            </div>
+                        </div>
                     </div>
                 </div> 
             </nav>
