@@ -11,9 +11,9 @@ class MedicamentoService
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.
     En POO nos enseñaron que el constructor tenia que tener el mismo nombre de la clase
     pero PHP exije que sea asi.*/
-    public function __construct()
+    public function __construct(?MedicamentoModel $medicamentoModel = null)
     {
-        $this->medicamentoModel = new MedicamentoModel();//Se reconoce e instancia la clase
+        $this->medicamentoModel = $medicamentoModel ?? new MedicamentoModel();//Se reconoce e instancia la clase
     }
 
     /*Se crea un método para validar el nombre de un medicamento según nuestras reglas
@@ -36,7 +36,7 @@ class MedicamentoService
             );
         }
         //preg_match controla que no se ingresen al final cosas como #, ^, palabra y muchos espacios y un nro,etc
-        if(!preg_match('/^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+( [A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/u', $medicamento)){
+        if(!preg_match('/^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+( [A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+)*$/u', $medicamento)){
             throw new \InvalidArgumentException("El nombre del medicamento no debe contener #, ^, espacios al inicio o al final, ni doble espacio");
         }
     }
