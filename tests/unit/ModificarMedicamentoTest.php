@@ -224,7 +224,7 @@ final class ModificarMedicamentoTest extends CIUnitTestCase
 
         $model->expects($this->once())
             ->method('modificar')
-            ->with(1, 'Ácido fólico niño')
+            ->with(1, 'Ácido Fólico Niño')
             ->willReturn(true);
 
         $service = new MedicamentoService($model);

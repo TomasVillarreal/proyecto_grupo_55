@@ -13,6 +13,6 @@ Modificar Medicamento (Tests\Unit\ModificarMedicamento)
  [x] Normaliza nombre al modificar
  [x] Normaliza con espacios alrededor
  [x] Modificacion exitosa
- [ ] Modificacion con tilde y enie
+ [x] Modificacion con tilde y enie
  [x] Modificacion con numero al final
 

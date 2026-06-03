@@ -43,8 +43,10 @@ class MedicamentoService
 
     // Funcion que normaliza el nombre del medicamento a ingresar
     private function normalizarNombreMedicamento(string $nombre) : string{
-        // ucfirst capitaliza el string, y strtolower convierte todo el string en minusculas
-        return ucfirst(strtolower(trim($nombre)));
+        /* mb convert case convierte el string pasado como argumento
+        en este caso la version sin espacios a los costados del nombre, en
+        una capitalizacion de las letras como titulo, siguiendo el metodo de codificacion utf 8*/
+        return mb_convert_case(trim($nombre), MB_CASE_TITLE, 'UTF-8');
     }
 
     /*Se crea un metodo que creará un nuevo medicamento teniendo en cuenta que cumple con las validaciones.

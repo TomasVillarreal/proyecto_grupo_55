@@ -1,34 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="Tests\Unit\ModificarMedicamentoTest" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" tests="16" assertions="23" errors="0" failures="1" skipped="0" time="0.060392">
-    <testcase name="test_ModificarMedicamentoInexistente" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="26" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.033564"/>
-    <testcase name="test_NombreVacio" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="41" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.002038"/>
-    <testcase name="test_SoloEspacios" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="52" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000801"/>
-    <testcase name="test_NombreMuyCorto" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="63" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000791"/>
-    <testcase name="test_SoloNumeros" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="74" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.001115"/>
-    <testcase name="test_CaracteresInvalidos" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="85" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000862"/>
-    <testcase name="test_NombreConGuionMedio" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="96" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000774"/>
-    <testcase name="test_DobleEspacio" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="107" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000769"/>
-    <testcase name="test_MismoNombreSinCambios" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="122" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.001256"/>
-    <testcase name="test_MismoNombreConDistintaCaseSinCambios" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="135" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000817"/>
-    <testcase name="test_NombreYaExisteEnOtroMedicamento" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="151" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000817"/>
-    <testcase name="test_NormalizaNombreAlModificar" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="168" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="4" time="0.002667"/>
-    <testcase name="test_NormalizaConEspaciosAlrededor" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="186" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="4" time="0.000910"/>
-    <testcase name="test_ModificacionExitosa" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="207" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000841"/>
-    <testcase name="test_ModificacionConTildeYEnie" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="219" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="2" time="0.011093">
-      <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Unit\ModificarMedicamentoTest::test_ModificacionConTildeYEnie&#13;
-Expectation failed for method name is "modificar" when invoked 1 time
-Parameter 1 for invocation App\Models\MedicamentoModel::modificar(1, 'Ácido fÓlico niÑo'): bool does not match expected value.
-Failed asserting that two strings are equal.
---- Expected
-+++ Actual
-@@ @@
--'Ácido fólico niño'
-+'Ácido fÓlico niÑo'
-&#13;
-C:\xampp\htdocs\proyecto_grupo_55\app\Services\MedicamentoService.php:107
-C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php:232</failure>
-    </testcase>
-    <testcase name="test_ModificacionConNumeroAlFinal" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="235" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.001277"/>
+  <testsuite name="Tests\Unit\ModificarMedicamentoTest" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" tests="16" assertions="25" errors="0" failures="0" skipped="0" time="0.052759">
+    <testcase name="test_ModificarMedicamentoInexistente" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="26" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.035338"/>
+    <testcase name="test_NombreVacio" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="41" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.002164"/>
+    <testcase name="test_SoloEspacios" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="52" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000794"/>
+    <testcase name="test_NombreMuyCorto" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="63" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000786"/>
+    <testcase name="test_SoloNumeros" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="74" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.001207"/>
+    <testcase name="test_CaracteresInvalidos" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="85" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000860"/>
+    <testcase name="test_NombreConGuionMedio" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="96" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000772"/>
+    <testcase name="test_DobleEspacio" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="107" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000765"/>
+    <testcase name="test_MismoNombreSinCambios" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="122" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.001196"/>
+    <testcase name="test_MismoNombreConDistintaCaseSinCambios" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="135" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.001075"/>
+    <testcase name="test_NombreYaExisteEnOtroMedicamento" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="151" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000884"/>
+    <testcase name="test_NormalizaNombreAlModificar" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="168" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="4" time="0.003398"/>
+    <testcase name="test_NormalizaConEspaciosAlrededor" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="186" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="4" time="0.000948"/>
+    <testcase name="test_ModificacionExitosa" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="207" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000840"/>
+    <testcase name="test_ModificacionConTildeYEnie" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="219" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="4" time="0.000878"/>
+    <testcase name="test_ModificacionConNumeroAlFinal" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\ModificarMedicamentoTest.php" line="235" class="Tests\Unit\ModificarMedicamentoTest" classname="Tests.Unit.ModificarMedicamentoTest" assertions="1" time="0.000854"/>
   </testsuite>
 </testsuites>
