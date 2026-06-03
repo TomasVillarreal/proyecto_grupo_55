@@ -49,7 +49,7 @@ class PedidoController extends BaseController
         $orden = in_array($orden, ['ASC', 'DESC']) ? $orden : 'ASC';
 
         // agarro los pedidos
-        $pedidos = $this->pedidoService->obtenerPedidos($idEstado, $idServicio, $orden);
+        $pedidos = $this->pedidoService->obtenerListadoPedidos($idEstado, $idServicio, $orden);
 
         // devuelvo los pedidos
         return ['pedidos' => $pedidos];

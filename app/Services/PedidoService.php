@@ -16,7 +16,7 @@ class PedidoService
     }
 
     /*Metodo para obtener los pedidos existentes, utilizando el método de la bd*/
-    public function obtenerPedidos(int $idEstado, int $idServicio, string $orden = 'ASC'): array
+    public function obtenerListadoPedidos(int $idEstado, int $idServicio, string $orden = 'ASC'): array
     {
         $pedidos = $this->pedidoModel->obtenerPedidos($idEstado, $idServicio, $orden);
         $listadoPedidos = [];//array que contendrá todos los pedidos existentes
@@ -35,7 +35,7 @@ class PedidoService
     // Metodo que obtiene un pedido especifico, usando el metodo del model
     public function obtenerPedidoEspecifico(int $id_pedido) : array
     {
-        $pedido = $this->pedidoModel->obtenerPedidoEspecifico($id_pedido);
+        $pedido = $this->pedidoModel->obtenerPorID($id_pedido);
 
         if ($pedido === null) {
             throw new \Exception("Pedido no encontrado");

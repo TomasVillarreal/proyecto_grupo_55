@@ -31,7 +31,7 @@ class ProductoFarmaceuticoService
     reglas de negocio. 
     Devuelve null si cumple con las validaciones y en caso contrario
     devuelve un string con el error*/
-    public function validarDosis(float $dosis): ?string
+    private function validarDosis(float $dosis): ?string
     {
         if (!is_numeric($dosis)) {
             return "La dosis debe ser un número";
@@ -48,7 +48,7 @@ class ProductoFarmaceuticoService
 
     /*Se crea un metodo que valida las posibles descripciones de los productos
     de acuerdo a nuestras reglas de negocio.  */
-    public function validarDescripcion(?string $descripcion): ?string
+    private function validarDescripcion(?string $descripcion): ?string
     {
         //Valida si el campo está vacío
         if (empty($descripcion)) {
@@ -67,7 +67,7 @@ class ProductoFarmaceuticoService
     cumple con las validaciones establecidas.
     En caso de que si cumpla, retorna un array vacio, en caso contrario, retorna
     un array con los errores. */
-    public function validarProductoFarmaceutico(array $data, ?int $excludeId = null): array
+    private function validarProductoFarmaceutico(array $data, ?int $excludeId = null): array
     {
         //Se crea el array que contendrá los errores, o no-
         $errors = [];

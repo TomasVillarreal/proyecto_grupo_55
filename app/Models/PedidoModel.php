@@ -83,7 +83,7 @@ class PedidoModel extends Model
     /* Funcion que devuelve un unico pedido (o ninguno), tal que el pedido devuelto sera aquel
     cuyo id sea igual al pasado como parametro. Trae con joins todos los datos
     necesarios para su uso en la vista, asi como todos los ids necesarios para la creacion del pedido*/
-    public function obtenerPedidoEspecifico(int $id_pedido) : ?Pedido
+    public function obtenerPorID(int $id_pedido) : ?Pedido
     {
         $builder = $this->db->table('Pedido p');//Crea la consulta sobre la tabla especificada
         $builder->select(
