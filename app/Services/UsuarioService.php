@@ -17,39 +17,9 @@ class UsuarioService{
     Se crea un método que valida que el email pasado por parámetro.
     Acá se hace uso de la API Abstract Email Validation
      */
-    public function validarEmailAPI(string $email): bool
+    public function validarEmailAPI(string $email)
     {
-        //Se hace uso de un try-catch para manejar errores en caso de que la API se caiga
-        try{
-            /*Se crea un cliente para poder concectarse a la url de la API
-            Es un cliente HTTP de CI4.
-            Crea una instancia de CURL (librería php para hacer peticiones HTTP).
-            */
-            $client = \Config\Services::curlrequest();
-
-            /*Acá se realiza la consulta HTTP a la API
-            response hace una petición HTTP GET y la guarda.
-            */
-            $response = $client->get(
-                'https://emailvalidation.abstractapi.com/v1/', //Contiene la ruta de especifica del servicio (endpoint de la API)
-                [
-                    //Especifica que se estan enviado parametros GET
-                    'query' => [
-                        'api_key' => env('ABSTRACT_API_KEY'), //La key que brinda Abstract que está en el archivo .env porque es privada.
-                        'email' => $email
-                    ]
-                ]
-            );
-
-            //Se decodifica la respuesta JSON obteniendo el cuerpo de la respuesta HTTP
-            $data = json_decode($response->getBody(), true);
-
-            //Se verifica si el formato del email es valido y además si es un email que realmente existe
-            return $data['is_valid_format']['value'] ?? false && (($data['deliverability'] ?? '') === 'DELIVERABLE');
-
-        }catch (\Exception $e){ 
-            return false; 
-        }
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     /*
@@ -81,19 +51,20 @@ class UsuarioService{
     {
         $nombre = trim($nombre);//Se quitan espacios vacios
         $apellido = trim($apellido);//Se quitan espacios vacios
-        $nombreCompleto = $apellido . ', ' . $nombre; //Se concatena el nombre y el apellido para mejor uso
 
         //mb_strlen identifica cantidad de carcteres teniendo en cuenta las tildes, cosa que no hace strlen.
         //Se verifica que cada uno tenga al menos 2 o 3 caracteres de forma individual.
-        if(mb_strlen($nombre) < 3 || mb_strlen($apellido) < 3){
-            return "El nombre y el apellido deben contener al menos 3 caracteres cada uno.";
+        if(
+            !preg_match('/^[A-Za-zÁÉÍÓÚáéíóúñÑ]+( [A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/u', $nombre)
+            ||
+            !preg_match('/^[A-Za-zÁÉÍÓÚáéíóúñÑ]+( [A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/u', $apellido)
+        ){
+            throw new \InvalidArgumentException(
+                "El nombre o apellido no deben contener números ni símbolos."
+            );
         }
-
-        //preg_match controla que no se ingresen al final cosas como #, ^, palabra y muchos espacios y un nro,etc.
-        if(!preg_match('/^[A-Za-zÁÉÍÓÚáéíóúñÑ]+( [A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/u', $nombreCompleto)){
-                return "El nombre o apellido no deben contener números, símbolos (#, ^), espacios al inicio o al final, ni doble espacio";
-            }
-        return true;
+        $nombreCompleto = $apellido . ' ' . $nombre; //Se concatena el nombre y el apellido para mejor uso
+        return $nombreCompleto;
     }
 
     /*
@@ -121,8 +92,8 @@ class UsuarioService{
     */
     public function validarIngreso(string $email, string $password)
     {
-        /*Primero se obtiene la información del usuario que quiere ingresar
-        Ya en el metodo del modelo se verifica que sea un usuario activo*/
+        //Primero se obtiene la información del usuario que quiere ingresar
+        //Ya en el metodo del modelo se verifica que sea un usuario activo
         $usuario = $this->obtenerUsuarioPorEmail($email);
 
         //Luego se verifica que el password ingresado, coincida con el almacenado en la BD.
@@ -132,7 +103,7 @@ class UsuarioService{
     
         //En caso de cumplir con las validaciones, se retorna el usuario autenticado
         return $usuario;
-    }
+    }   
 
     /*
     Se crea un método que compara el hash del password almacenado en BD,
@@ -154,7 +125,7 @@ class UsuarioService{
     creacion de un nuevo usuario, son únicos y que por ende, no existe un usuario
     ya registrado con dicha información.
     */
-    public function verificarUsuarioUnico(string $email, int $dni): bool
+    public function verificarUsuarioUnico(string $email, string $dni): bool
     {
         //Hace uso del metodo en el model para verificar la unicidad del usuario
         if($this->usuarioModel->existeUsuario($email, $dni)){
@@ -180,26 +151,24 @@ class UsuarioService{
     Se crea un método que crea un usuario nuevo, de acuerdo a los datos
     pasados por parámetro, necesarios para dicha creación
     */
-    public function crearUsuario(int $dni, string $nombre, string $apellido, string $email, string $password, int $rol): int 
+    public function crearUsuario(string $dni, string $nombre, string $apellido, string $email, string $password, int $rol): int 
     {
-        //Se cuemprueba que los campos sean validos usando los metodos del propio service
-        if($this->validarDNI($dni) && $this->validarNombreCompleto($nombre, $apellido) &&
-            $this->validarEmailAPI($email) && $this->validarPassword($password) &&
-            $this->verificarUsuarioUnico($email, $dni)){
+        //Se usa el metodo que realiza todas las validaciones
+        $this->validacionCompleta($dni,$nombre,$apellido,$email,$password);
 
-            //Primero se hashea el password
-            $passwordHasheado = $this->hashearPassword($password);
+        //Se hashea el password
+        $passwordHasheado = $this->hashearPassword($password);
 
-            //Se crea un array con la data del nuevo usuario
-            $dataUsuario = [
-                'dni_usuario' => $dni,
-                'nombre_usuario' => $nombre,
-                'apellido_usuario' => $apellido,
-                'email_usuario' => $email,
-                'password_usuario' => $passwordHasheado,
-                'id_rol' => $rol,
-                'activo_usuario' => 1
-            ];
+        //Se crea un array con la data del nuevo usuario
+        $dataUsuario = [
+            'dni_usuario' => $dni,
+            'nombre_usuario' => $nombre,
+            'apellido_usuario' => $apellido,
+            'email_usuario' => $email,
+            'password_usuario' => $passwordHasheado,
+            'id_rol' => $rol,
+            'activo_usuario' => 1
+        ];
 
             //Se inserta el nuevo usuario
             $idUsuarioNuevo = $this->usuarioModel->insert($dataUsuario);
@@ -210,8 +179,22 @@ class UsuarioService{
             }
             //Retorna el ID del nuevo usuario creado 
             return (int)$idUsuarioNuevo;
+    }
+
+    /*
+    Método que realiza todas las validaciones para pasar a la correcta creacion
+    del usuario
+    */
+    public function validacionCompleta(string $dni, string $nombre, string $apellido, string $email, string $password)
+    {    
+        //Se cuemprueba que los campos sean validos usando los metodos del propio service
+        if($this->validarDNI($dni) && $this->validarNombreCompleto($nombre, $apellido) &&
+            $this->validarEmailAPI($email) && $this->validarPassword($password) &&
+            $this->verificarUsuarioUnico($email, $dni)){
+
+        } else {
+            throw new \InvalidArgumentException('Los datos ingresados no son válidos.' );
         }
-        throw new \InvalidArgumentException('Los datos ingresados no son válidos.' );
     }
 
     /*
@@ -253,3 +236,37 @@ class UsuarioService{
 
     }
 } 
+
+/**
+ *         //Se hace uso de un try-catch para manejar errores en caso de que la API se caiga
+        try{
+            /*Se crea un cliente para poder concectarse a la url de la API
+            Es un cliente HTTP de CI4.
+            Crea una instancia de CURL (librería php para hacer peticiones HTTP).
+            */
+            $client = \Config\Services::curlrequest();
+
+            /*Acá se realiza la consulta HTTP a la API
+            response hace una petición HTTP GET y la guarda.
+            
+            $response = $client->get(
+                'https://emailvalidation.abstractapi.com/v1/', //Contiene la ruta de especifica del servicio (endpoint de la API)
+                [
+                    //Especifica que se estan enviado parametros GET
+                    'query' => [
+                        'api_key' => env('ABSTRACT_API_KEY'), //La key que brinda Abstract que está en el archivo .env porque es privada.
+                        'email' => $email
+                    ]
+                ]
+            );
+
+            //Se decodifica la respuesta JSON obteniendo el cuerpo de la respuesta HTTP
+            $data = json_decode($response->getBody(), true);
+
+            //Se verifica si el formato del email es valido y además si es un email que realmente existe
+            return $data['is_valid_format']['value'] ?? false && (($data['deliverability'] ?? '') === 'DELIVERABLE');
+
+        }catch (\Exception $e){ 
+            return false; 
+        }
+ */

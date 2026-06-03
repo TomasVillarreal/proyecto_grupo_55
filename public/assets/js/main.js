@@ -33,8 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
   const select = document.getElementById("medSelectCreate");
   const input = document.getElementById("nameInputCreate");
