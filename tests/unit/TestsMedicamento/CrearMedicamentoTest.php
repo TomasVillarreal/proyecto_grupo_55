@@ -98,7 +98,7 @@ final class CrearMedicamentoTest extends CIUnitTestCase{
         $service = $this->crearServicioConMock();
  
         $this->expectException(\InvalidArgumentException::class);
-        $service->crearMedicamento('Amoxicilina-Acido'); // guión no está permitido por el regex
+        $service->crearMedicamento('Amoxicilina-Acido');
     }
  
     public function test_NombreConPunto()
@@ -125,54 +125,8 @@ final class CrearMedicamentoTest extends CIUnitTestCase{
         $service->crearMedicamento('Acido  Folico');
     }
  
-    public function test_NombreConDosPalabrasValido()
-    {
-        $model = $this->createMock(MedicamentoModel::class);
-        $model->method('obtenerPorNombre')->willReturn(null);
-        $model->method('agregar')->willReturn(10);
  
-        $service = new MedicamentoService($model);
- 
-        $this->assertSame(10, $service->crearMedicamento('Acido Folico'));
-    }
- 
-    public function test_NombreConTilde()
-    {
-        $model = $this->createMock(MedicamentoModel::class);
-        $model->method('obtenerPorNombre')->willReturn(null);
-        $model->method('agregar')->willReturn(3);
- 
-        $service = new MedicamentoService($model);
- 
-        $this->assertSame(3, $service->crearMedicamento('Ácido Fólico'));
-    }
- 
-    public function test_NombreConEnie()
-    {
-        $model = $this->createMock(MedicamentoModel::class);
-        $model->method('obtenerPorNombre')->willReturn(null);
-        $model->method('agregar')->willReturn(4);
- 
-        $service = new MedicamentoService($model);
- 
-        $this->assertSame(4, $service->crearMedicamento('Ibuprofeno Niño'));
-    }
- 
-    public function test_NombreConNumeroAlFinal()
-    {
-        $model = $this->createMock(MedicamentoModel::class);
-        $model->method('obtenerPorNombre')->willReturn(null);
-        $model->method('agregar')->willReturn(42);
- 
-        $service = new MedicamentoService($model);
- 
-        $this->assertSame(42, $service->crearMedicamento('Ibuprofeno 400'));
-    }
- 
- 
-    // =============================================
-    // NORMALIZACIÓN DE NOMBRE
-    // =============================================
+    // **** NORMALIZACIÓN ****
  
     public function test_NormalizaNombre()
     {
@@ -246,9 +200,7 @@ final class CrearMedicamentoTest extends CIUnitTestCase{
     }
  
  
-    // =============================================
-    // EXISTENCIA DEL MEDICAMENTO
-    // =============================================
+    // ****EXISTENCIA DEL MEDICAMENTO****
  
     // El medicamento existe y esta activo.
     public function test_ExisteActivo()
@@ -291,9 +243,7 @@ final class CrearMedicamentoTest extends CIUnitTestCase{
     }
  
  
-    // =============================================
-    // CREACIÓN EXITOSA
-    // =============================================
+    // **** CASOS VALIDOS ****
  
     public function test_CrearNuevo()
     {
@@ -307,10 +257,51 @@ final class CrearMedicamentoTest extends CIUnitTestCase{
         $this->assertSame(42, $service->crearMedicamento('Amoxicilina'));
     }
  
+        public function test_NombreConDosPalabrasValido()
+    {
+        $model = $this->createMock(MedicamentoModel::class);
+        $model->method('obtenerPorNombre')->willReturn(null);
+        $model->method('agregar')->willReturn(10);
  
-    // =============================================
-    // FALLA DE BASE DE DATOS
-    // =============================================
+        $service = new MedicamentoService($model);
+ 
+        $this->assertSame(10, $service->crearMedicamento('Acido Folico'));
+    }
+ 
+    public function test_NombreConTilde()
+    {
+        $model = $this->createMock(MedicamentoModel::class);
+        $model->method('obtenerPorNombre')->willReturn(null);
+        $model->method('agregar')->willReturn(3);
+ 
+        $service = new MedicamentoService($model);
+ 
+        $this->assertSame(3, $service->crearMedicamento('Ácido Fólico'));
+    }
+ 
+    public function test_NombreConEnie()
+    {
+        $model = $this->createMock(MedicamentoModel::class);
+        $model->method('obtenerPorNombre')->willReturn(null);
+        $model->method('agregar')->willReturn(4);
+ 
+        $service = new MedicamentoService($model);
+ 
+        $this->assertSame(4, $service->crearMedicamento('Ibuprofeno Niño'));
+    }
+ 
+    public function test_NombreConNumeroAlFinal()
+    {
+        $model = $this->createMock(MedicamentoModel::class);
+        $model->method('obtenerPorNombre')->willReturn(null);
+        $model->method('agregar')->willReturn(42);
+ 
+        $service = new MedicamentoService($model);
+ 
+        $this->assertSame(42, $service->crearMedicamento('Ibuprofeno 400'));
+    }
+ 
+    // **** FALLA DE BASE DE DATOS ****
  
     public function test_FallaBD()
     {

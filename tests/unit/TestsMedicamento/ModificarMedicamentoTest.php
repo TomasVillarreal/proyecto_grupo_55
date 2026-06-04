@@ -19,9 +19,7 @@ final class ModificarMedicamentoTest extends CIUnitTestCase
         return $entity;
     }
 
-    // =============================================
-    // MEDICAMENTO NO EXISTE
-    // =============================================
+    // **** MEDICAMENTO NO EXISTE ****
 
     public function test_ModificarMedicamentoInexistente()
     {
@@ -34,9 +32,7 @@ final class ModificarMedicamentoTest extends CIUnitTestCase
         $service->modificarMedicamento(999, 'Ibuprofeno');
     }
 
-    // =============================================
-    // VALIDACIÓN DE NOMBRE
-    // =============================================
+    // ***** VALIDACIONES NOMBRE ****
 
     public function test_NombreVacio()
     {
@@ -115,9 +111,7 @@ final class ModificarMedicamentoTest extends CIUnitTestCase
         $service->modificarMedicamento(1, 'Acido  Folico');
     }
 
-    // =============================================
-    // SIN CAMBIOS (mismo nombre)
-    // =============================================
+    // **** SIN CAMBIOS ****
 
     public function test_MismoNombreSinCambios()
     {
@@ -144,10 +138,7 @@ final class ModificarMedicamentoTest extends CIUnitTestCase
         $this->assertFalse($service->modificarMedicamento(1, 'IBUPROFENO'));
     }
 
-    // =============================================
-    // NOMBRE DUPLICADO
-    // =============================================
-
+    // **** NOMBRE DUPLICADO ****
     public function test_NombreYaExisteEnOtroMedicamento()
     {
         $model = $this->createMock(MedicamentoModel::class);
@@ -161,9 +152,7 @@ final class ModificarMedicamentoTest extends CIUnitTestCase
         $service->modificarMedicamento(1, 'Amoxicilina');
     }
 
-    // =============================================
-    // NORMALIZACIÓN
-    // =============================================
+    // **** NORMALIZACIÓN ****
 
     public function test_NormalizaNombreAlModificar()
     {

@@ -1,18 +1,9 @@
-Modificar Medicamento (Tests\Unit\ModificarMedicamento)
- [x] Modificar medicamento inexistente
- [x] Nombre vacio
- [x] Solo espacios
- [x] Nombre muy corto
- [x] Solo numeros
- [x] Caracteres invalidos
- [x] Nombre con guion medio
- [x] Doble espacio
- [x] Mismo nombre sin cambios
- [x] Mismo nombre con distinta case sin cambios
- [x] Nombre ya existe en otro medicamento
- [x] Normaliza nombre al modificar
- [x] Normaliza con espacios alrededor
- [x] Modificacion exitosa
- [x] Modificacion con tilde y enie
- [x] Modificacion con numero al final
+Eliminar Medicamento (Tests\Unit\EliminarMedicamento)
+ [x] Eliminar medicamento inexistente
+ [x] Eliminar medicamento ya inactivo
+ [x] Eliminar medicamento inactivo con distinto i d
+ [x] Eliminar medicamento activo
+ [x] Desactivar devuelve false
+ [x] I d cero
+ [x] I d negativo
 
