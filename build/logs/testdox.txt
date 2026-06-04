@@ -1,24 +1,6 @@
-Crear Producto (Tests\Unit\CrearProducto)
- [x] Crear producto nuevo
- [x] Crear producto verificacion i d correcto
- [x] Dosis negativa
- [x] Dosis cero
- [x] Dosis supera el maximo
- [x] Dosis justo en el maximo
- [x] Dosis justo en el minimo
- [x] Dosis notacion cientifica grande
- [x] I d tipo producto cero
- [x] I d medida producto negativo lanza excepcion
- [x] Descripcion nula
- [x] Descripcion vacia
- [x] Descripcion con caracteres permitidos
- [x] Descripcion con porcentaje
- [x] Descripcion con caracter invalido
- [x] Producto existente activo
- [x] Agregar no se llama si producto activo existe
- [x] Producto inactivo se reactiva
- [x] Agregar no se llama cuando se reactiva
- [x] Producto duplicado
- [x] I d medicamento ausente
- [x] Falla b d al agregar
+Eliminar Con Medicamento (Tests\Unit\EliminarConMedicamento)
+ [x] Eliminar con medicamento correctamente
+ [x] Eliminar con medicamento usa el i d correcto
+ [x] No desactiva productos si falla eliminar medicamento
+ [x] Cada metodo se invoca una sola vez
 
