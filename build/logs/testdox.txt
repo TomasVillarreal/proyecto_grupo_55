@@ -1,24 +1,24 @@
-Rechazar Pedido (Tests\Unit\RechazarPedido)
- [x] Rechazar pedido inexistente
- [x] Rechazar pedido aprobado
- [x] Rechazar pedido rechazado
- [x] Rechazar pedido con estado desconocido
- [x] Mensaje vacio
- [x] Mensaje solo espacios
- [x] Mensaje muy corto
- [x] Mensaje limite longitud
- [x] Mensaje muy largo
- [x] Mensaje solo numeros
- [x] Mensaje caracteres invalidos
- [x] Mensaje limite longitud positivo
- [x] Mensaje limite longitud maxima
- [x] Mensaje con caracteres permitidos
- [x] Mensaje con tildes y enie
- [x] Guion
- [x] Guion con espacios
- [x] Doble guion
- [x] Rechazar pedido pendiente
- [x] Falla b d al rechazar devuelve false sin excepcion
- [x] I d cero lanza excepcion
- [x] I d negativo lanza excepcion
+Crear Producto (Tests\Unit\CrearProducto)
+ [x] Crear producto nuevo
+ [x] Crear producto verificacion i d correcto
+ [x] Dosis negativa
+ [x] Dosis cero
+ [x] Dosis supera el maximo
+ [x] Dosis justo en el maximo
+ [x] Dosis justo en el minimo
+ [x] Dosis notacion cientifica grande
+ [x] I d tipo producto cero
+ [x] I d medida producto negativo lanza excepcion
+ [x] Descripcion nula
+ [x] Descripcion vacia
+ [x] Descripcion con caracteres permitidos
+ [x] Descripcion con porcentaje
+ [x] Descripcion con caracter invalido
+ [x] Producto existente activo
+ [x] Agregar no se llama si producto activo existe
+ [x] Producto inactivo se reactiva
+ [x] Agregar no se llama cuando se reactiva
+ [x] Producto duplicado
+ [x] I d medicamento ausente
+ [x] Falla b d al agregar
 

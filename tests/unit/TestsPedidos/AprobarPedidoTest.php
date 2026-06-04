@@ -67,7 +67,7 @@ final class AprobarPedidoTest extends CIUnitTestCase
         $service->aprobarPedido(1);
     }
 
-    // Estado desconocido/inesperado que no sea 1 tampoco debería aprobarse
+    // Estado desconocido/inesperado 
     public function test_AprobarPedidoEstadoDesconocido()
     {
         $model = $this->createMock(PedidoModel::class);

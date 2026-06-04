@@ -17,27 +17,28 @@ class ProductoFarmaceuticoService
     protected MedicamentoService $medicamentoService;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.*/
-    public function __construct()
+    public function __construct(?ProductoFarmaceuticoModel $productoModel = null, ?TipoProductoModel $tipoProductoModel = null,
+                                ?MedidaProductoModel $medidaProductoModel = null, ?MedicamentoModel $medicamentoModel = null,
+                                ?MedicamentoService $medicamentoService = null)
     {
         //Se reconocen e instancian las clases de los modelos a utilizar
-        $this->productoModel = new ProductoFarmaceuticoModel();
-        $this->tipoProductoModel = new TipoProductoModel();
-        $this->medidaProductoModel = new MedidaProductoModel();
-        $this->medicamentoModel = new MedicamentoModel();
-        $this->medicamentoService = new MedicamentoService();
+        $this->productoModel = $productoModel ?? new ProductoFarmaceuticoModel();
+        $this->tipoProductoModel = $tipoProductoModel ?? new TipoProductoModel();
+        $this->medidaProductoModel = $medidaProductoModel ?? new MedidaProductoModel();
+        $this->medicamentoModel = $medicamentoModel ?? new MedicamentoModel();
+        $this->medicamentoService = $medicamentoService ?? new MedicamentoService();
     }
 
     /*Se crea un metodo que valida las dosis de acuerdo a nuestras
     reglas de negocio. 
     Devuelve null si cumple con las validaciones y en caso contrario
     devuelve un string con el error*/
-    private function validarDosis(float $dosis): ?string
+    private function validarDosis(mixed $dosis): ?string
     {
-        if (!is_numeric($dosis)) {
+        if (!is_numeric($dosis) || $dosis === '') {
             return "La dosis debe ser un número";
         }
         
-        //Se castea a float y se valida que sea mayor a 0 y menor 3000
         $dosis = (float) $dosis;
         if ($dosis <= 0 || $dosis > 3000) {
             return "La dosis debe estar entre 0.01 y 3000";
@@ -71,6 +72,21 @@ class ProductoFarmaceuticoService
     {
         //Se crea el array que contendrá los errores, o no-
         $errors = [];
+
+        // Validar que todas las claves obligatorias estén presentes
+        $camposObligatorios = ['id_medicamento', 'id_tipo_producto', 'id_medida_producto', 'dosis_producto'];
+        foreach ($camposObligatorios as $campo) {
+            if (!array_key_exists($campo, $data)) {
+                throw new \InvalidArgumentException("El campo '$campo' es obligatorio.");
+            }
+        }
+
+        // Validar que los IDs sean enteros positivos
+        foreach (['id_medicamento', 'id_tipo_producto', 'id_medida_producto'] as $campo) {
+            if (!is_int($data[$campo]) || $data[$campo] <= 0) {
+                throw new \InvalidArgumentException("El campo '$campo' debe ser un entero positivo.");
+            }
+        }
 
         //Se validan las dosis haciendo uso del metodo anterior
         $dosisCheck = $this->validarDosis($data['dosis_producto'] ?? '');
