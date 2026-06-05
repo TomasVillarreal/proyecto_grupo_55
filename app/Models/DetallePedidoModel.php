@@ -12,6 +12,9 @@ use App\Entities\TipoProducto;
 use App\Entities\MedidaProducto;
 use App\Entities\EstadoPedido;
 use App\Entities\ServicioMedico;
+use App\Entities\Rol;
+use App\Entities\Usuario;
+
 use DateTime;
 
 class DetallePedidoModel extends Model
@@ -39,13 +42,31 @@ class DetallePedidoModel extends Model
             (int) $r['id_servicio_medico'],
             $r['nombre_servicio_medico']
         );
+
+        $rol = new Rol(
+            (int)$r['id_rol'],
+            $r['nombre_rol']
+        );
+
+        $usuario = new Usuario(
+            (int)$r['id_usuario'],
+            $r['dni_usuario'],
+            $r['nombre_usuario'],
+            $r['apellido_usuario'],
+            $r['email_usuario'],
+            $r['password_usuario'],
+            (bool)$r['activo_usuario'],
+            $rol
+        );
+        
         $pedido = new Pedido(
             (int) $r['id_pedido'],
             new DateTime($r['fecha_solicitud_pedido']),
             $r['comentario_pedido'] ?? null,
             $r['motivo_cancelacion_pedido'] ?? null,
             $estado,
-            $servicio
+            $servicio,
+            $usuario
         );
 
         $proveedor = new Proveedor(
@@ -123,7 +144,18 @@ class DetallePedidoModel extends Model
                 ep.tipo_estado_pedido,
 
                 sm.id_servicio_medico,
-                sm.nombre_servicio_medico
+                sm.nombre_servicio_medico,
+
+                u.id_usuario,
+                u.dni_usuario,
+                u.nombre_usuario,
+                u.apellido_usuario,
+                u.email_usuario,
+                u.password_usuario,
+                u.activo_usuario,
+
+                r.id_rol,
+                r.nombre_rol
             ')
             ->join(
                 'proveedor pv',
@@ -156,6 +188,14 @@ class DetallePedidoModel extends Model
             ->join(
                 'servicio_medico sm',
                 'sm.id_servicio_medico = pe.id_servicio_medico'
+            )
+            ->join(
+                'usuario u',
+                'u.id_usuario = pe.id_usuario'
+            )
+            ->join(
+                'rol r',
+                'r.id_rol = u.id_rol'
             );
     }
 
@@ -178,5 +218,19 @@ class DetallePedidoModel extends Model
         $result = $builder->get()->getResultArray();
 
         return array_map(fn($r) => $this->crearObjeto($r), $result);
+    }
+
+    /*
+    Funcion que crea el detalle para un pedido, pasando los datos necesarios
+    por parametro.
+    */
+    public function crearDetallePedido(int $cantidad, int $idPedido, int $idProveedor, int $idProducto): bool
+    {
+        return $this->insert([
+            'cantidad_medicamento' => $cantidad,
+            'id_pedido'            => $idPedido,
+            'id_proveedor'         => $idProveedor,
+            'id_producto'          => $idProducto
+        ]);
     }
 }
