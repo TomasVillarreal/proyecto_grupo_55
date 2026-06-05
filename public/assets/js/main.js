@@ -244,6 +244,16 @@ document.addEventListener("DOMContentLoaded", () => {
                                   method="POST"
                                   action="${BASE_URL}productos/eliminar/${prod.id_producto}"
                                 >
+                                document.getElementById("crearPedidoForm").addEventListener("submit", (e) => {
+
+                                        document.querySelectorAll(".producto-select").forEach(select => {
+
+                                            console.log("NAME:", select.name);
+                                            console.log("VALUE:", select.value);
+
+                                        });
+
+                                    });
                                     <button
                                       type="submit"
                                       class="btn btn-outline-danger btn-sm w-100"
@@ -295,12 +305,47 @@ let ordenFecha = "ASC";
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    /*Se agrega para evitar que se guarde un pedido sin seleccionar un producto farmaceutico
+    document.getElementById("crearPedidoForm").addEventListener("submit", validarFormularioPedido);*/
+    const formPedido = document.getElementById("crearPedidoForm");
+
+    if (formPedido) {
+        formPedido.addEventListener(
+            "submit",
+            validarFormularioPedido
+        );
+    }
+
     // agarra el select para el filtrado segun estados
     const estadoSelect = document.getElementById("selectFiltradoEstados");
+
+    if (estadoSelect){
+        estadoSelect.addEventListener(
+            "submit",
+            validarFormularioPedido
+        );
+    }
+
     // agarra el select para el filtrado segun servicios
     const servicioSelect = document.getElementById("selectFiltradoServicios");
+
+    if(servicioSelect){
+        servicioSelect.addEventListener(
+            "submit",
+            validarFormularioPedido
+        );
+    }
+
     // escucha el boton para cambiar el orden de la tabla segun la fecha
     const btnOrden = document.getElementById("btnOrdenFecha");
+
+    if(btnOrden){
+        btnOrden.addEventListener(
+            "submit",
+            validarFormularioPedido
+        );
+    }
+    
     // es el icono para el cambio del orden de la tabla, es para cambiarlo dsp
     const icon = document.getElementById("iconOrdenFecha");
 
@@ -371,6 +416,10 @@ document.addEventListener("DOMContentLoaded", () => {
     
     document.getElementById("crearPedidoForm")
         .addEventListener("reset", resetearFormulario);
+
+    //Agregado luego de que en las pruebas permita guardar un pedido sin producto farma
+    document.getElementById("crearPedidoForm")
+        .addEventListener("submit", validarFormularioPedido);
 
     // Creo una siempre
     crearCard();
@@ -493,7 +542,7 @@ function configurarEventosCard(card) {
             const productos = await res.json();
 
             // Agrego la opcion placeholder del select 
-            productSelect.innerHTML = `<option disabled selected>Seleccione...</option>`;
+            productSelect.innerHTML = `<option value="" disabled selected> Seleccione...</option>`;
 
             // Voy agregando las opciones del producto farmaceutico
             productos.forEach(p => {
@@ -633,6 +682,31 @@ function verificarDuplicados(cardActual) {
 
             // Corto el recorrido
             return;
+            }
+        });
+    }
+    
+    // Metodo para validar que todos los detalles tengan un producto farmaceutico seleccionado
+    function validarFormularioPedido(event) {
+
+        // Se obtienen todos los select de productos farmaceuticos
+        const productos = document.querySelectorAll(".producto-select");
+
+        // Se recorren uno a uno
+        for (const producto of productos) {
+
+            // Si algun producto no fue seleccionado se cancela el envio
+            if (!producto.value) {
+
+                event.preventDefault();
+
+                alert(
+                    "Debe seleccionar un producto farmacéutico en todos los detalles."
+                );
+
+                producto.focus();
+
+                return;
+            }
         }
-    });
-}
+    }
