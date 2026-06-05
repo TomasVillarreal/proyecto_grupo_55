@@ -7,6 +7,8 @@ use CodeIgniter\Model;
 use App\Entities\Pedido;
 use App\Entities\EstadoPedido;
 use App\Entities\ServicioMedico;
+use App\Entities\Rol;
+use App\Entities\Usuario;
 
 class PedidoModel extends Model
 {
@@ -17,8 +19,8 @@ class PedidoModel extends Model
         'comentario_pedido',
         'motivo_cancelacion_pedido',
         'id_estado_pedido',
-        'id_servicio_medico'
-        /*'id_usuario'*/
+        'id_servicio_medico',
+        'id_usuario'
     ];
     protected $useTimestamps = false; //Para no rellenar columnas de tiempo automaticamente.
     
@@ -35,13 +37,30 @@ class PedidoModel extends Model
             $r['nombre_servicio_medico']
         );
 
+        $rol = new Rol(
+            (int)$r['id_rol'],
+            $r['nombre_rol']
+        );
+
+        $usuario = new Usuario(
+            (int)$r['id_usuario'],
+            $r['dni_usuario'],
+            $r['nombre_usuario'],
+            $r['apellido_usuario'],
+            $r['email_usuario'],
+            $r['password_usuario'],
+            (bool)$r['activo_usuario'],
+            $rol
+        );
+
         return new Pedido(
             (int) $r['id_pedido'],
             new DateTime($r['fecha_solicitud_pedido']),
             $r['comentario_pedido'] ?? null,
             $r['motivo_cancelacion_pedido'] ?? null,
             $estado,
-            $servicio
+            $servicio,
+            $usuario,
         );
     }
 
@@ -57,7 +76,16 @@ class PedidoModel extends Model
                 ep.id_estado_pedido,
                 ep.tipo_estado_pedido,
                 sm.id_servicio_medico,
-                sm.nombre_servicio_medico'
+                sm.nombre_servicio_medico,
+                u.id_usuario,
+                u.dni_usuario,
+                u.nombre_usuario,
+                u.apellido_usuario,
+                u.email_usuario,
+                u.password_usuario,
+                u.activo_usuario,
+                r.id_rol,
+                r.nombre_rol'
             )
             ->join(
                 'estado_pedido ep',
@@ -66,6 +94,14 @@ class PedidoModel extends Model
             ->join(
                 'servicio_medico sm',
                 'sm.id_servicio_medico = p.id_servicio_medico'
+            )
+            ->join(
+                'usuario u',
+                'u.id_usuario = p.id_usuario'
+            )
+            ->join(
+                'rol r',
+                'r.id_rol = u.id_rol'
             );
     }
 
@@ -123,5 +159,21 @@ class PedidoModel extends Model
             'id_estado_pedido' => 3,
             'motivo_cancelacion_pedido' => $mensaje
         ]);
+    }
+
+    /*
+    Funcion que permite crear un nuevo pedido con los datos necesarios para su 
+    creacion, pasados como parametro. Retorna el id del nuevo pedido creado.
+    */
+    public function crearPedido(string $fechaSolicitud, ?string $comentario, int $idEstado, int $idServicio, int $idUsuario): int
+    {
+        $this->insert([
+            'fecha_solicitud_pedido' => $fechaSolicitud,
+            'comentario_pedido'      => $comentario,
+            'id_estado_pedido'       => $idEstado,
+            'id_servicio_medico'     => $idServicio,
+            'id_usuario'             => $idUsuario
+        ]);
+        return $this->insertID();
     }
 }
