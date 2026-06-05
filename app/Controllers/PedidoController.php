@@ -39,8 +39,8 @@ class PedidoController extends BaseController
     private function obtenerPedidosFiltrados() : array
     {
         /* agarro los datos de los filtros que vienen en la query string (si es que viene por ajax)
-         en caso contrario les coloco un 0 (el 0 actua como el valor default).
-         agarro tambien el orden de la tabla segun la fecha*/
+        en caso contrario les coloco un 0 (el 0 actua como el valor default).
+        agarro tambien el orden de la tabla segun la fecha*/
         $idEstado = (int) ($this->request->getGet('idEstado') ?? 0);
         $idServicio = (int) ($this->request->getGet('idServicio') ?? 0);
         $orden = strtoupper($this->request->getGet('orden') ?? 'ASC');
@@ -87,6 +87,10 @@ class PedidoController extends BaseController
     public function mostrarDetallesPedidos(int $idPedido) : string
     {
         $data['pedido'] = $this->pedidoService->obtenerPedidoEspecifico($idPedido);
+
+        //Se obtiene el id para luego usarlo y evitar que apruebe/rechace pedido propio
+        $data['usuarioSesion'] = session()->get('id_usuario');
+        
         $data['detalles_pedido'] = $this->detalleService->obtenerDetallesPedido($data['pedido']['id_pedido']);
 
         return view('layout/main_layout', [
@@ -138,7 +142,7 @@ class PedidoController extends BaseController
 
     public function guardarDatosPedido()
     {
-        // Datos generales
+        //Primero se obtienen los Datos generales enviados (POST) del pedido
         $idServicio = $this->request->getPost('id_servicio_medico');
         $fecha = $this->request->getPost('fecha_solicitud_pedido');
         $comentario = $this->request->getPost('comentario_pedido');
@@ -146,6 +150,19 @@ class PedidoController extends BaseController
         // Detalles
         $detalles = $this->request->getPost('detalles');
 
-        dd($detalles);
+        //Se hace uso de un try-catch para manejar mejor los posibles errores
+        try { 
+            //Se crea el pedido haciendo uso del metodo en el service
+            $this->pedidoService->crearPedido( $idServicio, $comentario, $detalles );
+
+            //Dirige al usuario a la vista de los pedidos con un mensaje de exito
+            return redirect() ->to('/listaPedidos')->with('success', 'Pedido creado correctamente.'); 
+
+        } catch (\Exception $e) { 
+
+            //Caso contrario recarga la vista mostrando mensajes de error
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
+
     }
 }
