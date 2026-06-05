@@ -211,22 +211,6 @@ class UsuarioService{
     }
 
     /*
-    Se crea un método que obtiene el id de usuario en sesion, para su
-    posterior uso junto con Pedidos.
-    */
-    public function obtenerIDUsuarioEnSesion(): ?int
-    {
-        $idUsuarioEnSesion = session()->get('id_usuario');
-
-        //Se verifica que el id exista en sesión 
-        if($idUsuarioEnSesion === null){ 
-            return null; 
-        } 
-
-        //Se retorna el id casteado a entero
-        return (int)$idUsuarioEnSesion;
-    }
-    /*
     Se crea un metodo que hace uso del metodo del model para obtener
     la info necesaria del usuario para mostrarla como su perfil
     */
