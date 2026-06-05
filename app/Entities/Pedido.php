@@ -13,16 +13,19 @@ class Pedido
     private ?string $motivo_rechazo;
     private EstadoPedido $estado;
     private ServicioMedico $servicio;
+    private Usuario $usuario;
 
     public function __construct(int $id, DateTime $fecha,
                                 ?string $comentario, ?string $motivo,
-                                EstadoPedido $estado, ServicioMedico $servicio){
+                                EstadoPedido $estado, ServicioMedico $servicio,
+                                Usuario $usuario){
         $this->asignarID($id);
         $this->asignarFechaSolicitud($fecha);
         $this->asignarComentario($comentario);
         $this->cambiarMotivoRechazo($motivo);
         $this->cambiarEstado($estado);
         $this->asignarServicioMedico($servicio);
+        $this->asignarUsuario($usuario);
     }
 
     private function asignarID(int $id) : void
@@ -55,6 +58,11 @@ class Pedido
         $this->servicio = $servicio;
     }
 
+    private function asignarUsuario(Usuario $usuario): void
+    {
+        $this->usuario = $usuario;
+    }
+
     public function obtenerID() : int
     {
         return $this->id;
@@ -83,5 +91,10 @@ class Pedido
     public function obtenerServicioMedico() : ServicioMedico
     {
         return $this->servicio;
+    }
+
+    public function obtenerUsuario(): Usuario
+    {
+        return $this->usuario;
     }
 }
