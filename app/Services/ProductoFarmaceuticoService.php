@@ -82,7 +82,7 @@ class ProductoFarmaceuticoService
         }
 
         // Validar que los IDs sean enteros positivos
-        foreach (['id_medicamento', 'id_tipo_producto', 'id_medida_producto'] as $campo) {
+        foreach (['id_tipo_producto', 'id_medida_producto'] as $campo) {
             if (!is_int($data[$campo]) || $data[$campo] <= 0) {
                 throw new \InvalidArgumentException("El campo '$campo' debe ser un entero positivo.");
             }

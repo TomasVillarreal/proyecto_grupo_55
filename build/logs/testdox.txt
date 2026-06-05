@@ -1,6 +1,3 @@
-Eliminar Con Medicamento (Tests\Unit\EliminarConMedicamento)
- [x] Eliminar con medicamento correctamente
- [x] Eliminar con medicamento usa el i d correcto
- [x] No desactiva productos si falla eliminar medicamento
- [x] Cada metodo se invoca una sola vez
+Crear Producto (Tests\Unit\CrearProducto)
+ [x] Dosis supera el maximo
 

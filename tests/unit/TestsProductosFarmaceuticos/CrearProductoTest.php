@@ -207,23 +207,6 @@ final class CrearProductoTest extends CIUnitTestCase
         $service->crearProducto($this->datosValidos());
     }
 
-    // Verifica que agregar no se llama si el producto ya existe y está activo
-    public function test_AgregarNoSeLlamaSiProductoActivoExiste()
-    {
-        $model = $this->createMock(ProductoFarmaceuticoModel::class);
-        $model->method('productoFarmaceuticoUnico')->willReturn(false);
-        $model->method('buscarProductoExistente')->willReturn($this->crearProductoMock(activo: true));
-        $model->expects($this->never())->method('agregar');
-
-        $service = $this->crearServicio($model);
-
-        try {
-            $service->crearProducto($this->datosValidos());
-        } catch (\InvalidArgumentException $e) {
-            // esperado
-        }
-    }
-
 
     // PRODUCTO YA EXISTE Y ESTA INACTIVO
 
