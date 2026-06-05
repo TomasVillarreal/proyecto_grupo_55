@@ -20,13 +20,12 @@ $routes->get(
 );
 
 // -- POST -- Con filtro de acceso solo para loggeados
-$routes->post('medicamentos/alta', 'MedicamentosController::altaMedicamento', ['filter' => 'auth']);
+$routes->post('medicamentos/alta', 'ProductoFarmaceuticoController::manejarCreacionProducto', ['filter' => 'auth']);
 //Ruta con el POST para la cracion de medicamentos y/o productos farm.
-$routes->post('medicamentos/modificacion','MedicamentosController::modificacionMedicamento', ['filter' => 'auth']);
+$routes->post('medicamentos/modificacion','ProductoFarmaceuticoController::manejarModificacionProducto', ['filter' => 'auth']);
 //Ruta con el POST para la modificacion de medicamentos y/o productos farm.
-$routes->post('productos/delete/(:num)', 'ProductoFarmaceuticoController::bajaProducto/$1', ['filter' => 'auth']);
-
-$routes->post('medicamentos/delete/(:num)', 'MedicamentosController::bajaMedicamento/$1', ['filter' => 'auth']);
+$routes->post('productos/delete/(:num)', 'ProductoFarmaceuticoController::manejarEliminacionProducto/$1', ['filter' => 'auth']);
+$routes->post('medicamentos/delete/(:num)', 'MedicamentosController::manejarEliminacionMedicamento/$1', ['filter' => 'auth']);
 
 
 
@@ -35,13 +34,13 @@ $routes->post('medicamentos/delete/(:num)', 'MedicamentosController::bajaMedicam
 // -- GET -- Con filtro de acceso solo para loggeados y responsables
 $routes->get('/listaPedidos', 'PedidoController::mostrarListaPedidos', ['filter' => 'auth']);
 $routes->get('/filtrarPedidos', 'PedidoController::mostrarListaFiltrada', ['filter' => 'auth']);
-$routes->get('/crearPedido', 'PedidoController::mostrarCreacionPedidos', ['filter' => ['auth', 'responsable']]);
+$routes->get('/crearPedido', 'PedidoController::mostrarCreacionPedidos', ['filter' => 'auth']);
 $routes->get('/pedido/(:num)', 'PedidoController::mostrarDetallesPedidos/$1', ['filter' => 'auth']);
 
 //POST
 $routes->post('pedidos/aprobar', 'PedidoController::manejarAceptacion', ['filter' => ['auth', 'responsable']]);
 $routes->post('pedidos/rechazar', 'PedidoController::manejarRechazo', ['filter' => ['auth', 'responsable']]);
-$routes->post('pedidos/crearPedido', 'PedidoController::guardarDatosPedido', ['filter' => ['auth', 'responsable']]);
+$routes->post('pedidos/crearPedido', 'PedidoController::guardarDatosPedido', ['filter' => 'auth']);
 
 // LOGIN/INICIO DE SESION
 
