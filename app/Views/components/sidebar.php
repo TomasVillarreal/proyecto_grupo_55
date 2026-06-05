@@ -40,6 +40,14 @@ $dniUsuario = session()->get('dni_usuario');
                                 <span class="nav_name">Crear usuario</span>
                             </a>
                         <?php endif; ?>
+                            <a href="<?= site_url('/listaPedidos') ?>" class="nav_link">
+                                <i class="bi bi-bag-plus nav_icon"></i>
+                            <span class="nav_name">Ver Pedidos</span>
+                            </a>
+                            <a href="<?= site_url('/crearPedido') ?>" class="nav_link">
+                                <i class="bi bi-cart-plus nav_icon"></i>
+                            <span class="nav_name">Crear Pedidos</span>
+                            </a>
                         <a href="<?= site_url('/access/logout') ?>" class="nav_link" style="margin-top: auto; margin-bottom: 2rem;">
                             <i class='bi bi-box-arrow-left nav_icon'></i>
                             <span class="nav_name">Cerrar sesión</span>

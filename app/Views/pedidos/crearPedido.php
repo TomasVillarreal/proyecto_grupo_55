@@ -148,7 +148,7 @@
 
                 <div class="mb-3">
                     <label class="form-label small fw-semibold">Producto</label>
-                    <select class="form-select producto-select" name="detalles[INDEX][id_producto]" disabled required>
+                    <select class="form-select producto-select" name="detalles[INDEX][id_producto]" required>
                         <option value="">Primero seleccione un medicamento</option>
                     </select>
                 </div>

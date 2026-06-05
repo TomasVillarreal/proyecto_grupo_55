@@ -28,6 +28,8 @@
             <td><?= esc($pedido['id_pedido']) ?></td>
             <td><?= esc($pedido['fecha']) ?></td>
             <td><?= esc($pedido['servicio_medico']) ?></td>
+            <td><?= esc($pedido['usuario']) ?></td>
+            <td><?= esc($pedido['rol']) ?></td>
             <td> 
                 <!-- Aca es donde se llama a la clase que contiene el color particular del estado-->
                 <span class="badge rounded-pill <?= $claseBadge ?>">

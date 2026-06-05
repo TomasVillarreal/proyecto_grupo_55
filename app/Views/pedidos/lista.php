@@ -29,7 +29,7 @@
     <table class="table table-bordered table-hover align-middle text-center">
         <thead class="table-dark">
             <tr>
-                <th>ID Pedido</th>
+                <th>Número Pedido</th>
                 <th>
                     Fecha
             <!-- Boton para ordenar segun la fecha de los pedidos-->
@@ -38,6 +38,8 @@
                     </button>
                 </th>
                 <th>Servicio Médico</th>
+                <th>Solicitado por</th>
+                <th>Rol</th>
                 <th>Estado</th>
             </tr>
         </thead>

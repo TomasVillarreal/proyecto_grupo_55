@@ -5,6 +5,12 @@ $estado = $pedido['estado'];
 $esPendiente = $estado === 'Pendiente';
 $esRechazado = $estado === 'Rechazado';
 $esAprobado  = $estado === 'Aprobado';
+
+//Se usa para ocultar/mostrar los botones de aprobar/rechazar de acuerdo al rol
+$esResponsable = session()->get('id_rol') == 1;
+
+//Se usa para que un mismo usuario no pueda aceptar/rechazar pedido propio
+$esPropioPedido = session()->get('id_usuario') == $pedido['id_usuario'];
 ?>
 
 <div class="container mt-4">
@@ -66,6 +72,16 @@ $esAprobado  = $estado === 'Aprobado';
                 <div class="col-md-4">
                     <small class="text-muted">Servicio Médico</small>
                     <div class="fw-semibold"><?= $pedido['servicio'] ?></div>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted">Solicitado por</small>
+                    <div class="fw-semibold"><?= esc($pedido['usuario']) ?></div>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted">Rol</small>
+                    <div class="fw-semibold"> <?= esc($pedido['rol']) ?></div>
                 </div>
 
                 <div class="col-md-12">
@@ -135,7 +151,7 @@ $esAprobado  = $estado === 'Aprobado';
 
 
     <!-- Div que contiene los botones de aprobado o rechazado, solo aparece si el pedido es pendiente-->
-    <?php if ($esPendiente): ?>
+    <?php if ($esPendiente && $esResponsable && !$esPropioPedido): ?>
         <!-- Le agrego un id para ocultarlo luego -->
         <div id="acciones" class="d-flex gap-2">
 
