@@ -34,6 +34,9 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'auth'  => \App\Filters\AuthFilter::class,//Nuevo filtro para autenticar no logeados
+        'guest' => \App\Filters\GuestFilter::class,//Nuevo filtro para autenticar logeados
+        'responsable' => \App\Filters\ResponsableFilter::class,//Nuevo filtro para los respomsables
     ];
 
     /**

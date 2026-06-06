@@ -21,6 +21,6 @@ class RolesService{
     public function obtenerRolesParaDropdown(): array
     {
         //Se llama al metodo del modelo
-        return $this->rolesModel->obtenerRolesParaDropdown();
+        return $this->rolesModel->obtenerParaDropdown();
     }
 } 
