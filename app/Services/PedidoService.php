@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Services;
-
 use App\Models\PedidoModel;
 
 class PedidoService
@@ -10,9 +9,9 @@ class PedidoService
     protected PedidoModel $pedidoModel;
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion*/
-    public function __construct()
+    public function __construct(?PedidoModel $pedidoModel = null)
     {
-        $this->pedidoModel = new PedidoModel();//Se reconoce e instancia la clase
+        $this->pedidoModel = $pedidoModel ?? new PedidoModel();//Se reconoce e instancia la clase
     }
 
     /*Metodo para obtener los pedidos existentes, utilizando el método de la bd*/
@@ -50,6 +49,49 @@ class PedidoService
                 ];
     }
 
+    private function validarMensajeRechazo(string $mensaje): void
+    {
+        $mensaje = trim($mensaje);
+
+        // Caso donde no hay motivo
+        if ($mensaje === '-') {
+            return;
+        }
+
+        if ($mensaje === '') {
+            throw new \InvalidArgumentException(
+                'El motivo de rechazo no puede estar vacío.'
+            );
+        }
+
+        // Restricciones sobre la longitud del texto
+        if(mb_strlen($mensaje) < 10){
+            throw new \InvalidArgumentException(
+                'El motivo de rechazo es demasiado corto'
+            );
+        }
+
+        if (mb_strlen($mensaje) > 255) {
+            throw new \InvalidArgumentException(
+                'El motivo de rechazo no puede superar los 255 caracteres.'
+            );
+        }
+
+        // Debe contener al menos una letra
+        if (!preg_match('/\p{L}/u', $mensaje)) {
+            throw new \InvalidArgumentException(
+                'El motivo de rechazo debe contener al menos una letra.'
+            );
+        }
+
+        // Caracteres permitidos
+        if (!preg_match('/^[\p{L}\p{N}\s.,;:()\-\/]+$/u', $mensaje)) {
+            throw new \InvalidArgumentException(
+                'El motivo de rechazo contiene caracteres inválidos.'
+            );
+        }
+    }
+
     // Metodo para el rechazo de un pedido, consiste en cambiar el estado del pedido unicamente.
     public function rechazarPedido(int $idPedido, string $mensajeRechazo): bool
     {
@@ -66,7 +108,9 @@ class PedidoService
             throw new \InvalidArgumentException("El pedido se encuentra en un estado invalido para su rechazo.");
         }
 
-        return $this->pedidoModel->rechazar($pedido->obtenerID(), $mensajeRechazo);
+        $this->validarMensajeRechazo(trim($mensajeRechazo));
+
+        return $this->pedidoModel->rechazar($pedido->obtenerID(), trim($mensajeRechazo));
     }
 
     // Metodo para la aprobacion de un pedido, consiste en cambiar el estado del pedido unicamente.

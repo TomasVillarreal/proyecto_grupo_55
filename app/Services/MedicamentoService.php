@@ -11,9 +11,9 @@ class MedicamentoService
     /*Creacion del constructor para evitar llamar al modelo en cada funcion.
     En POO nos enseñaron que el constructor tenia que tener el mismo nombre de la clase
     pero PHP exije que sea asi.*/
-    public function __construct()
+    public function __construct(?MedicamentoModel $medicamentoModel = null)
     {
-        $this->medicamentoModel = new MedicamentoModel();//Se reconoce e instancia la clase
+        $this->medicamentoModel = $medicamentoModel ?? new MedicamentoModel();//Se reconoce e instancia la clase
     }
 
     /*Se crea un método para validar el nombre de un medicamento según nuestras reglas
@@ -24,27 +24,38 @@ class MedicamentoService
     {
         $medicamento = trim($medicamento);//Se quitan espacios vacios
 
+        $sinEspacios = preg_replace('/\s+/', '', $medicamento);
+
         //mb_strlen identifica cantidad de carcteres teniendo en cuenta las tildes, cosa que no hace strlen.
-        if(mb_strlen($medicamento) < 3){
+        if(mb_strlen($sinEspacios) < 3){
             throw new \InvalidArgumentException("El nombre del medicamento es muy corto. Debe contener al menos 3 letras o caracteres");
         }
 
         // esto deshabilita la posibilidad de que el nombre del medicamento posea unicamente numeros
-        if(preg_match('/^\d+$/', $medicamento)){
+        if(preg_match('/^\d+$/', $sinEspacios)){
             throw new \InvalidArgumentException(
                 "El nombre del medicamento no puede contener únicamente números"
             );
         }
         //preg_match controla que no se ingresen al final cosas como #, ^, palabra y muchos espacios y un nro,etc
-        if(!preg_match('/^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+( [A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/u', $medicamento)){
+        if(!preg_match('/^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+( [A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]+)*$/u', $medicamento)){
             throw new \InvalidArgumentException("El nombre del medicamento no debe contener #, ^, espacios al inicio o al final, ni doble espacio");
+        }
+
+        // Debe existir al menos una palabra de 3 o más caracteres
+        if (!preg_match('/\b[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ]{3,}\b/u', $medicamento)) {
+            throw new \InvalidArgumentException(
+                "El nombre del medicamento debe contener al menos una palabra de 3 o más caracteres"
+            );
         }
     }
 
     // Funcion que normaliza el nombre del medicamento a ingresar
     private function normalizarNombreMedicamento(string $nombre) : string{
-        // ucfirst capitaliza el string, y strtolower convierte todo el string en minusculas
-        return ucfirst(strtolower(trim($nombre)));
+        /* mb convert case convierte el string pasado como argumento
+        en este caso la version sin espacios a los costados del nombre, en
+        una capitalizacion de las letras como titulo, siguiendo el metodo de codificacion utf 8*/
+        return mb_convert_case(trim($nombre), MB_CASE_TITLE, 'UTF-8');
     }
 
     /*Se crea un metodo que creará un nuevo medicamento teniendo en cuenta que cumple con las validaciones.
