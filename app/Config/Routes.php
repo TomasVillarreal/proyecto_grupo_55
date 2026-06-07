@@ -24,8 +24,8 @@ $routes->post('medicamentos/alta', 'ProductoFarmaceuticoController::manejarCreac
 //Ruta con el POST para la cracion de medicamentos y/o productos farm.
 $routes->post('medicamentos/modificacion','ProductoFarmaceuticoController::manejarModificacionProducto', ['filter' => 'auth']);
 //Ruta con el POST para la modificacion de medicamentos y/o productos farm.
-$routes->post('productos/delete/(:num)', 'ProductoFarmaceuticoController::manejarEliminacionProducto/$1', ['filter' => 'auth']);
-$routes->post('medicamentos/delete/(:num)', 'MedicamentosController::manejarEliminacionMedicamento/$1', ['filter' => 'auth']);
+$routes->post('productos/eliminar/(:num)', 'ProductoFarmaceuticoController::manejarEliminacionProducto/$1', ['filter' => 'auth']);
+$routes->post('medicamentos/eliminar/(:num)', 'MedicamentosController::manejarEliminacionMedicamento/$1', ['filter' => 'auth']);
 
 
 
