@@ -77,14 +77,14 @@ class ProductoFarmaceuticoService
         $camposObligatorios = ['id_medicamento', 'id_tipo_producto', 'id_medida_producto', 'dosis_producto'];
         foreach ($camposObligatorios as $campo) {
             if (!array_key_exists($campo, $data)) {
-                throw new \InvalidArgumentException("El campo '$campo' es obligatorio.");
+                $errors['falta_' . $campo] = ("El campo '$campo' es obligatorio.");
             }
         }
 
         // Validar que los IDs sean enteros positivos
         foreach (['id_tipo_producto', 'id_medida_producto'] as $campo) {
             if (!is_int($data[$campo]) || $data[$campo] <= 0) {
-                throw new \InvalidArgumentException("El campo '$campo' debe ser un entero positivo.");
+                $errors[$campo . '_invalido']= ("El campo '$campo' debe ser un entero positivo.");
             }
         }
 
