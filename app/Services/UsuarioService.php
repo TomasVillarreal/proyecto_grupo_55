@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\UsuarioModel;
 
 class UsuarioService{
-    protected $usuarioModel; //Variable que hace referencia al modelo
+    protected UsuarioModel $usuarioModel; //Variable que hace referencia al modelo
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion*/
     public function __construct()
@@ -94,10 +94,13 @@ class UsuarioService{
     {
         //Primero se obtiene la información del usuario que quiere ingresar
         //Ya en el metodo del modelo se verifica que sea un usuario activo
-        $usuario = $this->obtenerUsuarioPorEmail($email);
+        $usuario = $this->usuarioModel->obtenerInfoUsuario($email);
+        if($usuario === null){
+            throw new \Exception("Usuario no encontrado");
+        }
 
         //Luego se verifica que el password ingresado, coincida con el almacenado en la BD.
-        if(!$this->verificarHashPassword($password, $usuario->password_usuario)){
+        if(!$this->verificarHashPassword($password, $usuario->obtenerPassword())){
             throw new \Exception('Contraseña incorrecta.');
         }
     
@@ -171,6 +174,8 @@ class UsuarioService{
         ];
 
             //Se inserta el nuevo usuario
+
+            // CAMBIAR ****
             $idUsuarioNuevo = $this->usuarioModel->insert($dataUsuario);
 
             //Control de errores en caso de fallo en la nueva inserción
@@ -197,27 +202,17 @@ class UsuarioService{
         }
     }
 
-    /*
-    Se crea un método que obtiene la información de los usuarios, llamando
-    al método del model y pasando el email del usuario como parametro.
-    */
-    public function obtenerUsuarioPorEmail(string $email)//: array
-    {
-        $usuario = $this->usuarioModel->obtenerInfoUsuario($email);
-        if(!$usuario){
-            throw new \Exception("Usuario no encontrado");
-        }
-        return $usuario;
-    }
 
     /*
     Se crea un metodo que hace uso del metodo del model para obtener
     la info necesaria del usuario para mostrarla como su perfil
     */
-    public function obtenerInfoParaPerfil(string $email): ?object
+    public function obtenerInfoParaPerfil(string $email): ?array
     {
-        return $this->usuarioModel->obtenerInfoParaPerfil($email);
-
+        $usuario = $this->usuarioModel->obtenerInfoParaPerfil($email);
+        return ['nombre_completo' => $usuario->obtenerNombreCompleto(),
+        'email_usuario' => $usuario->obtenerEmail(),
+        'nombre_rol' => $usuario->obtenerRol()->obtenerNombre()];
     }
 } 
 
