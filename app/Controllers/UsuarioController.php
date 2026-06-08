@@ -25,7 +25,7 @@ class UsuarioController extends BaseController{
     public function vista_crear_usuario(): string
     {
         //Se obtienen los roles
-        $roles = $this->rolesService->obtenerRolesParaDropdown();
+        $roles = $this->rolesService->obtenerOpcionesDropdown();
 
         return view('layout/main_layout', [
             'title' => 'Registrar Usuario - Clinicks',

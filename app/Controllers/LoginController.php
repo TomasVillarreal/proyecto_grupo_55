@@ -6,7 +6,7 @@ use App\Services\UsuarioService;
 
 class LoginController extends BaseController{
      //Se crea la variable a utilizar del servicio del usuario
-    protected $usuarioService;
+    protected UsuarioService $usuarioService;
 
     /*Creacion del constructor para evitar llamar al servicio en cada funcion*/
     public function __construct()
@@ -70,11 +70,11 @@ class LoginController extends BaseController{
 
         //En caso de que se validen correctamente se procede a crear la sesion del usuario, con sus datos
         session()->set([
-            'id_usuario' => $usuario->id_usuario,
-            'id_rol' => $usuario->id_rol,
-            'email_usuario' => $usuario->email_usuario,
-            'nombre_rol' => $usuario->nombre_rol,
-            'nombre_completo' => $usuario->nombre_completo,
+            'id_usuario' => $usuario->obtenerID(),
+            'id_rol' => $usuario->obtenerRol()->obtenerID(),
+            'email_usuario' => $usuario->obtenerEmail(),
+            'nombre_rol' => $usuario->obtenerRol()->obtenerNombre(),
+            'nombre_completo' => $usuario->obtenerNombreCompleto(),
             'logged_in' => true
         ]);
         
