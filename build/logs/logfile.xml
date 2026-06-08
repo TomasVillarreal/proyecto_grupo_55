@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="Tests\Unit\CrearMedicamentoTest" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\TestsMedicamento\CrearMedicamentoTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.035101">
-    <testcase name="test_CrearNuevo" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\TestsMedicamento\CrearMedicamentoTest.php" line="248" class="Tests\Unit\CrearMedicamentoTest" classname="Tests.Unit.CrearMedicamentoTest" assertions="1" time="0.035101"/>
+  <testsuite name="Tests\Unit\AprobarPedidoTest" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\TestsPedidos\AprobarPedidoTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.040199">
+    <testcase name="test_AprobarPedidoPendiente" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\TestsPedidos\AprobarPedidoTest.php" line="84" class="Tests\Unit\AprobarPedidoTest" classname="Tests.Unit.AprobarPedidoTest" assertions="1" time="0.040199"/>
   </testsuite>
 </testsuites>
