@@ -70,19 +70,17 @@ class UsuarioService{
     /*
     Se crea un método que valida el DNI del usuario para luego poder ser aceptado
     */
-    public function validarDNI(string $dni): int|true
+    public function validarDNI(int $dni): true
     {
-        //Se definen dos variables que contemplan el DNI escrito con '.' y sin.
-        $dniConPuntos = '/^[0-9]{1,2}(\.[0-9]{3}){2}$/';
-        $dniSinPuntos = '/^[0-9]{7,8}$/';
+        //Se castea a string localmente en este metodo porque preg_match espera una cadena de texto
+        $dni = (string)$dni;
 
-        //Filtro de ambas posibilidades del dni
-        if(preg_match($dniConPuntos, $dni) || preg_match($dniSinPuntos, $dni)){
-            $dni = (int) str_replace('.','',$dni);//Se reemplazan los puntos por vacios para guardar correctamente en la BD.
-        } else{
-            //En caso de que el DNI no cumpla con el formato ya sea porque tiene letras o la longitud es incorrecta
-            throw new \InvalidArgumentException("El formato del DNI no es válido. Ingrese entre 7 y 8 números (con o sin puntos).");
+        if (!preg_match('/^[0-9]{7,8}$/', $dni)) {
+            throw new \InvalidArgumentException(
+                'El DNI debe contener entre 7 y 8 dígitos.'
+            );
         }
+
         return true;
     }
 
@@ -128,7 +126,7 @@ class UsuarioService{
     creacion de un nuevo usuario, son únicos y que por ende, no existe un usuario
     ya registrado con dicha información.
     */
-    public function verificarUsuarioUnico(string $email, string $dni): bool
+    public function verificarUsuarioUnico(string $email, int $dni): bool
     {
         //Hace uso del metodo en el model para verificar la unicidad del usuario
         if($this->usuarioModel->existeUsuario($email, $dni)){
@@ -154,7 +152,7 @@ class UsuarioService{
     Se crea un método que crea un usuario nuevo, de acuerdo a los datos
     pasados por parámetro, necesarios para dicha creación
     */
-    public function crearUsuario(string $dni, string $nombre, string $apellido, string $email, string $password, int $rol): int 
+    public function crearUsuario(int $dni, string $nombre, string $apellido, string $email, string $password, int $rol): int 
     {
         //Se usa el metodo que realiza todas las validaciones
         $this->validacionCompleta($dni,$nombre,$apellido,$email,$password);
@@ -162,35 +160,24 @@ class UsuarioService{
         //Se hashea el password
         $passwordHasheado = $this->hashearPassword($password);
 
-        //Se crea un array con la data del nuevo usuario
-        $dataUsuario = [
-            'dni_usuario' => $dni,
-            'nombre_usuario' => $nombre,
-            'apellido_usuario' => $apellido,
-            'email_usuario' => $email,
-            'password_usuario' => $passwordHasheado,
-            'id_rol' => $rol,
-            'activo_usuario' => 1
-        ];
+        //Se inserta el nuevo usuario
 
-            //Se inserta el nuevo usuario
-
-            // CAMBIAR ****
-            $idUsuarioNuevo = $this->usuarioModel->insert($dataUsuario);
-
-            //Control de errores en caso de fallo en la nueva inserción
-            if(!$idUsuarioNuevo){ 
-                throw new \RuntimeException( 'No se pudo crear el usuario.'); 
-            }
-            //Retorna el ID del nuevo usuario creado 
-            return (int)$idUsuarioNuevo;
+        // CAMBIAR ****
+        $idUsuarioNuevo = $this->usuarioModel->crearUsuario($dni, $nombre, $apellido, $email, $passwordHasheado, $rol);
+        
+        //Control de errores en caso de fallo en la nueva inserción
+        if(!$idUsuarioNuevo){ 
+            throw new \RuntimeException( 'No se pudo crear el usuario.'); 
+        }
+        //Retorna el ID del nuevo usuario creado 
+        return (int)$idUsuarioNuevo;
     }
 
     /*
     Método que realiza todas las validaciones para pasar a la correcta creacion
     del usuario
     */
-    public function validacionCompleta(string $dni, string $nombre, string $apellido, string $email, string $password)
+    public function validacionCompleta(int $dni, string $nombre, string $apellido, string $email, string $password)
     {    
         //Se cuemprueba que los campos sean validos usando los metodos del propio service
         if($this->validarDNI($dni) && $this->validarNombreCompleto($nombre, $apellido) &&

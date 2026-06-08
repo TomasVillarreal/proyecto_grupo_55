@@ -38,7 +38,7 @@ class UsuarioController extends BaseController{
     /*
     Método para manejar y mostrar los posibles errores en la creación del usuario
     */
-    public function erroresCreacionUsuario(string $dni, string $nombre, string $apellido, string $email, string $password, ?string $id_rol) 
+    public function erroresCreacionUsuario(int $dni, string $nombre, string $apellido, string $email, string $password, ?string $id_rol) 
     {
         $errores = [];
 

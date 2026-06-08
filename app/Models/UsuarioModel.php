@@ -21,7 +21,7 @@ class UsuarioModel extends Model{
 
         return new Usuario(
             (int) $registro['id_usuario'],
-            (string)$registro['dni_usuario'],
+            (int)$registro['dni_usuario'],
             $registro['nombre_usuario'],
             $registro['apellido_usuario'],
             $registro['email_usuario'],
@@ -69,5 +69,23 @@ class UsuarioModel extends Model{
         $builder->groupEnd();
         //Se verifica si existe al menos un resultado
         return $builder->countAllResults() > 0;
+    }
+
+    /*
+    Funcion que permite crear un nuevo usuario con los datos necesarios para su 
+    creacion pasados como parametro. Retorna el id del nuevo usuario creado.
+    */
+    public function crearUsuario(int $dni, string $nombre, string $apellido, string $email, string $password, int $rol) : int
+    {
+        $this->insert([
+            'dni_usuario' => $dni,
+            'nombre_usuario' => $nombre,
+            'apellido_usuario' => $apellido,
+            'email_usuario' => $email,
+            'password_usuario' => $password,
+            'activo_usuario' => 1,
+            'id_rol' => $rol
+        ]);
+        return $this->insertID();
     }
 }

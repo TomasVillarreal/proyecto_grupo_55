@@ -13,7 +13,8 @@ $errores = session()->getFlashdata('errores') ?? [];
 
         <div class="col-12 col-md-6">
           <label for="dniUserCreate" class="form-label">DNI</label>
-          <input id="dniUserCreate" name="dni_usuario" type="text" required
+          <input id="dniUserCreate" type="text" name="dni_usuario" pattern="[0-9]{7,8}" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                placeholder="Ingrese su DNI (mínimo 7 dígitos, máximo 8 dígitos)" required 
                 class="form-control <?= isset($errores['dni_usuario']) ? 'is-invalid' : '' ?>"
                 value="<?= old('dni_usuario') ?>">
           <?php if(isset($errores['dni_usuario'])): ?>
@@ -47,7 +48,7 @@ $errores = session()->getFlashdata('errores') ?? [];
 
         <div class="col-12 col-md-6">
           <label for="nameUserCreate" class="form-label">Nombre</label>
-          <input id="nameUserCreate" name="nombre_usuario" type="text" required
+          <input id="nameUserCreate" name="nombre_usuario" type="text"  placeholder="Ingrese su nombre"  required
                 class="form-control <?= isset($errores['nombre_usuario']) ? 'is-invalid' : '' ?>"
                 value="<?= old('nombre_usuario') ?>">
           <?php if(isset($errores['nombre_usuario'])): ?>
@@ -59,7 +60,7 @@ $errores = session()->getFlashdata('errores') ?? [];
 
         <div class="col-12 col-md-6">
           <label for="lastnameUserCreate" class="form-label">Apellido</label>
-          <input id="lastnameUserCreate" name="apellido_usuario" type="text" required
+          <input id="lastnameUserCreate" name="apellido_usuario" type="text" placeholder="Ingrese su apellido"  required
                 class="form-control <?= isset($errores['apellido_usuario']) ? 'is-invalid' : '' ?>"
                 value="<?= old('apellido_usuario') ?>">
           <?php if(isset($errores['apellido_usuario'])): ?>
@@ -75,7 +76,7 @@ $errores = session()->getFlashdata('errores') ?? [];
 
         <div class="col-12 col-md-6">
           <label for="emailUserCreate" class="form-label">Email</label>
-          <input id="emailUserCreate" name="email_usuario" type="text" required
+          <input id="emailUserCreate" name="email_usuario" type="text" placeholder="Ingrese su email"  required
                 class="form-control <?= isset($errores['email_usuario']) ? 'is-invalid' : '' ?>"
                 value="<?= old('email_usuario') ?>">
           <?php if(isset($errores['email_usuario'])): ?>
@@ -89,7 +90,7 @@ $errores = session()->getFlashdata('errores') ?? [];
             <label for="passwordUserCreate" class="form-label">Contraseña</label>
 
             <div class="input-group">
-                <input id="passwordUserCreate" name="password_usuario" type="password" required
+                <input id="passwordUserCreate" name="password_usuario" type="password" placeholder="Ingrese su contraseña" required
                       class="form-control <?= isset($errores['password_usuario']) ? 'is-invalid' : '' ?>">
 
                 <button type="button" class="btn btn-outline-secondary" id="togglePassword">
