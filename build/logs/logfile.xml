@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="Tests\Unit\CrearProductoTest" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\TestsProductosFarmaceuticos\CrearProductoTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.126057">
-    <testcase name="test_DosisSuperaElMaximo" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\TestsProductosFarmaceuticos\CrearProductoTest.php" line="101" class="Tests\Unit\CrearProductoTest" classname="Tests.Unit.CrearProductoTest" assertions="1" time="0.126057"/>
+  <testsuite name="Tests\Unit\CrearMedicamentoTest" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\TestsMedicamento\CrearMedicamentoTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.035101">
+    <testcase name="test_CrearNuevo" file="C:\xampp\htdocs\proyecto_grupo_55\tests\unit\TestsMedicamento\CrearMedicamentoTest.php" line="248" class="Tests\Unit\CrearMedicamentoTest" classname="Tests.Unit.CrearMedicamentoTest" assertions="1" time="0.035101"/>
   </testsuite>
 </testsuites>

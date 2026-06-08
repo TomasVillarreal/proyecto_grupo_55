@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\EstadoPedidoModel;
+use App\Libraries\CatalogoTemplate;
 use Override;
 
-class EstadoPedidoService extends CatalogoService
+class EstadoPedidoService extends CatalogoTemplate
 {
     //Variable a utilizar que hace referncia al modelo
     protected EstadoPedidoModel $estadoPedidoModel;

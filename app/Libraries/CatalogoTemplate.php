@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Libraries;
 
-abstract class CatalogoService{
+abstract class CatalogoTemplate{
 
     public function obtenerOpcionesDropdown(){
         $opciones = [];
