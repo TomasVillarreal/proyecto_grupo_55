@@ -142,6 +142,10 @@ class PedidoController extends BaseController
 
     public function guardarDatosPedido()
     {
+        echo '<pre>';
+print_r($this->request->getPost());
+echo '</pre>';
+exit;
         //Primero se obtienen los Datos generales enviados (POST) del pedido
         $idServicio = $this->request->getPost('id_servicio_medico');
         $fecha = $this->request->getPost('fecha_solicitud_pedido');
@@ -163,6 +167,5 @@ class PedidoController extends BaseController
             //Caso contrario recarga la vista mostrando mensajes de error
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
-
     }
 }

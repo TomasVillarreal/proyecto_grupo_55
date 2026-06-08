@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+
 use App\Services\ProductoFarmaceuticoService;
 
 class MedicamentosController extends BaseController

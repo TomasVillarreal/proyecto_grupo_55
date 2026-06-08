@@ -10,14 +10,12 @@ class PedidoService
     //Variable a utilizar que hace referncia al modelo
     protected PedidoModel $pedidoModel;
     protected DetallePedidoModel $detallePedidoModel;
-    protected $db;//Variable a utilizar para realizar la conexion a la BD.
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion*/
     public function __construct()
     {
         $this->pedidoModel = new PedidoModel();//Se reconoce e instancia la clase
         $this->detallePedidoModel = new DetallePedidoModel();//Se reconoce e instancia la clase
-        $this->db = \Config\Database::connect();//Conexion con nuestra BD.
     }
 
     /*Metodo para obtener los pedidos existentes, utilizando el método de la bd*/
@@ -128,39 +126,24 @@ class PedidoService
     /* Método que crea un pedido junto con sus respectivos detalles de pedido
     pasando por parametro sus datos
     */ 
-    public function crearPedido( int $idServicio, ?string $comentario, array $detalles ): int 
+    public function crearPedido (int $idServicio, ?string $comentario): int
     {
-        //Primero se controla que se haya creado al menos un detalle de pedido para continuar
-        if (empty($detalles)) {
-            throw new \Exception('Debe agregar al menos un detalle al pedido.');
-        }
+        //Primero se obtiene el usuario en sesion que es el que crea el pedido
+        $idUsuario = session()->get('id_usuario');
 
-        //Luego se obtiene el id del usuario en sesión para asignar a dicho usuario el pedido
-        $idUsuario = session()->get('id_usuario'); 
-        
-        //Luego se obtiene la fecha actual, que es en la que se realiza el pedido
-        $fechaSolicitud = date('Y-m-d'); 
-        
-        //Se establece el estado del pedido. Por defecto todo pedido nuevo está en "pendiente"
-        $idEstado = 1; 
-        
-        //Se hace uso de transacción para evitar que queden peddidos inconmpletos en caso de errores en el medio
-        $this->db->transStart();
-        
-        //Ahora si se crea el pedido y se guarda su id. Se hace uso del metodo del model
-        $idPedido = $this->pedidoModel->agregar($fechaSolicitud, $comentario, $idEstado, $idServicio, $idUsuario ); 
+        //Se obtiene la fecha actual, que es en la que se realiza el pedido
+        $fechaSolicitud = date('Y-m-d');
 
-    
+        //Se asigna por defecto el estado del pedido como "Pendiente"
+        $idEstado = 1;
 
-        //Se finaliza la transacción una vez creado el pedido y sus detalles
-        $this->db->transComplete(); 
-        
-        //En caso de errores, los manejamos con un excepcion
-        if (!$this->db->transStatus()){ 
-            throw new \Exception('Ocurrió un error al crear el pedido.'); 
-        } 
-        
-        //Por utlimo retornamos el id del nuevo pedido creado
-        return $idPedido; 
+        //Hace uso del metodo del modelo para crear un pedido
+        return $this->pedidoModel->agregar(
+            $fechaSolicitud,
+            $comentario,
+            $idEstado,
+            $idServicio,
+            $idUsuario
+        );
     }
 }
