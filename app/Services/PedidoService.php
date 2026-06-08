@@ -150,36 +150,7 @@ class PedidoService
         //Ahora si se crea el pedido y se guarda su id. Se hace uso del metodo del model
         $idPedido = $this->pedidoModel->agregar($fechaSolicitud, $comentario, $idEstado, $idServicio, $idUsuario ); 
 
-        //Se muestran mensajes de error en caso de que alguno de los siguientes campos este vacio
-        foreach ($detalles as $detalle) {
-
-            if (empty($detalle['id_producto'])) {
-                throw new \Exception(
-                    'Todos los detalles deben tener un producto farmacéutico seleccionado.'
-                );
-            }
-
-            if (empty($detalle['id_proveedor'])) {
-                throw new \Exception(
-                    'Todos los detalles deben tener un proveedor seleccionado.'
-                );
-            }
-
-            if (empty($detalle['cantidad_medicamento'])) {
-                throw new \Exception(
-                    'Todos los detalles deben indicar una cantidad.'
-                );
-            }
-        }
-
-        //Se crean todos los detalles asociados al pedido que se está creando, haciendo uso del metodo del model
-        foreach ($detalles as $detalle) { 
-            $this->detallePedidoModel->crearDetallePedido( 
-                $detalle['cantidad_medicamento'], 
-                $idPedido, 
-                $detalle['id_proveedor'], 
-                $detalle['id_producto'] ); 
-        } 
+    
 
         //Se finaliza la transacción una vez creado el pedido y sus detalles
         $this->db->transComplete(); 

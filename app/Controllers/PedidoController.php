@@ -153,7 +153,7 @@ class PedidoController extends BaseController
         //Se hace uso de un try-catch para manejar mejor los posibles errores
         try { 
             //Se crea el pedido haciendo uso del metodo en el service
-            $this->pedidoService->crearPedido( $idServicio, $comentario, $detalles );
+            $this->detalleService->crearPedidoCompleto( $idServicio, $comentario, $detalles );
 
             //Dirige al usuario a la vista de los pedidos con un mensaje de exito
             return redirect() ->to('/listaPedidos')->with('success', 'Pedido creado correctamente.'); 
