@@ -5,7 +5,7 @@ namespace App\Entities;
 class Usuario 
 {
     private int $id;
-    private string $dni;
+    private int $dni;
     private string $nombre;
     private string $apellido;
     private string $email;
@@ -13,7 +13,7 @@ class Usuario
     private bool $activo;
     private Rol $id_rol;
 
-    public function __construct(int $id, string $dni, string $nombre, string $apellido, string $email, string $password, bool $activo, Rol $id_rol){
+    public function __construct(int $id, int $dni, string $nombre, string $apellido, string $email, string $password, bool $activo, Rol $id_rol){
         $this->asignarID($id);
         $this->asignarDni($dni);
         $this->asignarNombre($nombre);
@@ -29,7 +29,7 @@ class Usuario
         $this->id = $id;
     }
 
-    private function asignarDni(string $dni) : void
+    private function asignarDni(int  $dni) : void
     {
         $this->dni = $dni;
     }
@@ -69,7 +69,7 @@ class Usuario
         return $this->id;
     }
 
-    public function obtenerDni() : string
+    public function obtenerDni() : int
     {
         return $this->dni;
     }
