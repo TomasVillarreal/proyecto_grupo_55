@@ -45,7 +45,7 @@ $routes->post('pedidos/crearPedido', 'PedidoController::guardarDatosPedido', ['f
 // LOGIN/INICIO DE SESION
 
 // -- GET -- Con filtro de acceso solo para no loggeados
-$routes->get('/access/login', 'LoginController::vista_login');
+$routes->get('/access/login', 'LoginController::mostrarLogin');
 
 // -- POST -- Con filtro de acceso solo para no loggeados
 $routes->post('/access/iniciar_sesion', 'LoginController::login');
@@ -54,8 +54,8 @@ $routes->post('/access/iniciar_sesion', 'LoginController::login');
 // USUARIO
 
 // -- GET -- Con filtro de acceso solo para loggeados y responsables
-$routes->get('/access/registrar', 'UsuarioController::vista_crear_usuario', ['filter' => ['auth', 'responsable']]);
+$routes->get('/access/registrar', 'UsuarioController::mostrarAltaUsuario', ['filter' => ['auth', 'responsable']]);
 $routes->get('/access/logout', 'LoginController::logout', ['filter' => 'auth']);
 
 // -- POST -- Con filtro de acceso solo para loggeados y responsables
-$routes->post('/access/crear', 'UsuarioController::crear_usuario', ['filter' => ['auth', 'responsable']]);
+$routes->post('/access/crear', 'UsuarioController::crearUsuario', ['filter' => ['auth', 'responsable']]);

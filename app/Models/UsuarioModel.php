@@ -75,7 +75,7 @@ class UsuarioModel extends Model{
     Funcion que permite crear un nuevo usuario con los datos necesarios para su 
     creacion pasados como parametro. Retorna el id del nuevo usuario creado.
     */
-    public function crearUsuario(int $dni, string $nombre, string $apellido, string $email, string $password, int $rol) : int
+    public function agregar(int $dni, string $nombre, string $apellido, string $email, string $password, int $rol) : int
     {
         $this->insert([
             'dni_usuario' => $dni,

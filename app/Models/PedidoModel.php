@@ -165,7 +165,7 @@ class PedidoModel extends Model
     Funcion que permite crear un nuevo pedido con los datos necesarios para su 
     creacion, pasados como parametro. Retorna el id del nuevo pedido creado.
     */
-    public function crearPedido(string $fechaSolicitud, ?string $comentario, int $idEstado, int $idServicio, int $idUsuario): int
+    public function agregar(string $fechaSolicitud, ?string $comentario, int $idEstado, int $idServicio, int $idUsuario): int
     {
         $this->insert([
             'fecha_solicitud_pedido' => $fechaSolicitud,

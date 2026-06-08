@@ -8,8 +8,8 @@ use App\Services\RolesService;
 class UsuarioController extends BaseController{
 
     //Se crea la variable del servicio de usuario a utilizar
-    protected $usuarioService;
-    protected $rolesService;
+    protected UsuarioService $usuarioService;
+    protected RolesService $rolesService;
 
     /*Creacion del constructor para evitar llamar al servicio en cada funcion*/
     public function __construct()
@@ -22,7 +22,7 @@ class UsuarioController extends BaseController{
     /*
     Se crea un metodo que carga la vista de creacion del usuario
     */
-    public function vista_crear_usuario(): string
+    public function mostrarAltaUsuario(): string
     {
         //Se obtienen los roles
         $roles = $this->rolesService->obtenerOpcionesDropdown();
@@ -104,7 +104,7 @@ class UsuarioController extends BaseController{
     Se crea un metodo que cree a un usuario, haciendo uso de las validaciones
     de los servicios
     */
-    public function crear_usuario()
+    public function manejarCreacionUsuario()
     {
         //Se obtienen todos los POST del form
         $dataUsuario = $this->request->getPost(); 
@@ -148,7 +148,7 @@ class UsuarioController extends BaseController{
     para poder mostrarse en forma de "perfil de usuario" en
     el sidebar
     */
-    public function perfil_usuario(string $email)
+    public function obtenerPerfil(string $email)
     {
         return $this->usuarioService->obtenerInfoParaPerfil($email);
     }

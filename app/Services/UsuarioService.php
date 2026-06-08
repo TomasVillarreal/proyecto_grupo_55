@@ -163,7 +163,7 @@ class UsuarioService{
         //Se inserta el nuevo usuario
 
         // CAMBIAR ****
-        $idUsuarioNuevo = $this->usuarioModel->crearUsuario($dni, $nombre, $apellido, $email, $passwordHasheado, $rol);
+        $idUsuarioNuevo = $this->usuarioModel->agregar($dni, $nombre, $apellido, $email, $passwordHasheado, $rol);
         
         //Control de errores en caso de fallo en la nueva inserción
         if(!$idUsuarioNuevo){ 

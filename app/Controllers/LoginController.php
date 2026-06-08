@@ -18,7 +18,7 @@ class LoginController extends BaseController{
     /*
     Método que carga la vista del login
     */
-    public function vista_login(){
+    public function mostrarLogin(){
         return view('access/login', [
             'title' => 'Iniciar Sesion - Clinicks',
             'content' => view('access/login')]);
@@ -27,7 +27,7 @@ class LoginController extends BaseController{
     /*
     Método para manejar y mostrar los posibles errores en el inicio de sesion
     */
-    public function erroresCreacionUsuario(string $email, string $password)
+    public function erroresLoginUsuario(string $email, string $password)
     {
         $errores = [];
 
@@ -59,7 +59,7 @@ class LoginController extends BaseController{
         $email = trim($this->request->getPost('email_usuario'));
         $password = $this->request->getPost('password_usuario');
 
-        $resultado = $this->erroresCreacionUsuario($email, $password);
+        $resultado = $this->erroresLoginUsuario($email, $password);
 
         if ($resultado) {
             return $resultado;

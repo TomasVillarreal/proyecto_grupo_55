@@ -70,33 +70,51 @@ class MedicamentoModel extends Model
     }
 
     /* Funcion que cambia el activo_medicamento del objeto cuyo id sea igual al 
-    pasado como parametro a 0 (es decir, inactivo)*/
+    pasado como parametro a 0 (es decir, inactivo). Se hace uso de un 
+    procedimiento almacenado, previamente creado en la base
+    de datos*/
     public function desactivar(int $id): bool
     {
-        return $this->update($id, [
-            'activo_medicamento' => 0
-        ]);
+        $query = $this->db->query(
+            "CALL sp_desactivar_medicamento(?)",
+            [$id]
+        );
+
+        $resultado = $query->getRow();
+
+        return $resultado->filas_afectadas > 0;
     }
 
     /* Funcion que cambia el nombre del objeto cuyo id sea igual al 
-    pasado al string pasado como parametro*/
+    pasado al string pasado como parametro. Se hace uso de un 
+    procedimiento almacenado, previamente creado en la base
+    de datos*/
     public function modificar(int $id, string $nombre): bool
     {
-        return $this->update($id, [
-            'nombre_medicamento' => $nombre
-        ]);
+        $query = $this->db->query(
+            "CALL sp_modificar_medicamento(?, ?)",
+            [$id, $nombre]
+        );
+
+        $resultado = $query->getRow();
+
+        return $resultado->filas_afectadas > 0;
     }
 
     /* Funcion que inserta un nuevo objeto con el nombre pasado como parametro
-    y que devuelve el id del nuevo medicamento creado*/
+    y que devuelve el id del nuevo medicamento creado.
+    Se hace uso de un procedimiento almacenado, previamente creado en la base
+    de datos.*/
     public function agregar(string $nombre): int
     {
-        $this->insert([
-            'nombre_medicamento' => $nombre,
-            'activo_medicamento' => 1
-        ]);
+        $query = $this->db->query(
+            "CALL sp_crear_medicamento(?)",
+            [$nombre]
+        );
 
-        return (int) $this->getInsertID();
+        $resultado = $query->getRow();
+
+        return (int)$resultado->id_medicamento;
     }
 
     /* Funcion que verifica la existencia de algun medicamento con el nombre pasado como parametro

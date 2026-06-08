@@ -148,7 +148,7 @@ class PedidoService
         $this->db->transStart();
         
         //Ahora si se crea el pedido y se guarda su id. Se hace uso del metodo del model
-        $idPedido = $this->pedidoModel->crearPedido($fechaSolicitud, $comentario, $idEstado, $idServicio, $idUsuario ); 
+        $idPedido = $this->pedidoModel->agregar($fechaSolicitud, $comentario, $idEstado, $idServicio, $idUsuario ); 
 
         //Se muestran mensajes de error en caso de que alguno de los siguientes campos este vacio
         foreach ($detalles as $detalle) {
