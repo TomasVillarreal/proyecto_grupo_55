@@ -75,11 +75,13 @@ class MedicamentoModel extends Model
     de datos*/
     public function desactivar(int $id): bool
     {
+        //Ejecuta el procedimiento almacenado
         $query = $this->db->query(
             "CALL sp_desactivar_medicamento(?)",
             [$id]
         );
 
+        //Obtiene la fila devuelta por el procedimiento
         $resultado = $query->getRow();
 
         return $resultado->filas_afectadas > 0;
@@ -91,11 +93,13 @@ class MedicamentoModel extends Model
     de datos*/
     public function modificar(int $id, string $nombre): bool
     {
+        //Ejecuta el procedimiento almacenado
         $query = $this->db->query(
             "CALL sp_modificar_medicamento(?, ?)",
             [$id, $nombre]
         );
 
+        //Obtiene la fila devuelta por el procedimiento
         $resultado = $query->getRow();
 
         return $resultado->filas_afectadas > 0;
@@ -107,11 +111,13 @@ class MedicamentoModel extends Model
     de datos.*/
     public function agregar(string $nombre): int
     {
+        //Ejecuta el procedimiento almacenado
         $query = $this->db->query(
             "CALL sp_crear_medicamento(?)",
             [$nombre]
         );
 
+        //Obtiene la fila devuelta por el procedimiento
         $resultado = $query->getRow();
 
         return (int)$resultado->id_medicamento;

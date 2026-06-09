@@ -58,4 +58,4 @@ $routes->get('/access/registrar', 'UsuarioController::mostrarAltaUsuario', ['fil
 $routes->get('/access/logout', 'LoginController::logout', ['filter' => 'auth']);
 
 // -- POST -- Con filtro de acceso solo para loggeados y responsables
-$routes->post('/access/crear', 'UsuarioController::crearUsuario', ['filter' => ['auth', 'responsable']]);
+$routes->post('/access/crear', 'UsuarioController::manejarCreacionUsuario', ['filter' => ['auth', 'responsable']]);

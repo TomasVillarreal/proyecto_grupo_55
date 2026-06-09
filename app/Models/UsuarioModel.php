@@ -62,13 +62,20 @@ class UsuarioModel extends Model{
     */
     public function existeUsuario(string $email, int $dni): bool
     {
-        $builder = $this->db->table('Usuario');//Se busca en la tabla de usuario.
-        $builder->groupStart();//Para poder hacer doble 'where' 
-            $builder->where('email_usuario', $email); //Filtro por email
-            $builder->orWhere('dni_usuario', $dni); //Filtro por dni
-        $builder->groupEnd();
-        //Se verifica si existe al menos un resultado
-        return $builder->countAllResults() > 0;
+         //Ejecuta el procedimiento almacenado
+        $query = $this->db->query(
+            "CALL sp_existe_usuario(?, ?)",
+            [$email, $dni]
+        );
+
+        //Obtiene la fila devuelta por el procedimiento
+        $resultado = $query->getRow();
+
+        //Libera el resultado inmediatamente para mantener la conexión limpia
+        $query->freeResult();
+
+        //Si $resultado no es null y tiene un id_usuario válido (mayor a 0), significa que el usuario YA existe.
+        return isset($resultado->id_usuario) && (int)$resultado->id_usuario > 0;
     }
 
     /*
