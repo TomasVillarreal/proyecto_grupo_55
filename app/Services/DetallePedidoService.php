@@ -88,7 +88,7 @@ class DetallePedidoService
     {
         foreach ($detalles as $detalle) {
 
-            $this->detalleModel->crearDetallePedido(
+            $this->detalleModel->agregar(
                 $detalle['cantidad_medicamento'],
                 $idPedido,
                 $detalle['id_proveedor'],

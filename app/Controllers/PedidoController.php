@@ -142,13 +142,8 @@ class PedidoController extends BaseController
 
     public function guardarDatosPedido()
     {
-        echo '<pre>';
-print_r($this->request->getPost());
-echo '</pre>';
-exit;
         //Primero se obtienen los Datos generales enviados (POST) del pedido
         $idServicio = $this->request->getPost('id_servicio_medico');
-        $fecha = $this->request->getPost('fecha_solicitud_pedido');
         $comentario = $this->request->getPost('comentario_pedido');
 
         // Detalles

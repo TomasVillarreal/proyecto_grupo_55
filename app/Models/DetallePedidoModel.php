@@ -224,7 +224,7 @@ class DetallePedidoModel extends Model
     Funcion que crea el detalle para un pedido, pasando los datos necesarios
     por parametro.
     */
-    public function crearDetallePedido(int $cantidad, int $idPedido, int $idProveedor, int $idProducto): bool
+    public function agregar(int $cantidad, int $idPedido, int $idProveedor, int $idProducto): bool
     {
         return $this->insert([
             'cantidad_medicamento' => $cantidad,
