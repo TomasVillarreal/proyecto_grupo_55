@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\ProveedorModel;
+use App\Libraries\CatalogoTemplate;
 use Override;
 
-class ProveedorService extends CatalogoService
+class ProveedorService extends CatalogoTemplate
 {
     //Variable a utilizar que hace referncia al modelo
     protected ProveedorModel $proveedorModel;

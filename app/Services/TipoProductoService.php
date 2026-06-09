@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\TipoProductoModel;
+use App\Libraries\CatalogoTemplate;
 use Override;
 
-class TipoProductoService extends CatalogoService
+class TipoProductoService extends CatalogoTemplate
 {
     //Variable a utilizar que hace referncia al modelo
     protected TipoProductoModel $tipoProductoModel;
