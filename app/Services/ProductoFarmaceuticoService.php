@@ -52,7 +52,7 @@ class ProductoFarmaceuticoService
     private function validarDescripcion(?string $descripcion): ?string
     {
         //Valida si el campo está vacío
-        if (empty($descripcion)) {
+        if (empty(trim($descripcion))) {
             return null; // Es opcional
         }
         
