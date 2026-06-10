@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\RolesModel;
+use App\Libraries\CatalogoTemplate;
 use Override;
 
-class RolesService extends CatalogoService{
+class RolesService extends CatalogoTemplate{
     protected RolesModel $rolesModel;//Variable que hace referencia al modelo
 
     /*Creacion del constructor para evitar llamar al modelo en cada funcion*/
