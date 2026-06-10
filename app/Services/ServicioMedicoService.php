@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\ServicioMedicoModel;
+use App\Libraries\CatalogoTemplate;
 
-class ServicioMedicoService extends CatalogoService
+class ServicioMedicoService extends CatalogoTemplate
 {
     //Variable a utilizar que hace referncia al modelo
     protected ServicioMedicoModel $servicioModel;

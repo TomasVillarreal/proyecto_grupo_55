@@ -38,7 +38,6 @@ class DetallePedidoService
                 'tipo'          => $detalle->obtenerProducto()->obtenerTipo()->obtenerNombre(),
                 'medida'        => $detalle->obtenerProducto()->obtenerUnidadMedida()->obtenerNombre(),
                 'dosis'         => $detalle->obtenerProducto()->obtenerDosis(),
-                'descripcion'   => $detalle->obtenerProducto()->obtenerDescripcion(),
             ];
         }
         return $listadoDetalles;

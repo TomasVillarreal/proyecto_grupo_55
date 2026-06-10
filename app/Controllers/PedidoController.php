@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Services\CatalogoService;
 use App\Services\DetallePedidoService;
 use App\Services\PedidoService;
 use App\Services\EstadoPedidoService;
@@ -16,7 +15,7 @@ class PedidoController extends BaseController
     //Se crea la variable a utilizar del servicio de los pedidos
     protected PedidoService $pedidoService;
     protected EstadoPedidoService $estadoService;
-    protected CatalogoService $servicioService;
+    protected ServicioMedicoService $servicioService;
     protected DetallePedidoService $detalleService;
     protected ProveedorService $proveedorService;
     protected MedicamentoService $medicamentoService;
