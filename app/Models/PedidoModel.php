@@ -120,6 +120,8 @@ class PedidoModel extends Model
 
         // Ordeno los pedidos segun el valor del argumento
         $builder->orderBy('p.fecha_solicitud_pedido', $orden);
+        ($orden === 'ASC') ? $ordenID = 'ASC' : $ordenID = 'DESC';
+        $builder->orderBy('p.id_pedido', $ordenID);
 
         //Se obtienen los resultados
         $result = $builder->get()->getResultArray();
